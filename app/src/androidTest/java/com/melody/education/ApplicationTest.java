@@ -1,4 +1,4 @@
-package education.melody.com;
+package com.melody.education;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;
