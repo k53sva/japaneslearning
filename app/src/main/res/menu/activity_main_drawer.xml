@@ -6,6 +6,10 @@
                 android:id="@+id/nav_beginner_conversation"
                 android:icon="@drawable/ic_menu_beginner"
                 android:title="Japanese Conversation" />
+            <item
+                android:id="@+id/nav_beginner_express"
+                android:icon="@drawable/ic_menu_express"
+                android:title="Express English" />
         </menu>
     </item>
 
