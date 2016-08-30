@@ -15,7 +15,6 @@ public class App extends Application {
     public void onCreate() {
         enableStrictMode();
         super.onCreate();
-
         application = this;
         playlistManager = new PlaylistManager();
     }

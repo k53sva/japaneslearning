@@ -14,7 +14,7 @@ import com.devbrackets.android.exomedia.ui.widget.VideoControls;
 import com.devbrackets.android.playlistcore.api.AudioPlayerApi;
 import com.devbrackets.android.playlistcore.service.BasePlaylistService;
 import com.melody.education.App;
-import com.melody.education.MainActivity;
+import com.melody.education.StartActivity;
 import com.melody.education.R;
 import com.melody.education.data.MediaItem;
 import com.melody.education.manager.PlaylistManager;
@@ -80,7 +80,7 @@ public class MediaService extends BasePlaylistService<MediaItem, PlaylistManager
     @NonNull
     @Override
     protected PendingIntent getNotificationClickPendingIntent() {
-        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+        Intent intent = new Intent(getApplicationContext(), StartActivity.class);
         return PendingIntent.getActivity(getApplicationContext(), FOREGROUND_REQUEST_CODE, intent, PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
