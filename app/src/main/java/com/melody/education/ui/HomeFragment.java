@@ -3,7 +3,9 @@ package com.melody.education.ui;
 import android.content.res.Resources;
 import android.graphics.Rect;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -26,12 +28,14 @@ public class HomeFragment extends BaseFragment {
     private RecyclerView recyclerView;
     private LessonAdapter adapter;
     private List<Album> albumList;
+    SwipeRefreshLayout mSwipeRefreshLayout;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.content_main, container, false);
         recyclerView = (RecyclerView) v.findViewById(R.id.recycler_view);
+        mSwipeRefreshLayout = (SwipeRefreshLayout) v.findViewById(R.id.swipe_refresh);
 
         albumList = new ArrayList<>();
         adapter = new LessonAdapter(getActivity(), albumList);
@@ -42,9 +46,26 @@ public class HomeFragment extends BaseFragment {
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(adapter);
         prepareAlbums();
+        mSwipeRefreshLayout.setOnRefreshListener(this::refreshItems);
         return v;
     }
 
+    /**
+     * Refresh list
+     */
+    void refreshItems() {
+        // Load items
+        // ...
+        // Load complete
+        new Handler().postDelayed(this::onItemsLoadComplete, 5000);
+    }
+
+    void onItemsLoadComplete() {
+        // Update the adapter and notify data set changed
+        // ...
+        // Stop refresh animation
+        mSwipeRefreshLayout.setRefreshing(false);
+    }
 
     /**
      * Adding few albums for testing

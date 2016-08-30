@@ -19,9 +19,7 @@ import com.squareup.picasso.Picasso;
 import java.util.List;
 
 
-/**
- * Created by Ravi Tamada on 18/05/16.
- */
+
 public class LessonAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private static final int TYPE_ADS = 0;
     private static final int TYPE_ITEM = 1;
