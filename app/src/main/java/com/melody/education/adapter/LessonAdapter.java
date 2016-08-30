@@ -2,16 +2,13 @@ package com.melody.education.adapter;
 
 import android.content.Context;
 import android.content.Intent;
-import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.melody.education.R;
 import com.melody.education.fragment.LessonFragment;
@@ -25,8 +22,9 @@ import java.util.List;
 /**
  * Created by Ravi Tamada on 18/05/16.
  */
-public class LessonAdapter extends RecyclerView.Adapter<LessonAdapter.MyViewHolder> {
-
+public class LessonAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+    private static final int TYPE_ADS = 0;
+    private static final int TYPE_ITEM = 1;
     private Context mContext;
     private List<Album> albumList;
 
@@ -35,6 +33,7 @@ public class LessonAdapter extends RecyclerView.Adapter<LessonAdapter.MyViewHold
         public TextView title, count;
         public ImageView overflow;
         public ImageView thumbnail;
+        private RelativeLayout body;
 
 
         public MyViewHolder(View view) {
@@ -43,6 +42,13 @@ public class LessonAdapter extends RecyclerView.Adapter<LessonAdapter.MyViewHold
             count = (TextView) view.findViewById(R.id.count);
             thumbnail = (ImageView) view.findViewById(R.id.thumbnail);
             overflow = (ImageView) view.findViewById(R.id.overflow);
+            body = (RelativeLayout) view.findViewById(R.id.item_content);
+        }
+    }
+
+    class AdsHolder extends RecyclerView.ViewHolder {
+        public AdsHolder(View itemView) {
+            super(itemView);
         }
     }
 
@@ -53,62 +59,41 @@ public class LessonAdapter extends RecyclerView.Adapter<LessonAdapter.MyViewHold
     }
 
     @Override
-    public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View itemView = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.album_card, parent, false);
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        if (viewType == TYPE_ITEM) {
+            View itemView = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.item_lesson, parent, false);
 
-        return new MyViewHolder(itemView);
+            return new MyViewHolder(itemView);
+        } else {
+            //inflate your layout and pass it to view holder
+            return new AdsHolder(null);
+        }
     }
 
     @Override
-    public void onBindViewHolder(final MyViewHolder holder, int position) {
-        Album album = albumList.get(position);
-        holder.title.setText(album.getName());
-        holder.count.setText(album.getDescription());
-        holder.overflow.setOnClickListener(v -> showPopupMenu(holder.overflow, position));
-        Picasso.with(mContext)
-                .load("http://www.japaneselearning.somee.com/image/beginner_lesson_1.jpg")
-                .placeholder(R.drawable.album1)
-                .into(holder.thumbnail);
+    public void onBindViewHolder(final RecyclerView.ViewHolder holder, int position) {
+        if (holder instanceof MyViewHolder) {
+            MyViewHolder myViewHolder = (MyViewHolder) holder;
+            Album album = albumList.get(position);
+            myViewHolder.title.setText(album.getName());
+            myViewHolder.count.setText(album.getDescription());
+            Picasso.with(mContext)
+                    .load("http://www.japaneselearning.somee.com/image/beginner_lesson_1.jpg")
+                    .placeholder(R.drawable.album1)
+                    .into(myViewHolder.thumbnail);
 
+            //Click item
+            ((MyViewHolder) holder).body.setOnClickListener(v -> startLearningActivity(position));
+
+        } else if (holder instanceof AdsHolder) {
+            //cast holder to VHHeader and set data for header.
+        }
     }
 
-    /**
-     * Showing popup menu when tapping on 3 dots
-     */
-    private void showPopupMenu(View view, int position) {
-        // inflate menu
-        PopupMenu popup = new PopupMenu(mContext, view);
-        MenuInflater inflater = popup.getMenuInflater();
-        inflater.inflate(R.menu.menu_album, popup.getMenu());
-        popup.setOnMenuItemClickListener(new MyMenuItemClickListener(position));
-        popup.show();
-    }
-
-    /**
-     * Click listener for popup menu items
-     */
-    class MyMenuItemClickListener implements PopupMenu.OnMenuItemClickListener {
-        int position;
-
-        public MyMenuItemClickListener(int postion) {
-            this.position = postion;
-        }
-
-        @Override
-        public boolean onMenuItemClick(MenuItem menuItem) {
-            switch (menuItem.getItemId()) {
-                case R.id.action_add_favourite:
-                    Toast.makeText(mContext, "Add to favourite", Toast.LENGTH_SHORT).show();
-                    return true;
-                case R.id.action_play_next:
-                    startLearningActivity(position);
-                    return true;
-                default:
-            }
-            return false;
-        }
-
+    @Override
+    public int getItemViewType(int position) {
+        return TYPE_ITEM;
     }
 
     @Override
