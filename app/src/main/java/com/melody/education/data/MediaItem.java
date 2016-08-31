@@ -59,11 +59,11 @@ public class MediaItem implements IPlaylistItem {
 
     @Override
     public String getAlbum() {
-        return "ExoMedia Demo";
+        return sample.getTitle();
     }
 
     @Override
     public String getArtist() {
-        return "Unknown Artist";
+        return "Lesson 1";
     }
 }

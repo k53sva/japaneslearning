@@ -13,7 +13,7 @@ import android.widget.TextView;
 import com.melody.education.R;
 import com.melody.education.fragment.LessonFragment;
 import com.melody.education.model.Lesson;
-import com.melody.education.ui.LearningActivity;
+import com.melody.education.ui.ConversationActivity;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -105,7 +105,7 @@ public class LessonAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     }
 
     private void startLearningActivity(int selectedIndex) {
-        Intent intent = new Intent(mContext, LearningActivity.class);
+        Intent intent = new Intent(mContext, ConversationActivity.class);
         intent.putExtra(LessonFragment.EXTRA_INDEX, selectedIndex);
         mContext.startActivity(intent);
     }

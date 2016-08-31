@@ -18,10 +18,10 @@ public class Samples {
 
         //Audio items
         audioSamples = new LinkedList<>();
-        audioSamples.add(new Sample("Marseilles -- The Arrival", "https://archive.org/download/count_monte_cristo_0711_librivox/count_of_monte_cristo_001_dumas.mp3", audioImage));
-        audioSamples.add(new Sample("Father and Son", "https://archive.org/download/count_monte_cristo_0711_librivox/count_of_monte_cristo_002_dumas.mp3", audioImage));
-        audioSamples.add(new Sample("The Catalans", "https://archive.org/download/count_monte_cristo_0711_librivox/count_of_monte_cristo_003_dumas.mp3", audioImage));
-        audioSamples.add(new Sample("Conspiracy", "https://archive.org/download/count_monte_cristo_0711_librivox/count_of_monte_cristo_004_dumas.mp3", audioImage));
+        audioSamples.add(new Sample("Greeting", "http://japaneselearning.comli.com/lesson_1.mp3", audioImage));
+        audioSamples.add(new Sample("Hobby", "http://japaneselearning.comli.com/lesson_1.mp3", audioImage));
+        audioSamples.add(new Sample("Education", "http://japaneselearning.comli.com/lesson_1.mp3", audioImage));
+        audioSamples.add(new Sample("Family", "http://japaneselearning.comli.com/lesson_1.mp3", audioImage));
 
 
         //Video items

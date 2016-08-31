@@ -23,7 +23,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.LearningActivity"
+            android:name=".ui.ConversationActivity"
             android:theme="@style/AppTheme.NoActionBar" />
 
         <activity android:name=".ui.UserSettingActivity" />

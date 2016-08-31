@@ -35,7 +35,6 @@ public class BaseActivity extends AppCompatActivity {
             } else if (fontSizePref == "Large") {
                 themeID = R.style.FontSizeLarge;
             }
-
             // Set the theme for the activity.
             setTheme(themeID);
         } catch (Exception ex) {

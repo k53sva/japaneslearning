@@ -57,6 +57,8 @@ dependencies {
     compile 'com.android.support:support-v4:24.2.0'
     compile 'com.michaelpardo:activeandroid:3.1.0-SNAPSHOT'
     compile 'com.readystatesoftware.systembartint:systembartint:1.0.3'
+    compile 'com.github.JakeWharton:ViewPagerIndicator:2.4.1'
+
 
     apt 'com.jakewharton:butterknife-compiler:8.4.0'
 }

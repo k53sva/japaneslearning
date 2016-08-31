@@ -20,7 +20,18 @@
 
 
     <!-- Indicator -->
-    <include layout="@layout/layout_indicator" />
+    <com.viewpagerindicator.CirclePageIndicator
+        android:id="@+id/indicator"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:background="@android:color/transparent"
+        android:padding="10dip"
+        app:fillColor="@android:color/darker_gray"
+        app:pageColor="@android:color/transparent"
+        app:radius="5dp"
+        app:strokeColor="@android:color/darker_gray"
+        app:strokeWidth="2dp" />
     <!-- ViewPager -->
     <android.support.v4.view.ViewPager
         android:id="@+id/viewpager_learning"

@@ -13,6 +13,8 @@ import com.melody.education.adapter.ViewPagerAdapter;
 import com.melody.education.fragment.GrammarFragment;
 import com.melody.education.fragment.LessonFragment;
 import com.melody.education.fragment.VocabularyFragment;
+import com.viewpagerindicator.PageIndicator;
+import com.viewpagerindicator.TitlePageIndicator;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -20,15 +22,9 @@ import butterknife.ButterKnife;
 /**
  * Created by K53SV on 8/29/2016.
  */
-public class LearningActivity extends BaseActivity {
+public class ConversationActivity extends BaseActivity {
     @BindView(R.id.viewpager_learning)
     ViewPager mViewPager;
-    @BindView(R.id.btn1)
-    ImageView btn1;
-    @BindView(R.id.btn2)
-    ImageView btn2;
-    @BindView(R.id.btn3)
-    ImageView btn3;
     @BindView(R.id.toolbar)
     Toolbar toolbar;
 
@@ -38,7 +34,7 @@ public class LearningActivity extends BaseActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_learning);
+        setContentView(R.layout.activity_conversation);
         ButterKnife.bind(this);
         retrieveExtras();
         setUpView();
@@ -55,14 +51,16 @@ public class LearningActivity extends BaseActivity {
         adapter = new ViewPagerAdapter(getSupportFragmentManager());
         adapter.addFragment(LessonFragment.newInstance(selectedIndex), getString(R.string.fragment_lesson_title));
         adapter.addFragment(new VocabularyFragment(), getString(R.string.fragment_vocabulary_title));
-        adapter.addFragment(new GrammarFragment(), getString(R.string.fragment_grammar_title));
+        adapter.addFragment(new GrammarFragment(), getString(R.string.fragment_note_title));
         mViewPager.setAdapter(adapter);
         mViewPager.setCurrentItem(0);
 
-        btn1.setImageResource(R.drawable.fill_circle);
         getSupportActionBar().setTitle(adapter.getPageTitle(0));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+
+        PageIndicator titleIndicator = (PageIndicator) findViewById(R.id.indicator);
+        titleIndicator.setViewPager(mViewPager);
     }
 
     private void setTab() {
@@ -78,11 +76,6 @@ public class LearningActivity extends BaseActivity {
 
             @Override
             public void onPageSelected(int position) {
-                // TODO Auto-generated method stub
-                btn1.setImageResource(R.drawable.holo_circle);
-                btn2.setImageResource(R.drawable.holo_circle);
-                btn3.setImageResource(R.drawable.holo_circle);
-                btnAction(position);
                 getSupportActionBar().setTitle(adapter.getPageTitle(position));
             }
 
@@ -98,23 +91,4 @@ public class LearningActivity extends BaseActivity {
         }
         return (super.onOptionsItemSelected(menuItem));
     }
-
-    private void btnAction(int action) {
-        switch (action) {
-            case 0:
-                btn1.setImageResource(R.drawable.fill_circle);
-
-                break;
-
-            case 1:
-                btn2.setImageResource(R.drawable.fill_circle);
-
-                break;
-            case 2:
-                btn3.setImageResource(R.drawable.fill_circle);
-
-                break;
-        }
-    }
-
 }
