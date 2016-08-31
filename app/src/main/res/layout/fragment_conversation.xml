@@ -10,14 +10,10 @@
         android:layout_height="match_parent"
         android:layout_above="@+id/audio_player_controls_container">
 
-        <TextView
-            android:id="@+id/tv_conversation"
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycler_view_conversation"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_margin="5dp"
-            android:padding="5dp"
-            android:textSize="18sp"
-            android:textColor="@color/album_title" />
+            android:layout_height="wrap_content" />
 
         <ProgressBar
             android:id="@+id/audio_player_loading"

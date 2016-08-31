@@ -13,7 +13,7 @@ import android.view.ViewGroup;
 
 import com.google.gson.Gson;
 import com.melody.education.R;
-import com.melody.education.adapter.LessonAdapter;
+import com.melody.education.adapter.ConversationAdapter;
 import com.melody.education.model.Lesson;
 import com.melody.education.utils.DataHelper;
 import com.melody.education.utils.GridSpacingItemDecoration;
@@ -29,7 +29,7 @@ import java.util.List;
  */
 public class HomeFragment extends BaseFragment {
     private RecyclerView recyclerView;
-    private LessonAdapter adapter;
+    private ConversationAdapter adapter;
     private List<Lesson> lessonList = new ArrayList<>();
     SwipeRefreshLayout mSwipeRefreshLayout;
 
@@ -44,7 +44,7 @@ public class HomeFragment extends BaseFragment {
         recyclerView.setItemAnimator(new DefaultItemAnimator());
 
         lessonList = new ArrayList<>();
-        adapter = new LessonAdapter(getActivity(), lessonList);
+        adapter = new ConversationAdapter(getActivity(), lessonList);
         recyclerView.setAdapter(adapter);
 
         mSwipeRefreshLayout = (SwipeRefreshLayout) v.findViewById(R.id.swipe_refresh);

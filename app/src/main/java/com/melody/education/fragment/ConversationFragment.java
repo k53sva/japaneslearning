@@ -3,6 +3,10 @@ package com.melody.education.fragment;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,27 +21,37 @@ import com.devbrackets.android.playlistcore.event.PlaylistItemChange;
 import com.devbrackets.android.playlistcore.listener.PlaylistListener;
 import com.devbrackets.android.playlistcore.listener.ProgressListener;
 import com.devbrackets.android.playlistcore.service.PlaylistServiceCore;
+import com.google.gson.Gson;
 import com.melody.education.App;
 import com.melody.education.R;
+import com.melody.education.adapter.ConversationFragmentAdapter;
+import com.melody.education.adapter.VocabularyAdapter;
 import com.melody.education.data.MediaItem;
 import com.melody.education.data.Samples;
 import com.melody.education.manager.PlaylistManager;
+import com.melody.education.model.Conversation;
+import com.melody.education.model.Vocabulary;
 import com.melody.education.ui.BaseFragment;
+import com.melody.education.utils.DataHelper;
+import com.melody.education.utils.GridSpacingItemDecoration;
+import com.melody.education.utils.Utils;
 import com.squareup.picasso.Picasso;
 
 
+import org.json.JSONArray;
+
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
 /**
  * Created by K53SV on 8/29/2016.
  */
-public class LessonFragment extends BaseFragment implements PlaylistListener<MediaItem>, ProgressListener {
+public class ConversationFragment extends BaseFragment implements PlaylistListener<MediaItem>, ProgressListener {
     public static final String EXTRA_INDEX = "EXTRA_INDEX";
     public static final int PLAYLIST_ID = 4; //Arbitrary, for the example
 
     ProgressBar loadingBar;
-    TextView tvConversation;
 
     TextView currentPositionView;
     TextView durationView;
@@ -53,11 +67,13 @@ public class LessonFragment extends BaseFragment implements PlaylistListener<Med
     private PlaylistManager playlistManager;
     private int selectedIndex = 0;
 
-    private Picasso picasso;
+    private RecyclerView recyclerView;
+    private ConversationFragmentAdapter adapter;
+    List<Conversation> conversationList = new ArrayList<>();
 
 
-    public static LessonFragment newInstance(int index) {
-        LessonFragment fragment = new LessonFragment();
+    public static ConversationFragment newInstance(int index) {
+        ConversationFragment fragment = new ConversationFragment();
         Bundle bundle = new Bundle();
         bundle.putInt(EXTRA_INDEX, index);
         fragment.setArguments(bundle);
@@ -69,7 +85,7 @@ public class LessonFragment extends BaseFragment implements PlaylistListener<Med
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_lesson, container, false);
+        View view = inflater.inflate(R.layout.fragment_conversation, container, false);
         retrieveExtras();
         init(view);
         return view;
@@ -194,7 +210,6 @@ public class LessonFragment extends BaseFragment implements PlaylistListener<Med
 
     private void retrieveViews(View view) {
         loadingBar = (ProgressBar) view.findViewById(R.id.audio_player_loading);
-        tvConversation = (TextView) view.findViewById(R.id.tv_conversation);
 
         currentPositionView = (TextView) view.findViewById(R.id.audio_player_position);
         durationView = (TextView) view.findViewById(R.id.audio_player_duration);
@@ -204,6 +219,14 @@ public class LessonFragment extends BaseFragment implements PlaylistListener<Med
         previousButton = (ImageButton) view.findViewById(R.id.audio_player_previous);
         playPauseButton = (ImageButton) view.findViewById(R.id.audio_player_play_pause);
         nextButton = (ImageButton) view.findViewById(R.id.audio_player_next);
+        recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view_conversation);
+        adapter = new ConversationFragmentAdapter(getActivity(), conversationList);
+        RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(getActivity(), 1);
+        recyclerView.setLayoutManager(mLayoutManager);
+        recyclerView.addItemDecoration(new GridSpacingItemDecoration(10, Utils.dpToPx(getActivity(), 1), true));
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.setAdapter(adapter);
+        getData();
 
     }
 
@@ -260,7 +283,22 @@ public class LessonFragment extends BaseFragment implements PlaylistListener<Med
         nextButton.setVisibility(View.VISIBLE);
 
         loadingBar.setVisibility(View.INVISIBLE);
-        tvConversation.setText(fakeData());
+
+    }
+
+    private void getData() {
+        Gson gson = new Gson();
+        DataHelper helper = new DataHelper(getActivity());
+        JSONArray array = helper.convertDatabaseToJsonLike(DataHelper.TABLE_CONVERSATION, "WHERE LessonId Like '%They are my treasures%'");
+        try {
+            for (int i = 0; i < array.length(); i++) {
+                conversationList.add(gson.fromJson(array.getString(i), Conversation.class));
+            }
+            adapter.notifyDataSetChanged();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     /**

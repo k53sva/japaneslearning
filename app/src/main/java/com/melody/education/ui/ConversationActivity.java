@@ -6,15 +6,13 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.WindowManager;
-import android.widget.ImageView;
 
 import com.melody.education.R;
 import com.melody.education.adapter.ViewPagerAdapter;
+import com.melody.education.fragment.ConversationFragment;
 import com.melody.education.fragment.GrammarFragment;
-import com.melody.education.fragment.LessonFragment;
 import com.melody.education.fragment.VocabularyFragment;
 import com.viewpagerindicator.PageIndicator;
-import com.viewpagerindicator.TitlePageIndicator;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -43,13 +41,13 @@ public class ConversationActivity extends BaseActivity {
 
     private void retrieveExtras() {
         Bundle extras = getIntent().getExtras();
-        selectedIndex = extras.getInt(LessonFragment.EXTRA_INDEX, 0);
+        selectedIndex = extras.getInt(ConversationFragment.EXTRA_INDEX, 0);
     }
 
     private void setUpView() {
         setSupportActionBar(toolbar);
         adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(LessonFragment.newInstance(selectedIndex), getString(R.string.fragment_lesson_title));
+        adapter.addFragment(ConversationFragment.newInstance(selectedIndex), getString(R.string.fragment_lesson_title));
         adapter.addFragment(new VocabularyFragment(), getString(R.string.fragment_vocabulary_title));
         adapter.addFragment(new GrammarFragment(), getString(R.string.fragment_note_title));
         mViewPager.setAdapter(adapter);
@@ -61,6 +59,7 @@ public class ConversationActivity extends BaseActivity {
 
         PageIndicator titleIndicator = (PageIndicator) findViewById(R.id.indicator);
         titleIndicator.setViewPager(mViewPager);
+        mViewPager.setOffscreenPageLimit(3);
     }
 
     private void setTab() {

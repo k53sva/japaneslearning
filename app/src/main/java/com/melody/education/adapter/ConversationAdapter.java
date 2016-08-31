@@ -11,19 +11,20 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.melody.education.R;
-import com.melody.education.fragment.LessonFragment;
+import com.melody.education.fragment.ConversationFragment;
 import com.melody.education.model.Lesson;
 import com.melody.education.ui.ConversationActivity;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
-public class LessonAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class ConversationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private static final int TYPE_ADS = 0;
     private static final int TYPE_ITEM = 1;
     private Context mContext;
-    private List<Lesson> lessonList;
+    public static List<Lesson> conversationList = new ArrayList<>();
 
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
@@ -50,16 +51,16 @@ public class LessonAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     }
 
 
-    public LessonAdapter(Context mContext, List<Lesson> lessonList) {
+    public ConversationAdapter(Context mContext, List<Lesson> lessonList) {
         this.mContext = mContext;
-        this.lessonList = lessonList;
+        this.conversationList = lessonList;
     }
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         if (viewType == TYPE_ITEM) {
             View itemView = LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.item_lesson, parent, false);
+                    .inflate(R.layout.item_conversation, parent, false);
 
             return new MyViewHolder(itemView);
         } else {
@@ -72,7 +73,7 @@ public class LessonAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     public void onBindViewHolder(final RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof MyViewHolder) {
             MyViewHolder myViewHolder = (MyViewHolder) holder;
-            Lesson item = lessonList.get(position);
+            Lesson item = conversationList.get(position);
             myViewHolder.title.setText(item.LessonName);
             myViewHolder.count.setText(item.Anh + "\n" + item.Nhat + "\n" + item.Romaji + "\n" + item.Detail);
             if (position % 2 == 0)
@@ -101,12 +102,12 @@ public class LessonAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
     @Override
     public int getItemCount() {
-        return lessonList.size();
+        return conversationList.size();
     }
 
     private void startLearningActivity(int selectedIndex) {
         Intent intent = new Intent(mContext, ConversationActivity.class);
-        intent.putExtra(LessonFragment.EXTRA_INDEX, selectedIndex);
+        intent.putExtra(ConversationFragment.EXTRA_INDEX, selectedIndex);
         mContext.startActivity(intent);
     }
 }

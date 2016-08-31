@@ -5,6 +5,7 @@
     android:layout_margin="5dp"
     android:orientation="vertical">
 
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -23,7 +24,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="6"
             android:text="How do you do?"
-            android:textColor="@color/white" />
+            android:textColor="@color/text_conversation" />
     </LinearLayout>
 
     <LinearLayout
@@ -43,7 +44,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="6"
             android:text="はじめまして[HAJIMEMASHITE]"
-            android:textColor="@color/white" />
+            android:textColor="@color/text_conversation" />
     </LinearLayout>
 
     <LinearLayout
@@ -63,7 +64,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="6"
             android:text="This is a standard greeting, when you meet somebody for the first time. When somebody said to you HAJIMEMASHITE, you also say, HAJIMEMASHITE."
-            android:textColor="@color/white" />
+            android:textColor="@color/text_conversation" />
     </LinearLayout>
 
     <View
