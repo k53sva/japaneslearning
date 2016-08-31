@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="updateFrequency">
+        <item name="1">Small</item>
+        <item name="7">Medium</item>
+        <item name="3">Large</item>
+    </string-array>
+    <string-array name="updateFrequencyValues">
+        <item name="1">Small</item>
+        <item name="7">Medium</item>
+        <item name="30">Large</item>
+    </string-array>
+
+</resources>

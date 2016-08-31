@@ -1,9 +1,12 @@
 package com.melody.education.utils;
 
+import android.content.Context;
+import android.content.res.Resources;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.util.TypedValue;
 
 import com.melody.education.R;
 
@@ -25,5 +28,13 @@ public class Utils {
             ft.replace(R.id.frame_body, fragment, fragmentTag);
             ft.commit();
         }
+    }
+
+    /**
+     * Converting dp to pixel
+     */
+    public static int dpToPx(Context c, int dp) {
+        Resources r = c.getResources();
+        return Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, r.getDisplayMetrics()));
     }
 }

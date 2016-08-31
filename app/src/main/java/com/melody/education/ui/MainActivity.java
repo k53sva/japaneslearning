@@ -1,56 +1,62 @@
 package com.melody.education.ui;
 
+import android.annotation.TargetApi;
+import android.app.SearchManager;
+import android.content.Context;
+import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
-import android.support.design.widget.AppBarLayout;
+import android.os.Environment;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.WindowManager;
+import android.widget.EditText;
 
 
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
 import com.melody.education.R;
-import com.melody.education.utils.CustomVolleyRequestQueue;
 import com.melody.education.utils.Utils;
+import com.readystatesoftware.systembartint.SystemBarTintManager;
+import com.thin.downloadmanager.DefaultRetryPolicy;
+import com.thin.downloadmanager.DownloadRequest;
+import com.thin.downloadmanager.DownloadStatusListener;
+import com.thin.downloadmanager.ThinDownloadManager;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.io.File;
 
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     Toolbar mToolbar;
-    AppBarLayout mAppBar;
-    private RequestQueue mQueue;
 
+    @TargetApi(Build.VERSION_CODES.KITKAT)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
-        mAppBar = (AppBarLayout) findViewById(R.id.appbar);
-        setSupportActionBar(mToolbar);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-
-        //initCollapsingToolbar();
+        setSupportActionBar(mToolbar);
+        //
         initNavigationView();
-       /* try {
-            Picasso.with(this).load(R.drawable.cover).into((ImageView) findViewById(R.id.backdrop));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        */
-
-
         Utils.startFragment(this, new HomeFragment());
-
-       // getData();
+        handleIntent(getIntent());
+        //getData();
+        //JSONArray array = convertDatabaseToJson();
     }
 
     private void initNavigationView() {
@@ -65,6 +71,19 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     @Override
+    protected void onNewIntent(Intent intent) {
+        handleIntent(intent);
+    }
+
+    private void handleIntent(Intent intent) {
+
+        if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
+            String query = intent.getStringExtra(SearchManager.QUERY);
+            //use the query to search your data somehow
+        }
+    }
+
+    @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
@@ -74,85 +93,111 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
+
+    @TargetApi(Build.VERSION_CODES.KITKAT)
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.option_menu, menu);
+
+        // Get the SearchView and set the searchable configuration
+        // Associate searchable configuration with the SearchView
+        SearchManager searchManager =
+                (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+        SearchView searchView =
+                (SearchView) menu.findItem(R.id.search).getActionView();
+        searchView.setSearchableInfo(
+                searchManager.getSearchableInfo(getComponentName()));
+        EditText searchEditText = (EditText) searchView.findViewById(android.support.v7.appcompat.R.id.search_src_text);
+        searchEditText.setOnFocusChangeListener((v, b) -> {
+            if (b) {
+                getWindow().clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+                // create manager instance after the content view is set
+                SystemBarTintManager mTintManager = new SystemBarTintManager(this);
+                // enable status bar tint
+                mTintManager.setStatusBarTintEnabled(true);
+                mTintManager.setTintColor(getResources().getColor(R.color.colorPrimaryDark));
+            } else
+                getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        });
+        return super.onCreateOptionsMenu(menu);
+    }
+
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
+        if (id == R.id.nav_setting) {
+            startActivity(new Intent(this, UserSettingActivity.class));
+        } else if (id == R.id.nav_feedback) {
+            Intent emailIntent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts(
+                    "mailto", "abc@gmail.com", null));
+            emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Subject");
+            emailIntent.putExtra(Intent.EXTRA_TEXT, "Body");
+            startActivity(Intent.createChooser(emailIntent, "Send email..."));
+        }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
 
-    private void getData() {
-      /*  ApiInterface apiService =
-                ApiClient.getClient().create(ApiInterface.class);
-
-        Call<List<Lesson>> call = apiService.getBeginnerLessonList();
-        call.enqueue(new Callback<List<Lesson>>() {
-            @Override
-            public void onResponse(Call<List<Lesson>> call, Response<List<Lesson>> response) {
-                Log.e("TAG", response.body().get(0).getDescription());
-            }
-
-            @Override
-            public void onFailure(Call<List<Lesson>> call, Throwable t) {
-                    Log.e("TAG", t.getMessage());
-            }
-        });*/
-        mQueue = CustomVolleyRequestQueue.getInstance(this.getApplicationContext())
-                .getRequestQueue();
-        String url = "http://www.japaneselearning.somee.com/api/beginner/1/lessonlist.txt";
-        final StringRequest jsonRequest = new StringRequest(Request.Method.GET, url,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        Log.e("TAG", response);
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Log.e("TAG", error.getMessage());
-                    }
-                });
-        jsonRequest.setTag("TAG");
-        mQueue.add(jsonRequest);
-
-    }
 
 
     /**
-     * Initializing collapsing mToolbar
-     * Will show and hide the mToolbar title on scroll
+     * Move file
      */
-  /*  private void initCollapsingToolbar() {
-        final CollapsingToolbarLayout collapsingToolbar =
-                (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
-        collapsingToolbar.setTitle(" ");
-        AppBarLayout appBarLayout = (AppBarLayout) findViewById(R.id.appbar);
-        appBarLayout.setExpanded(true);
+    public void moveFile() {
+        File from = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/kaic1/imagem.jpg");
+        File to = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/kaic2/imagem.jpg");
+        from.renameTo(to);
+    }
 
-        // hiding & showing the title when mToolbar expanded & collapsed
-        appBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
-            boolean isShow = false;
-            int scrollRange = -1;
+    /**
+     * Convert DataBase to Json
+     */
+    private JSONArray convertDatabaseToJson() {
+        Uri destinationUri = Uri.parse(this.getExternalCacheDir().toString() + "/data.sqlite");
+        String myPath = destinationUri.toString();// Set path to your database
+        String myTable = "Lesson";//Set name of your table
 
-            @Override
-            public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
-                if (scrollRange == -1) {
-                    scrollRange = appBarLayout.getTotalScrollRange();
-                }
-                if (scrollRange + verticalOffset == 0) {
-                    collapsingToolbar.setTitle(getString(R.string.app_name));
-                    isShow = true;
-                } else if (isShow) {
-                    collapsingToolbar.setTitle(" ");
-                    isShow = false;
+        //or you can use `context.getDatabasePath("my_db_test.db")`
+
+        SQLiteDatabase myDataBase = SQLiteDatabase.openDatabase(myPath, null, SQLiteDatabase.OPEN_READONLY);
+
+        String searchQuery = "SELECT  * FROM " + myTable;
+        Cursor cursor = myDataBase.rawQuery(searchQuery, null);
+
+        JSONArray resultSet = new JSONArray();
+
+        cursor.moveToFirst();
+        while (cursor.isAfterLast() == false) {
+
+            int totalColumn = cursor.getColumnCount();
+            JSONObject rowObject = new JSONObject();
+
+            for (int i = 0; i < totalColumn; i++) {
+                if (cursor.getColumnName(i) != null) {
+                    try {
+                        if (cursor.getString(i) != null) {
+                            Log.d("TAG_NAME", cursor.getString(i));
+                            rowObject.put(cursor.getColumnName(i), cursor.getString(i));
+                        } else {
+                            rowObject.put(cursor.getColumnName(i), "");
+                        }
+                    } catch (Exception e) {
+                        Log.d("TAG_NAME", e.getMessage());
+                    }
                 }
             }
-        });
-    }*/
-
+            resultSet.put(rowObject);
+            cursor.moveToNext();
+        }
+        cursor.close();
+        Log.d("TAG_NAME", resultSet.toString());
+        myDataBase.close();
+        return resultSet;
+    }
 }
+

@@ -14,7 +14,7 @@ public class Samples {
     private static final List<Sample> videoSamples;
 
     static {
-        String audioImage = "https://ia902708.us.archive.org/3/items/count_monte_cristo_0711_librivox/Count_Monte_Cristo_1110.jpg?cnt=0";
+        String audioImage = "http://www.japaneselearning.somee.com/image/beginner_lesson_1.jpg";
 
         //Audio items
         audioSamples = new LinkedList<>();

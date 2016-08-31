@@ -4,13 +4,15 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
+import android.view.WindowManager;
 import android.widget.ImageView;
 
 import com.melody.education.R;
 import com.melody.education.adapter.ViewPagerAdapter;
 import com.melody.education.fragment.GrammarFragment;
 import com.melody.education.fragment.LessonFragment;
-import com.melody.education.fragment.VocabylaryFragment;
+import com.melody.education.fragment.VocabularyFragment;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -52,13 +54,15 @@ public class LearningActivity extends BaseActivity {
         setSupportActionBar(toolbar);
         adapter = new ViewPagerAdapter(getSupportFragmentManager());
         adapter.addFragment(LessonFragment.newInstance(selectedIndex), getString(R.string.fragment_lesson_title));
-        adapter.addFragment(new VocabylaryFragment(), getString(R.string.fragment_vocabulary_title));
+        adapter.addFragment(new VocabularyFragment(), getString(R.string.fragment_vocabulary_title));
         adapter.addFragment(new GrammarFragment(), getString(R.string.fragment_grammar_title));
         mViewPager.setAdapter(adapter);
         mViewPager.setCurrentItem(0);
 
         btn1.setImageResource(R.drawable.fill_circle);
         getSupportActionBar().setTitle(adapter.getPageTitle(0));
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
     }
 
     private void setTab() {
@@ -84,6 +88,15 @@ public class LearningActivity extends BaseActivity {
 
         });
 
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem menuItem) {
+        switch (menuItem.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+        }
+        return (super.onOptionsItemSelected(menuItem));
     }
 
     private void btnAction(int action) {

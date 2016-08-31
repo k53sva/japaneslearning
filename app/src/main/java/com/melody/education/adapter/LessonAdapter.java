@@ -12,19 +12,18 @@ import android.widget.TextView;
 
 import com.melody.education.R;
 import com.melody.education.fragment.LessonFragment;
-import com.melody.education.model.Album;
+import com.melody.education.model.Lesson;
 import com.melody.education.ui.LearningActivity;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
 
-
 public class LessonAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private static final int TYPE_ADS = 0;
     private static final int TYPE_ITEM = 1;
     private Context mContext;
-    private List<Album> albumList;
+    private List<Lesson> lessonList;
 
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
@@ -51,9 +50,9 @@ public class LessonAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     }
 
 
-    public LessonAdapter(Context mContext, List<Album> albumList) {
+    public LessonAdapter(Context mContext, List<Lesson> lessonList) {
         this.mContext = mContext;
-        this.albumList = albumList;
+        this.lessonList = lessonList;
     }
 
     @Override
@@ -73,14 +72,20 @@ public class LessonAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     public void onBindViewHolder(final RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof MyViewHolder) {
             MyViewHolder myViewHolder = (MyViewHolder) holder;
-            Album album = albumList.get(position);
-            myViewHolder.title.setText(album.getName());
-            myViewHolder.count.setText(album.getDescription());
-            Picasso.with(mContext)
-                    .load("http://www.japaneselearning.somee.com/image/beginner_lesson_1.jpg")
-                    .placeholder(R.drawable.album1)
-                    .into(myViewHolder.thumbnail);
+            Lesson item = lessonList.get(position);
+            myViewHolder.title.setText(item.LessonName);
+            myViewHolder.count.setText(item.Anh + "\n" + item.Nhat + "\n" + item.Romaji + "\n" + item.Detail);
+            if (position % 2 == 0)
+                Picasso.with(mContext)
+                        .load("http://www.japaneselearning.somee.com/image/beginner_lesson_1.jpg")
+                        .placeholder(R.drawable.album1)
+                        .into(myViewHolder.thumbnail);
+            else
 
+                Picasso.with(mContext)
+                        .load("http://japaneselearning.comli.com/lesson2.gif")
+                        .placeholder(R.drawable.album1)
+                        .into(myViewHolder.thumbnail);
             //Click item
             ((MyViewHolder) holder).body.setOnClickListener(v -> startLearningActivity(position));
 
@@ -96,7 +101,7 @@ public class LessonAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
     @Override
     public int getItemCount() {
-        return albumList.size();
+        return lessonList.size();
     }
 
     private void startLearningActivity(int selectedIndex) {

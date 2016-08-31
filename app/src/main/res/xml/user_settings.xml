@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <PreferenceCategory android:title="Settings" >
+        <SwitchPreference
+            android:title="Notification"
+            android:summary="Enable notification to check new lesson"
+            android:key="prefUserNotification"/>
+        <ListPreference
+            android:key="prefUpdateFrequency"
+            android:title="Transcript Font Size"
+            android:summary="Font size for app"
+            android:entries="@array/updateFrequency"
+            android:entryValues="@array/updateFrequencyValues"
+            />
+    </PreferenceCategory>
+</PreferenceScreen>

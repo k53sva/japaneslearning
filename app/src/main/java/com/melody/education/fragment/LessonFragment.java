@@ -7,7 +7,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -30,9 +29,6 @@ import com.squareup.picasso.Picasso;
 import java.util.LinkedList;
 import java.util.List;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-
 /**
  * Created by K53SV on 8/29/2016.
  */
@@ -41,7 +37,7 @@ public class LessonFragment extends BaseFragment implements PlaylistListener<Med
     public static final int PLAYLIST_ID = 4; //Arbitrary, for the example
 
     ProgressBar loadingBar;
-    ImageView artworkView;
+    TextView tvConversation;
 
     TextView currentPositionView;
     TextView durationView;
@@ -100,15 +96,17 @@ public class LessonFragment extends BaseFragment implements PlaylistListener<Med
     @Override
     public boolean onPlaylistItemChanged(MediaItem currentItem, boolean hasNext, boolean hasPrevious) {
         shouldSetDuration = true;
-
         //Updates the button states
         nextButton.setEnabled(hasNext);
         previousButton.setEnabled(hasPrevious);
-
-        //Loads the new image
-        picasso.load(currentItem.getArtworkUrl()).into(artworkView);
-
         return true;
+    }
+
+    private String fakeData() {
+        return "Yamada\t:\tHajimemashite. Yamada desu. Doozo yoroshiku.\n" +
+                "Lucy\t:\tHajimemashite. Lucy desu. Doozo yoroshiku.\n" +
+                "Yamada\t:\tLucy-san wa gakusei desu ka?\n" +
+                "Lucy\t:\tHai. Watashi wa gakusei desu.";
     }
 
     @Override
@@ -190,24 +188,23 @@ public class LessonFragment extends BaseFragment implements PlaylistListener<Med
         retrieveViews(view);
         setupListeners();
 
-        picasso = Picasso.with(getActivity().getApplicationContext());
-
         boolean generatedPlaylist = setupPlaylistManager();
         startPlayback(generatedPlaylist);
     }
 
     private void retrieveViews(View view) {
-        loadingBar = (ProgressBar)view.findViewById(R.id.audio_player_loading);
-        artworkView = (ImageView)view.findViewById(R.id.audio_player_image);
+        loadingBar = (ProgressBar) view.findViewById(R.id.audio_player_loading);
+        tvConversation = (TextView) view.findViewById(R.id.tv_conversation);
 
-        currentPositionView = (TextView)view.findViewById(R.id.audio_player_position);
-        durationView = (TextView)view.findViewById(R.id.audio_player_duration);
+        currentPositionView = (TextView) view.findViewById(R.id.audio_player_position);
+        durationView = (TextView) view.findViewById(R.id.audio_player_duration);
 
-        seekBar = (SeekBar)view.findViewById(R.id.audio_player_seek);
+        seekBar = (SeekBar) view.findViewById(R.id.audio_player_seek);
 
-        previousButton = (ImageButton)view.findViewById(R.id.audio_player_previous);
-        playPauseButton = (ImageButton)view.findViewById(R.id.audio_player_play_pause);
-        nextButton = (ImageButton)view.findViewById(R.id.audio_player_next);
+        previousButton = (ImageButton) view.findViewById(R.id.audio_player_previous);
+        playPauseButton = (ImageButton) view.findViewById(R.id.audio_player_play_pause);
+        nextButton = (ImageButton) view.findViewById(R.id.audio_player_next);
+
     }
 
     /**
@@ -249,7 +246,7 @@ public class LessonFragment extends BaseFragment implements PlaylistListener<Med
      * @param isPlaying True if the audio item is currently playing
      */
     private void updatePlayPauseImage(boolean isPlaying) {
-        int resId = isPlaying ? R.drawable.playlistcore_ic_pause_black : R.drawable.playlistcore_ic_play_arrow_black;
+        int resId = isPlaying ? R.drawable.playlistcore_ic_pause_white : R.drawable.playlistcore_ic_play_arrow_white;
         playPauseButton.setImageResource(resId);
     }
 
@@ -263,6 +260,7 @@ public class LessonFragment extends BaseFragment implements PlaylistListener<Med
         nextButton.setVisibility(View.VISIBLE);
 
         loadingBar.setVisibility(View.INVISIBLE);
+        tvConversation.setText(fakeData());
     }
 
     /**
@@ -291,26 +289,9 @@ public class LessonFragment extends BaseFragment implements PlaylistListener<Med
     private void setupListeners() {
         seekBar.setOnSeekBarChangeListener(new SeekBarChanged());
 
-        previousButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                playlistManager.invokePrevious();
-            }
-        });
-
-        playPauseButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                playlistManager.invokePausePlay();
-            }
-        });
-
-        nextButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                playlistManager.invokeNext();
-            }
-        });
+        previousButton.setOnClickListener(v -> playlistManager.invokePrevious());
+        playPauseButton.setOnClickListener(v -> playlistManager.invokePausePlay());
+        nextButton.setOnClickListener(v -> playlistManager.invokeNext());
     }
 
 
