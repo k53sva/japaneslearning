@@ -81,7 +81,10 @@ public class ConversationListFragment extends BaseFragment {
         JSONArray array = helper.convertDatabaseToJson(DataHelper.TABLE_CONVERSATION, "Picture IS NOT NULL AND Picture !=''");
         try {
             for (int i = 0; i < array.length(); i++) {
-                conversationList.add(gson.fromJson(array.getString(i), Conversation.class));
+                Conversation c = gson.fromJson(array.getString(i), Conversation.class);
+                c.Audio = "http://japaneselearning.comli.com/lesson_1.mp3";
+                c.Picture = "http://www.japaneselearning.somee.com/image/beginner_lesson_1.jpg";
+                conversationList.add(c);
             }
 
         } catch (Exception e) {

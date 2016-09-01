@@ -6,7 +6,6 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,17 +25,13 @@ import com.melody.education.App;
 import com.melody.education.R;
 import com.melody.education.adapter.ConversationAdapter;
 import com.melody.education.adapter.ConversationFragmentAdapter;
-import com.melody.education.adapter.VocabularyAdapter;
 import com.melody.education.data.MediaItem;
-import com.melody.education.data.Samples;
 import com.melody.education.manager.PlaylistManager;
 import com.melody.education.model.Conversation;
-import com.melody.education.model.Vocabulary;
 import com.melody.education.ui.BaseFragment;
 import com.melody.education.utils.DataHelper;
 import com.melody.education.utils.GridSpacingItemDecoration;
 import com.melody.education.utils.Utils;
-import com.squareup.picasso.Picasso;
 
 
 import org.json.JSONArray;
@@ -89,7 +84,27 @@ public class ConversationFragment extends BaseFragment implements PlaylistListen
         View view = inflater.inflate(R.layout.fragment_conversation, container, false);
         retrieveExtras();
         init(view);
+        getData();
         return view;
+    }
+
+    private void getData() {
+        Gson gson = new Gson();
+        DataHelper helper = new DataHelper(getActivity());
+        JSONArray array =
+                helper.convertDatabaseToJsonLike(DataHelper.TABLE_CONVERSATION,
+                        "WHERE ChungId = '"
+                                + ConversationAdapter.conversationList.get(selectedIndex).ChungID
+                                + "'");
+        try {
+            for (int i = 0; i < array.length(); i++) {
+                conversationList.add(gson.fromJson(array.getString(i), Conversation.class));
+            }
+            adapter.notifyDataSetChanged();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -116,6 +131,8 @@ public class ConversationFragment extends BaseFragment implements PlaylistListen
         //Updates the button states
         nextButton.setEnabled(hasNext);
         previousButton.setEnabled(hasPrevious);
+        //Update data
+
         return true;
     }
 
@@ -124,7 +141,8 @@ public class ConversationFragment extends BaseFragment implements PlaylistListen
     public boolean onPlaybackStateChanged(@NonNull PlaylistServiceCore.PlaybackState playbackState) {
         switch (playbackState) {
             case STOPPED:
-                getActivity().finish();
+                playlistManager.play(0, true);
+                //getActivity().finish();
                 break;
 
             case RETRIEVING:
@@ -180,11 +198,13 @@ public class ConversationFragment extends BaseFragment implements PlaylistListen
         }
 
         List<MediaItem> mediaItems = new LinkedList<>();
-        for (Samples.Sample sample : Samples.getAudioSamples()) {
-            MediaItem mediaItem = new MediaItem(sample, true);
+       /* for (Conversation conversation : ConversationAdapter.conversationList) {
+            MediaItem mediaItem = new MediaItem(conversation, true);
             mediaItems.add(mediaItem);
-        }
+        }*/
 
+        MediaItem mediaItem = new MediaItem(ConversationAdapter.conversationList.get(selectedIndex), true);
+        mediaItems.add(mediaItem);
         playlistManager.setParameters(mediaItems, selectedIndex);
         playlistManager.setId(PLAYLIST_ID);
 
@@ -214,6 +234,7 @@ public class ConversationFragment extends BaseFragment implements PlaylistListen
         previousButton = (ImageButton) view.findViewById(R.id.audio_player_previous);
         playPauseButton = (ImageButton) view.findViewById(R.id.audio_player_play_pause);
         nextButton = (ImageButton) view.findViewById(R.id.audio_player_next);
+
         recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view_conversation);
         adapter = new ConversationFragmentAdapter(getActivity(), conversationList);
         RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(getActivity(), 1);
@@ -221,7 +242,6 @@ public class ConversationFragment extends BaseFragment implements PlaylistListen
         recyclerView.addItemDecoration(new GridSpacingItemDecoration(10, Utils.dpToPx(getActivity(), 1), true));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(adapter);
-        getData();
 
     }
 
@@ -274,30 +294,11 @@ public class ConversationFragment extends BaseFragment implements PlaylistListen
      */
     public void loadCompleted() {
         playPauseButton.setVisibility(View.VISIBLE);
-        previousButton.setVisibility(View.VISIBLE);
-        nextButton.setVisibility(View.VISIBLE);
+        previousButton.setVisibility(View.GONE);
+        nextButton.setVisibility(View.GONE);
 
         loadingBar.setVisibility(View.INVISIBLE);
 
-    }
-
-    private void getData() {
-        Gson gson = new Gson();
-        DataHelper helper = new DataHelper(getActivity());
-        JSONArray array =
-                helper.convertDatabaseToJsonLike(DataHelper.TABLE_CONVERSATION,
-                        "WHERE ChungId = '"
-                                + ConversationAdapter.conversationList.get(selectedIndex).ChungID
-                                + "'");
-        try {
-            for (int i = 0; i < array.length(); i++) {
-                conversationList.add(gson.fromJson(array.getString(i), Conversation.class));
-            }
-            adapter.notifyDataSetChanged();
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 
     /**
@@ -305,9 +306,9 @@ public class ConversationFragment extends BaseFragment implements PlaylistListen
      * This is the opposite of {@link #loadCompleted()}
      */
     public void restartLoading() {
-        playPauseButton.setVisibility(View.INVISIBLE);
+        playPauseButton.setVisibility(View.GONE);
         previousButton.setVisibility(View.INVISIBLE);
-        nextButton.setVisibility(View.INVISIBLE);
+        nextButton.setVisibility(View.GONE);
 
         loadingBar.setVisibility(View.VISIBLE);
     }

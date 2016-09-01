@@ -48,7 +48,7 @@ public class ConversationActivity extends BaseActivity {
         setSupportActionBar(toolbar);
         adapter = new ViewPagerAdapter(getSupportFragmentManager());
         adapter.addFragment(ConversationFragment.newInstance(selectedIndex), getString(R.string.fragment_lesson_title));
-        adapter.addFragment(new VocabularyFragment(), getString(R.string.fragment_vocabulary_title));
+        adapter.addFragment(VocabularyFragment.newInstance(selectedIndex), getString(R.string.fragment_vocabulary_title));
         adapter.addFragment(new GrammarFragment(), getString(R.string.fragment_note_title));
         mViewPager.setAdapter(adapter);
         mViewPager.setCurrentItem(0);

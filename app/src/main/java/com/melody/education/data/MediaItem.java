@@ -2,6 +2,7 @@ package com.melody.education.data;
 
 import com.devbrackets.android.playlistcore.manager.IPlaylistItem;
 import com.melody.education.manager.PlaylistManager;
+import com.melody.education.model.Conversation;
 
 /**
  * A custom {@link IPlaylistItem}
@@ -9,10 +10,10 @@ import com.melody.education.manager.PlaylistManager;
  */
 public class MediaItem implements IPlaylistItem {
 
-    private Samples.Sample sample;
+    private Conversation sample;
     boolean isAudio;
 
-    public MediaItem(Samples.Sample sample, boolean isAudio) {
+    public MediaItem(Conversation sample, boolean isAudio) {
         this.sample = sample;
         this.isAudio = isAudio;
     }
@@ -34,7 +35,7 @@ public class MediaItem implements IPlaylistItem {
 
     @Override
     public String getMediaUrl() {
-        return sample.getMediaUrl();
+        return sample.Audio;
     }
 
     @Override
@@ -44,26 +45,26 @@ public class MediaItem implements IPlaylistItem {
 
     @Override
     public String getThumbnailUrl() {
-        return sample.getArtworkUrl();
+        return sample.Picture;
     }
 
     @Override
     public String getArtworkUrl() {
-        return sample.getArtworkUrl();
+        return sample.Picture;
     }
 
     @Override
     public String getTitle() {
-        return sample.getTitle();
+        return sample.Title;
     }
 
     @Override
     public String getAlbum() {
-        return sample.getTitle();
+        return sample.Nhat;
     }
 
     @Override
     public String getArtist() {
-        return "Lesson 1";
+        return sample.Description;
     }
 }

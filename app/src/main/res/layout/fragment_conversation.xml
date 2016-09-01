@@ -87,7 +87,7 @@
                 android:src="@drawable/playlistcore_ic_skip_previous_white"
                 android:visibility="invisible"
                 tools:ignore="ContentDescription"
-                tools:visibility="visible" />
+                tools:visibility="gone" />
 
             <android.support.v4.widget.Space
                 android:layout_width="44dp"
@@ -115,7 +115,7 @@
                 android:src="@drawable/playlistcore_ic_skip_next_white"
                 android:visibility="invisible"
                 tools:ignore="ContentDescription"
-                tools:visibility="visible" />
+                tools:visibility="gone" />
 
             <android.support.v4.widget.Space
                 android:layout_width="0dp"
