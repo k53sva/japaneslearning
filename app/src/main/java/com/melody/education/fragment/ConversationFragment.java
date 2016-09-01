@@ -24,6 +24,7 @@ import com.devbrackets.android.playlistcore.service.PlaylistServiceCore;
 import com.google.gson.Gson;
 import com.melody.education.App;
 import com.melody.education.R;
+import com.melody.education.adapter.ConversationAdapter;
 import com.melody.education.adapter.ConversationFragmentAdapter;
 import com.melody.education.adapter.VocabularyAdapter;
 import com.melody.education.data.MediaItem;
@@ -118,12 +119,6 @@ public class ConversationFragment extends BaseFragment implements PlaylistListen
         return true;
     }
 
-    private String fakeData() {
-        return "Yamada\t:\tHajimemashite. Yamada desu. Doozo yoroshiku.\n" +
-                "Lucy\t:\tHajimemashite. Lucy desu. Doozo yoroshiku.\n" +
-                "Yamada\t:\tLucy-san wa gakusei desu ka?\n" +
-                "Lucy\t:\tHai. Watashi wa gakusei desu.";
-    }
 
     @Override
     public boolean onPlaybackStateChanged(@NonNull PlaylistServiceCore.PlaybackState playbackState) {
@@ -289,7 +284,11 @@ public class ConversationFragment extends BaseFragment implements PlaylistListen
     private void getData() {
         Gson gson = new Gson();
         DataHelper helper = new DataHelper(getActivity());
-        JSONArray array = helper.convertDatabaseToJsonLike(DataHelper.TABLE_CONVERSATION, "WHERE LessonId Like '%They are my treasures%'");
+        JSONArray array =
+                helper.convertDatabaseToJsonLike(DataHelper.TABLE_CONVERSATION,
+                        "WHERE ChungId = '"
+                                + ConversationAdapter.conversationList.get(selectedIndex).ChungID
+                                + "'");
         try {
             for (int i = 0; i < array.length(); i++) {
                 conversationList.add(gson.fromJson(array.getString(i), Conversation.class));

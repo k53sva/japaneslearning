@@ -1,22 +1,17 @@
 package com.melody.education.adapter;
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.melody.education.R;
-import com.melody.education.fragment.ConversationFragment;
 import com.melody.education.model.Conversation;
-import com.melody.education.model.Lesson;
-import com.melody.education.ui.ConversationActivity;
-import com.melody.education.utils.ViewAnimationUtils;
-import com.squareup.picasso.Picasso;
+
+import net.cachapa.expandablelayout.ExpandableLayout;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,13 +21,13 @@ public class ConversationFragmentAdapter extends RecyclerView.Adapter<RecyclerVi
     private static final int TYPE_ADS = 0;
     private static final int TYPE_ITEM = 1;
     private Context mContext;
-    private boolean expand = false;
     public static List<Conversation> conversationList = new ArrayList<>();
+    private List<Boolean> isExpandList = new ArrayList<>();
 
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
         public TextView tvName, tvEnglish, tvRomaji, tvJapanese;
-        public LinearLayout expand;
+        public ExpandableLayout expandableLayout;
 
         public MyViewHolder(View view) {
             super(view);
@@ -40,7 +35,7 @@ public class ConversationFragmentAdapter extends RecyclerView.Adapter<RecyclerVi
             tvEnglish = (TextView) view.findViewById(R.id.tv_english);
             tvRomaji = (TextView) view.findViewById(R.id.tv_romaji);
             tvJapanese = (TextView) view.findViewById(R.id.tv_japanese);
-            expand = (LinearLayout) view.findViewById(R.id.view_expand);
+            expandableLayout = (ExpandableLayout) itemView.findViewById(R.id.expandable_layout);
         }
     }
 
@@ -80,14 +75,12 @@ public class ConversationFragmentAdapter extends RecyclerView.Adapter<RecyclerVi
                 myViewHolder.tvJapanese.setText(item.Nhat);
                 myViewHolder.tvRomaji.setText(item.Romaji);
 
-                myViewHolder.expand.setOnClickListener(v -> {
-                    if (expand) {
-                        ViewAnimationUtils.expandOrCollapse(myViewHolder.expand, true);
-                    } else {
-                        ViewAnimationUtils.expandOrCollapse(myViewHolder.expand, false);
-                    }
+                myViewHolder.tvEnglish.setOnClickListener(v -> {
+                    if (myViewHolder.expandableLayout.isExpanded())
+                        myViewHolder.expandableLayout.collapse();
+                    else
+                        myViewHolder.expandableLayout.expand();
 
-                    expand = !expand;
                 });
 
                 if (position % 2 != 0) {
@@ -109,6 +102,10 @@ public class ConversationFragmentAdapter extends RecyclerView.Adapter<RecyclerVi
 
     @Override
     public int getItemCount() {
+        isExpandList.clear();
+        for (Conversation c : conversationList) {
+            isExpandList.add(false);
+        }
         return conversationList.size();
     }
 }

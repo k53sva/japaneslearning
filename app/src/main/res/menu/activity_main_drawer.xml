@@ -9,7 +9,7 @@
             <item
                 android:id="@+id/nav_beginner_express"
                 android:icon="@drawable/ic_menu_express"
-                android:title="Express English" />
+                android:title="Lesson" />
         </menu>
     </item>
 

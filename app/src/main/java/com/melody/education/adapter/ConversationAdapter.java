@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.melody.education.R;
 import com.melody.education.fragment.ConversationFragment;
+import com.melody.education.model.Conversation;
 import com.melody.education.model.Lesson;
 import com.melody.education.ui.ConversationActivity;
 import com.squareup.picasso.Picasso;
@@ -24,7 +25,7 @@ public class ConversationAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     private static final int TYPE_ADS = 0;
     private static final int TYPE_ITEM = 1;
     private Context mContext;
-    public static List<Lesson> conversationList = new ArrayList<>();
+    public static List<Conversation> conversationList = new ArrayList<>();
 
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
@@ -51,9 +52,9 @@ public class ConversationAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     }
 
 
-    public ConversationAdapter(Context mContext, List<Lesson> lessonList) {
+    public ConversationAdapter(Context mContext, List<Conversation> conversationList) {
         this.mContext = mContext;
-        this.conversationList = lessonList;
+        this.conversationList = conversationList;
     }
 
     @Override
@@ -73,9 +74,9 @@ public class ConversationAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     public void onBindViewHolder(final RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof MyViewHolder) {
             MyViewHolder myViewHolder = (MyViewHolder) holder;
-            Lesson item = conversationList.get(position);
-            myViewHolder.title.setText(item.LessonName);
-            myViewHolder.count.setText(item.Anh + "\n" + item.Nhat + "\n" + item.Romaji + "\n" + item.Detail);
+            Conversation item = conversationList.get(position);
+            myViewHolder.title.setText(item.Title);
+            myViewHolder.count.setText(item.Description);
             if (position % 2 == 0)
                 Picasso.with(mContext)
                         .load("http://www.japaneselearning.somee.com/image/beginner_lesson_1.jpg")

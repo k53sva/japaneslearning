@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import com.google.gson.Gson;
 import com.melody.education.R;
 import com.melody.education.adapter.ConversationAdapter;
+import com.melody.education.model.Conversation;
 import com.melody.education.model.Lesson;
 import com.melody.education.utils.DataHelper;
 import com.melody.education.utils.GridSpacingItemDecoration;
@@ -27,10 +28,10 @@ import java.util.List;
 /**
  * Created by K53SV on 8/29/2016.
  */
-public class HomeFragment extends BaseFragment {
+public class ConversationListFragment extends BaseFragment {
     private RecyclerView recyclerView;
     private ConversationAdapter adapter;
-    private List<Lesson> lessonList = new ArrayList<>();
+    private List<Conversation> conversationList = new ArrayList<>();
     SwipeRefreshLayout mSwipeRefreshLayout;
 
     @Nullable
@@ -43,8 +44,8 @@ public class HomeFragment extends BaseFragment {
         recyclerView.addItemDecoration(new GridSpacingItemDecoration(2, Utils.dpToPx(getActivity(), 0), true));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
 
-        lessonList = new ArrayList<>();
-        adapter = new ConversationAdapter(getActivity(), lessonList);
+        conversationList = new ArrayList<>();
+        adapter = new ConversationAdapter(getActivity(), conversationList);
         recyclerView.setAdapter(adapter);
 
         mSwipeRefreshLayout = (SwipeRefreshLayout) v.findViewById(R.id.swipe_refresh);
@@ -77,10 +78,10 @@ public class HomeFragment extends BaseFragment {
     private void getData() {
         Gson gson = new Gson();
         DataHelper helper = new DataHelper(getActivity());
-        JSONArray array = helper.convertDatabaseToJson(DataHelper.TABLE_LESSON);
+        JSONArray array = helper.convertDatabaseToJson(DataHelper.TABLE_CONVERSATION, "Picture IS NOT NULL AND Picture !=''");
         try {
             for (int i = 0; i < array.length(); i++) {
-                lessonList.add(gson.fromJson(array.getString(i), Lesson.class));
+                conversationList.add(gson.fromJson(array.getString(i), Conversation.class));
             }
 
         } catch (Exception e) {

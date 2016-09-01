@@ -54,7 +54,7 @@ public class VocabularyFragment extends Fragment {
     private void getData() {
         Gson gson = new Gson();
         DataHelper helper = new DataHelper(getActivity());
-        JSONArray array = helper.convertDatabaseToJson(DataHelper.TABLE_VOCABULARY, "LessonId ='L1'");
+        JSONArray array = helper.convertDatabaseToJson(DataHelper.TABLE_VOCABULARY, "ChungID ='L1'");
         try {
             for (int i = 0; i < array.length(); i++) {
                 vocabularyList.add(gson.fromJson(array.getString(i), Vocabulary.class));

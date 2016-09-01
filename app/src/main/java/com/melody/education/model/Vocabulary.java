@@ -8,5 +8,5 @@ public class Vocabulary {
     public String Anh;
     public String NhatRomaji;
     public String Detail;
-    public String LessonId;
+    public String ChungID;
 }

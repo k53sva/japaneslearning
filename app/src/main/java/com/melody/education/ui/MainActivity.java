@@ -29,10 +29,6 @@ import android.widget.EditText;
 import com.melody.education.R;
 import com.melody.education.utils.Utils;
 import com.readystatesoftware.systembartint.SystemBarTintManager;
-import com.thin.downloadmanager.DefaultRetryPolicy;
-import com.thin.downloadmanager.DownloadRequest;
-import com.thin.downloadmanager.DownloadStatusListener;
-import com.thin.downloadmanager.ThinDownloadManager;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -53,7 +49,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         setSupportActionBar(mToolbar);
         //
         initNavigationView();
-        Utils.startFragment(this, new HomeFragment());
+        Utils.startFragment(this, new ConversationListFragment());
         handleIntent(getIntent());
         //getData();
         //JSONArray array = convertDatabaseToJson();
@@ -128,6 +124,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
+
         if (id == R.id.nav_setting) {
             startActivity(new Intent(this, UserSettingActivity.class));
         } else if (id == R.id.nav_feedback) {
@@ -136,13 +133,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Subject");
             emailIntent.putExtra(Intent.EXTRA_TEXT, "Body");
             startActivity(Intent.createChooser(emailIntent, "Send email..."));
+        } else if (id == R.id.nav_beginner_conversation) {
+            Utils.startFragment(MainActivity.this, new ConversationListFragment());
         }
+
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
-
 
 
     /**
