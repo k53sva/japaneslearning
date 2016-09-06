@@ -87,6 +87,8 @@ public class ConversationListFragment extends BaseFragment {
                 conversationList.add(c);
             }
 
+            // conversationList.add(0, new Conversation()); //Add header
+
         } catch (Exception e) {
             e.printStackTrace();
         }

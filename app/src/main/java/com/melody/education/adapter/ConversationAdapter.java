@@ -24,6 +24,7 @@ import java.util.List;
 public class ConversationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private static final int TYPE_ADS = 0;
     private static final int TYPE_ITEM = 1;
+    private static final int TYPE_HEADER = 2;
     private Context mContext;
     public static List<Conversation> conversationList = new ArrayList<>();
 
@@ -45,6 +46,14 @@ public class ConversationAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         }
     }
 
+    class HeaderViewHolder extends RecyclerView.ViewHolder {
+
+        public HeaderViewHolder(View itemView) {
+            super(itemView);
+        }
+    }
+
+
     class AdsHolder extends RecyclerView.ViewHolder {
         public AdsHolder(View itemView) {
             super(itemView);
@@ -59,7 +68,10 @@ public class ConversationAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        if (viewType == TYPE_ITEM) {
+        if (viewType == TYPE_HEADER) {
+            View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_header, parent, false);
+            return new HeaderViewHolder(v);
+        } else if (viewType == TYPE_ITEM) {
             View itemView = LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.item_conversation, parent, false);
 
@@ -93,12 +105,19 @@ public class ConversationAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
         } else if (holder instanceof AdsHolder) {
             //cast holder to VHHeader and set data for header.
+        } else if (holder instanceof HeaderViewHolder) {
+
         }
     }
 
     @Override
     public int getItemViewType(int position) {
-        return TYPE_ITEM;
+        if (position == 99999) {
+            return TYPE_HEADER;
+        } else {
+            return TYPE_ITEM;
+        }
+
     }
 
     @Override
