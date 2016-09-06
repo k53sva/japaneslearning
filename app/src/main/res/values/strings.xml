@@ -9,7 +9,7 @@
     <string name="backdrop_title">JAPANESE</string>
     <string name="backdrop_subtitle">こんにちは ラーニング ビーチ</string>
 
-    <string name="fragment_lesson_title">Lesson</string>
+    <string name="fragment_lesson_title">Lessons</string>
     <string name="fragment_vocabulary_title">Vocabulary</string>
     <string name="fragment_note_title">Notes</string>
     <string name="title_activity_settings">Settings</string>

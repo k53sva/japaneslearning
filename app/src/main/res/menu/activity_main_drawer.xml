@@ -1,77 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:title="Conversation">
-        <menu android:checkableBehavior="all">
-            <item
-                android:id="@+id/nav_beginner_conversation"
-                android:icon="@drawable/ic_menu_beginner"
-                android:title="Japanese Conversation" />
-            <item
-                android:id="@+id/nav_beginner_express"
-                android:icon="@drawable/ic_menu_express"
-                android:title="New Report" />
+    <item
+        android:id="@+id/nav_beginner_conversation"
+        android:icon="@drawable/ic_menu_send"
+        android:title="Conversation" />
 
-            <item
-                android:icon="@drawable/ic_menu_express"
-                android:title="Express Japanese" />
+    <item
+        android:icon="@drawable/ic_menu_share"
+        android:title="Lessons" />
 
-            <item
-                android:icon="@drawable/ic_menu_express"
-                android:title="Japanese Speak And Vocabulary" />
+    <item
+        android:icon="@drawable/ic_menu_camera"
+        android:title="Topic" />
 
-        </menu>
-    </item>
+    <item
+        android:icon="@drawable/ic_menu_share"
+        android:title="Kanji" />
+    <item
+        android:icon="@drawable/ic_menu_camera"
+        android:title="Syllabaries" />
 
-    <item android:title="">
-        <menu android:checkableBehavior="all">
-            <item
-                android:icon="@drawable/ic_menu_express"
-                android:title="Lesson" />
-        </menu>
-    </item>
-
-    <item android:title="">
-        <menu android:checkableBehavior="all">
-            <item
-                android:icon="@drawable/ic_menu_express"
-                android:title="Topic" />
-        </menu>
-    </item>
-
-    <item android:title="">
-        <menu android:checkableBehavior="all">
-            <item
-                android:icon="@drawable/ic_menu_express"
-                android:title="Kanji" />
-        </menu>
-    </item>
-
-    <item android:title="">
-        <menu android:checkableBehavior="all">
-            <item
-                android:icon="@drawable/ic_menu_express"
-                android:title="Syllabaries" />
-        </menu>
-
-    </item>
-
-    <item android:title="">
-        <menu android:checkableBehavior="all">
-            <item
-                android:icon="@drawable/ic_menu_express"
-                android:title="Quiz" />
-        </menu>
-    </item>
-
-    <item android:title="">
-        <menu android:checkableBehavior="all">
-            <item
-                android:icon="@drawable/ic_menu_express"
-                android:title="Playlist" />
-        </menu>
-
-    </item>
-
+    <item
+        android:icon="@drawable/ic_menu_send"
+        android:title="Quiz" />
 
     <item android:title="About">
         <menu>

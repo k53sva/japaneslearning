@@ -24,15 +24,11 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
 import android.view.WindowManager;
 import android.widget.EditText;
-import android.widget.ExpandableListView;
 
 
 import com.melody.education.R;
-import com.melody.education.adapter.ExpandableListAdapter;
-import com.melody.education.model.ExpandedMenuModel;
 import com.melody.education.utils.Utils;
 import com.readystatesoftware.systembartint.SystemBarTintManager;
 
@@ -40,19 +36,9 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 
 
-public class MainActivity extends AppCompatActivity {
-    private DrawerLayout mDrawerLayout;
-    ExpandableListAdapter mMenuAdapter;
-    ExpandableListView expandableList;
-    List<String> listDataHeader;
-    HashMap<String, List<String>> listDataChild;
-
-
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     Toolbar mToolbar;
 
     @TargetApi(Build.VERSION_CODES.KITKAT)
@@ -78,99 +64,10 @@ public class MainActivity extends AppCompatActivity {
                 this, drawer, mToolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
+
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        expandableList = (ExpandableListView) findViewById(R.id.navigationmenu);
-        if (navigationView != null) {
-            setupDrawerContent(navigationView);
-        }
-
-        prepareListData();
-        mMenuAdapter = new ExpandableListAdapter(this, listDataHeader, listDataChild, expandableList);
-
-        // setting list adapter
-        expandableList.setAdapter(mMenuAdapter);
-        expandableList.expandGroup(0);
-        expandableList.expandGroup(6);
-        setOnClickItemMenu();
+        navigationView.setNavigationItemSelectedListener(this);
     }
-
-    private void setOnClickItemMenu() {
-        expandableList.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
-            @Override
-            public boolean onChildClick(ExpandableListView expandableListView, View view, int i, int i1, long l) {
-                if (i == 6) {
-                    if (i1 == 0) {
-                        startActivity(new Intent(MainActivity.this, UserSettingActivity.class));
-                    }
-                    if (i1 == 1) {
-                        Intent emailIntent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts(
-                                "mailto", "abc@gmail.com", null));
-                        emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Subject");
-                        emailIntent.putExtra(Intent.EXTRA_TEXT, "Body");
-                    }
-                } else if (i == 0) {
-                    if (i1 == 0) {
-                        Utils.startFragment(MainActivity.this, new ConversationListFragment());
-                    }
-                }
-                mDrawerLayout.closeDrawers();
-                return false;
-            }
-        });
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                mDrawerLayout.openDrawer(GravityCompat.START);
-                return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
-
-    private void setupDrawerContent(NavigationView navigationView) {
-        navigationView.setNavigationItemSelectedListener(menuItem -> {
-            menuItem.setChecked(true);
-            mDrawerLayout.closeDrawers();
-            return true;
-        });
-    }
-
-
-    private void prepareListData() {
-        listDataHeader = new ArrayList<>();
-        listDataChild = new HashMap<>();
-
-        // Adding data header
-        listDataHeader.add("Conversation");
-        listDataHeader.add("Lesson");
-        listDataHeader.add("Topic");
-        listDataHeader.add("Kanji");
-        listDataHeader.add("Syllabaries");
-        listDataHeader.add("Quiz");
-        listDataHeader.add("About");
-
-        // Adding child data
-        List<String> heading1 = new ArrayList<>();
-        heading1.add("Japanese Conversation");
-        heading1.add("New Report");
-        heading1.add("Express Japanese");
-        heading1.add("Japanese Speak and Vocabulary");
-
-
-        List<String> heading2 = new ArrayList<>();
-        heading2.add("Setting");
-        heading2.add("Contact");
-
-
-        listDataChild.put(listDataHeader.get(0), heading1);// Header, Child data
-        listDataChild.put(listDataHeader.get(6), heading2);
-
-    }
-
 
     @Override
     protected void onNewIntent(Intent intent) {
@@ -224,7 +121,7 @@ public class MainActivity extends AppCompatActivity {
         });
         return super.onCreateOptionsMenu(menu);
     }
-/*
+
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
@@ -247,7 +144,7 @@ public class MainActivity extends AppCompatActivity {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
-    }*/
+    }
 
 
     /**
@@ -305,4 +202,3 @@ public class MainActivity extends AppCompatActivity {
         return resultSet;
     }
 }
-
