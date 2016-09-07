@@ -28,7 +28,7 @@ public class SyllabariesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     private static final int TYPE_ITEM = 1;
     private static final int TYPE_HEADER = 2;
     private Context mContext;
-    public static List<SyllabariesModel> syllabariesModels = new ArrayList<>();
+    public List<SyllabariesModel> syllabariesModels = new ArrayList<>();
 
 
     public class MyViewHolder extends RecyclerView.ViewHolder {

@@ -3,12 +3,15 @@ package com.melody.education.ui;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
+import android.support.design.widget.AppBarLayout;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,6 +48,13 @@ public class SyllabariesFragment extends BaseFragment {
 
         tabLayout = (TabLayout) v.findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
+
+        AppBarLayout appBarLayout = ((MainActivity) getActivity()).appBarLayout;
+        CoordinatorLayout.LayoutParams lp = (CoordinatorLayout.LayoutParams) appBarLayout.getLayoutParams();
+        lp.height = Utils.dpToPx(getActivity(), 100);
+        appBarLayout.setLayoutParams(lp);
+        ((MainActivity) getActivity()).tvDes.setVisibility(View.GONE);
+
         return v;
     }
 

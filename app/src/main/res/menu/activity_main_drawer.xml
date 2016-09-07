@@ -1,41 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
+        android:background="?attr/selectableItemBackground"
         android:id="@+id/nav_beginner_conversation"
         android:icon="@drawable/ic_menu_send"
         android:title="Conversation" />
 
     <item
+        android:background="?attr/selectableItemBackground"
         android:icon="@drawable/ic_menu_share"
         android:title="Lessons" />
 
     <item
+        android:background="?attr/selectableItemBackground"
         android:icon="@drawable/ic_menu_camera"
         android:title="Topic" />
 
     <item
+        android:background="?attr/selectableItemBackground"
         android:icon="@drawable/ic_menu_share"
         android:title="Kanji" />
     <item
+        android:background="?attr/selectableItemBackground"
         android:id="@+id/menu_syllabaries"
         android:icon="@drawable/ic_menu_camera"
         android:title="Syllabaries" />
 
     <item
+        android:background="?attr/selectableItemBackground"
         android:icon="@drawable/ic_menu_camera"
         android:title="Playlist" />
 
     <item
+        android:background="?attr/selectableItemBackground"
         android:icon="@drawable/ic_menu_send"
         android:title="Quiz" />
 
     <item android:title="About">
         <menu>
             <item
+                android:background="?attr/selectableItemBackground"
                 android:id="@+id/nav_feedback"
                 android:icon="@drawable/ic_menu_send"
                 android:title="Feedback" />
             <item
+                android:background="?attr/selectableItemBackground"
                 android:id="@+id/nav_setting"
                 android:icon="@drawable/ic_menu_share"
                 android:title="Setting" />

@@ -44,7 +44,6 @@ public class HiraganaFragment extends BaseFragment {
         recyclerView.addItemDecoration(new GridSpacingItemDecoration(5, Utils.dpToPx(getActivity(), 5), true));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
 
-
         adapter = new SyllabariesAdapter(getActivity(), SyllabariesManager.getHiragana());
         recyclerView.setAdapter(adapter);
 

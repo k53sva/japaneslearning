@@ -3,6 +3,8 @@ package com.melody.education.ui;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
+import android.support.design.widget.AppBarLayout;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
@@ -50,6 +52,10 @@ public class ConversationListFragment extends BaseFragment {
 
         mSwipeRefreshLayout = (SwipeRefreshLayout) v.findViewById(R.id.swipe_refresh);
         mSwipeRefreshLayout.setOnRefreshListener(this::refreshItems);
+        AppBarLayout appBarLayout = ((MainActivity) getActivity()).appBarLayout;
+        CoordinatorLayout.LayoutParams lp = (CoordinatorLayout.LayoutParams) appBarLayout.getLayoutParams();
+        lp.height = Utils.dpToPx(getActivity(), 200);
+        appBarLayout.setLayoutParams(lp);
 
         getData();
         return v;

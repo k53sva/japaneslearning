@@ -26,6 +26,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.WindowManager;
 import android.widget.EditText;
+import android.widget.TextView;
 
 
 import com.melody.education.R;
@@ -40,6 +41,8 @@ import java.io.File;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     Toolbar mToolbar;
+    AppBarLayout appBarLayout;
+    TextView tvTitle, tvDes;
 
     @TargetApi(Build.VERSION_CODES.KITKAT)
     @Override
@@ -49,6 +52,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         setSupportActionBar(mToolbar);
+
+        appBarLayout = (AppBarLayout) findViewById(R.id.appbar);
+        tvTitle = (TextView) findViewById(R.id.tv_title);
+        tvDes = (TextView) findViewById(R.id.tv_des);
         //
         initNavigationView();
         Utils.startFragment(this, new ConversationListFragment());
