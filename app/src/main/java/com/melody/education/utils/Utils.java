@@ -14,6 +14,7 @@ import com.melody.education.R;
  * Created by K53SV on 8/29/2016.
  */
 public class Utils {
+    public static final String PACKAGE_NAME = "com.melody.education";
 
 
     public static void startFragment(FragmentActivity context, Fragment fragment) {

@@ -32,7 +32,7 @@ public class SplashActivity extends BaseActivity {
         String filePath = this.getExternalCacheDir().toString() + "/" + DataHelper.DATABASE_NAME;
         File file = new File(filePath);
         if (file.exists()) {
-            delay(5, "database is exist");
+            delay(1, "database is exist");
         } else {
             getData();
         }

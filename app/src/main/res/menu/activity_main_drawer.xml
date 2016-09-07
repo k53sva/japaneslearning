@@ -17,8 +17,13 @@
         android:icon="@drawable/ic_menu_share"
         android:title="Kanji" />
     <item
+        android:id="@+id/menu_syllabaries"
         android:icon="@drawable/ic_menu_camera"
         android:title="Syllabaries" />
+
+    <item
+        android:icon="@drawable/ic_menu_camera"
+        android:title="Playlist" />
 
     <item
         android:icon="@drawable/ic_menu_send"

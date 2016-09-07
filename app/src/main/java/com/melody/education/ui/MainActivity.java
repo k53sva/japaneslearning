@@ -138,6 +138,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             startActivity(Intent.createChooser(emailIntent, "Send email..."));
         } else if (id == R.id.nav_beginner_conversation) {
             Utils.startFragment(MainActivity.this, new ConversationListFragment());
+        } else if (id == R.id.menu_syllabaries) {
+            Utils.startFragment(this, new SyllabariesFragment());
         }
 
 
