@@ -13,8 +13,9 @@ import android.widget.TextView;
 import com.melody.education.R;
 import com.melody.education.fragment.ConversationFragment;
 import com.melody.education.model.Conversation;
-import com.melody.education.model.Lesson;
+import com.melody.education.net.FetchData;
 import com.melody.education.ui.ConversationActivity;
+import com.melody.education.utils.DataHelper;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -89,17 +90,12 @@ public class ConversationAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             Conversation item = conversationList.get(position);
             myViewHolder.title.setText(item.Title);
             myViewHolder.count.setText(item.Description);
-            if (position % 2 == 0)
-                Picasso.with(mContext)
-                        .load("http://www.japaneselearning.somee.com/image/beginner_lesson_1.jpg")
-                        .placeholder(R.drawable.album1)
-                        .into(myViewHolder.thumbnail);
-            else
 
-                Picasso.with(mContext)
-                        .load("http://japaneselearning.comli.com/lesson2.gif")
-                        .placeholder(R.drawable.album1)
-                        .into(myViewHolder.thumbnail);
+            Picasso.with(mContext)
+                    .load(FetchData.ROOT_URL + item.Picture)
+                    .placeholder(R.drawable.album1)
+                    .into(myViewHolder.thumbnail);
+
             //Click item
             ((MyViewHolder) holder).body.setOnClickListener(v -> startLearningActivity(position));
 

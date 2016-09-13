@@ -92,7 +92,7 @@ public class ConversationFragment extends BaseFragment implements PlaylistListen
         Gson gson = new Gson();
         DataHelper helper = new DataHelper(getActivity());
         JSONArray array =
-                helper.convertDatabaseToJsonLike(DataHelper.TABLE_CONVERSATION,
+                helper.convertDatabaseToJsonLike(DataHelper.DATABASE_CONVERSATION, DataHelper.TABLE_CONVERSATION,
                         "WHERE ChungId = '"
                                 + ConversationAdapter.conversationList.get(selectedIndex).ChungID
                                 + "'");
@@ -198,7 +198,7 @@ public class ConversationFragment extends BaseFragment implements PlaylistListen
         }
 
         List<MediaItem> mediaItems = new LinkedList<>();
-       /* for (Conversation conversation : ConversationAdapter.conversationList) {
+       /* for (Conversation conversation : ConversationAdapter.lessonArrayList) {
             MediaItem mediaItem = new MediaItem(conversation, true);
             mediaItems.add(mediaItem);
         }*/

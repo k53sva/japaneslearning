@@ -17,7 +17,7 @@ import com.google.gson.Gson;
 import com.melody.education.R;
 import com.melody.education.adapter.ConversationAdapter;
 import com.melody.education.model.Conversation;
-import com.melody.education.model.Lesson;
+import com.melody.education.net.FetchData;
 import com.melody.education.utils.DataHelper;
 import com.melody.education.utils.GridSpacingItemDecoration;
 import com.melody.education.utils.Utils;
@@ -84,16 +84,15 @@ public class ConversationListFragment extends BaseFragment {
     private void getData() {
         Gson gson = new Gson();
         DataHelper helper = new DataHelper(getActivity());
-        JSONArray array = helper.convertDatabaseToJson(DataHelper.TABLE_CONVERSATION, "Picture IS NOT NULL AND Picture !=''");
+        JSONArray array = helper.convertDatabaseToJson(DataHelper.DATABASE_CONVERSATION, DataHelper.TABLE_CONVERSATION, "Picture IS NOT NULL AND Picture !=''");
         try {
             for (int i = 0; i < array.length(); i++) {
                 Conversation c = gson.fromJson(array.getString(i), Conversation.class);
-                c.Audio = "http://japaneselearning.comli.com/lesson_1.mp3";
-                c.Picture = "http://www.japaneselearning.somee.com/image/beginner_lesson_1.jpg";
+                c.Audio = FetchData.ROOT_URL + c.Audio;
                 conversationList.add(c);
             }
 
-            // conversationList.add(0, new Conversation()); //Add header
+            // lessonArrayList.add(0, new Conversation()); //Add header
 
         } catch (Exception e) {
             e.printStackTrace();

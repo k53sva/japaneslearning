@@ -147,6 +147,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             Utils.startFragment(MainActivity.this, new ConversationListFragment());
         } else if (id == R.id.menu_syllabaries) {
             Utils.startFragment(this, new SyllabariesFragment());
+        } else if (id == R.id.nav_menu_lessons) {
+            Utils.startFragment(this, new LessonListFragment());
         }
 
 

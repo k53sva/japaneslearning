@@ -70,7 +70,7 @@ public class ConversationFragmentAdapter extends RecyclerView.Adapter<RecyclerVi
             MyViewHolder myViewHolder = (MyViewHolder) holder;
             if (conversationList.size() > 0) {
                 Conversation item = conversationList.get(position);
-                myViewHolder.tvName.setText(item.Ten);
+                myViewHolder.tvName.setText(item.Ten + ":");
                 myViewHolder.tvEnglish.setText(item.Anh);
                 myViewHolder.tvJapanese.setText(item.Nhat);
                 myViewHolder.tvRomaji.setText(item.Romaji);

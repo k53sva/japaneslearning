@@ -74,8 +74,9 @@ public class VocabularyFragment extends Fragment {
         Gson gson = new Gson();
         DataHelper helper = new DataHelper(getActivity());
         JSONArray array =
-                helper.convertDatabaseToJson(DataHelper.TABLE_VOCABULARY,
-                        "ChungID ='"
+                helper.convertDatabaseToJson(DataHelper.DATABASE_CONVERSATION, DataHelper.TABLE_VOCABULARY,
+                        DataHelper.COL_CHUNGID
+                                + " ='"
                                 + ConversationAdapter.conversationList.get(selectedIndex).ChungID
                                 + "'");
         try {

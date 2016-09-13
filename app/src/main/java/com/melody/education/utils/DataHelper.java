@@ -13,10 +13,13 @@ import org.json.JSONObject;
  */
 public class DataHelper {
     private static final String TAG = DataHelper.class.getSimpleName();
-    public static String DATABASE_NAME = "data.sqlite";
+    public static String DATABASE_CONVERSATION = "conversation.sqlite";
     public static String TABLE_LESSON = "Lesson";
     public static String TABLE_VOCABULARY = "Vocabulary";
+    public static String TABLE_NOTES = "Notes";
     public static String TABLE_CONVERSATION = "Conversation";
+
+    public static final String COL_CHUNGID = "ChungID";
 
     Activity activity;
 
@@ -27,8 +30,9 @@ public class DataHelper {
     /**
      * Convert DataBase to Json
      */
-    public JSONArray convertDatabaseToJson(String table) {
-        String myPath = activity.getExternalCacheDir().toString() + "/" + DATABASE_NAME;// Set path to your database
+    public synchronized JSONArray convertDatabaseToJson(String databaseName, String table) {
+        String myPath = activity.getExternalCacheDir().toString() + "/" + databaseName;// Set path to your database
+        Log.e(TAG, myPath);
         String myTable = table;//Set name of your table
 
         //or you can use `context.getDatabasePath("my_db_test.db")`
@@ -72,9 +76,10 @@ public class DataHelper {
     /**
      * Convert DataBase to Json
      */
-    public JSONArray convertDatabaseToJson(String table, String clause) {
-        String myPath = activity.getExternalCacheDir().toString() + "/" + DATABASE_NAME;// Set path to your database
+    public synchronized JSONArray convertDatabaseToJson(String databaseName, String table, String clause) {
+        String myPath = activity.getExternalCacheDir().toString() + "/" + databaseName;// Set path to your database
         String myTable = table;//Set name of your table
+        Log.e(TAG, myPath);
 
         //or you can use `context.getDatabasePath("my_db_test.db")`
 
@@ -113,9 +118,10 @@ public class DataHelper {
         return resultSet;
     }
 
-    public JSONArray convertDatabaseToJsonLike(String table, String clause) {
-        String myPath = activity.getExternalCacheDir().toString() + "/" + DATABASE_NAME;// Set path to your database
+    public synchronized JSONArray convertDatabaseToJsonLike(String databaseName, String table, String clause) {
+        String myPath = activity.getExternalCacheDir().toString() + "/" + databaseName;// Set path to your database
         String myTable = table;//Set name of your table
+        Log.e(TAG, myPath);
 
         //or you can use `context.getDatabasePath("my_db_test.db")`
 

@@ -50,19 +50,17 @@ dependencies {
     compile 'com.squareup.picasso:picasso:2.5.2'
     compile 'com.devbrackets.android:playlistcore:1.1.1'
     compile 'com.google.code.gson:gson:2.6.2'
-    compile 'com.squareup.retrofit2:retrofit:2.0.2'
-    compile 'com.squareup.retrofit2:converter-gson:2.0.2'
-    compile 'com.loopj.android:android-async-http:1.4.9'
-    compile 'com.android.volley:volley:1.0.0'
     compile 'com.mani:ThinDownloadManager:1.2.5'
     compile 'com.jakewharton:butterknife:8.4.0'
     compile 'com.android.support:support-v4:24.2.0'
-    compile 'com.michaelpardo:activeandroid:3.1.0-SNAPSHOT'
     compile 'com.readystatesoftware.systembartint:systembartint:1.0.3'
     compile 'com.github.JakeWharton:ViewPagerIndicator:2.4.1'
     compile 'net.cachapa.expandablelayout:expandablelayout:2.2'
     compile 'com.amulyakhare:com.amulyakhare.textdrawable:1.0.1'
 
+    compile 'io.reactivex:rxandroid:1.2.1'
+    compile 'io.reactivex:rxjava:1.1.6'
+    compile 'com.jakewharton.rxbinding:rxbinding:0.4.0'
 
     apt 'com.jakewharton:butterknife-compiler:8.4.0'
 }

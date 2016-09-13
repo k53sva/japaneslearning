@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -32,13 +33,12 @@ public class SyllabariesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        public TextView tvCharJapanese, tvCharLatinh;
+        public ImageView ivContent;
         private RelativeLayout item;
 
         public MyViewHolder(View view) {
             super(view);
-            tvCharJapanese = (TextView) view.findViewById(R.id.tv_char_japanese);
-            tvCharLatinh = (TextView) view.findViewById(R.id.tv_char_latinh);
+            ivContent = (ImageView) view.findViewById(R.id.iv_japanese);
             item = (RelativeLayout) view.findViewById(R.id.item_content);
         }
     }
@@ -85,11 +85,8 @@ public class SyllabariesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         if (holder instanceof MyViewHolder) {
             MyViewHolder myViewHolder = (MyViewHolder) holder;
             SyllabariesModel item = syllabariesModels.get(position);
-            myViewHolder.tvCharJapanese.setText(item.charJapanese);
-            myViewHolder.tvCharLatinh.setText(item.charLatinh);
-            if (item.audioName.length() > 0)
-                myViewHolder.item.setOnClickListener(v -> playAudio(item.audioName));
-            else
+            myViewHolder.ivContent.setImageResource(item.image);
+            if (item.charLatinh.length() > 0)
                 myViewHolder.item.setOnClickListener(v -> playAudio(item.charLatinh));
         } else if (holder instanceof AdsHolder) {
             //cast holder to VHHeader and set data for header.
@@ -100,7 +97,7 @@ public class SyllabariesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
     @Override
     public int getItemViewType(int position) {
-        if (syllabariesModels.get(position).charJapanese.length() > 0) {
+        if (syllabariesModels.get(position).charLatinh.length() > 0) {
             return TYPE_ITEM;
 
         } else {
