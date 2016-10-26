@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,6 +28,7 @@ import com.melody.education.adapter.ConversationFragmentAdapter;
 import com.melody.education.data.MediaItem;
 import com.melody.education.manager.PlaylistManager;
 import com.melody.education.model.Conversation;
+import com.melody.education.net.FetchData;
 import com.melody.education.ui.BaseFragment;
 import com.melody.education.utils.DataHelper;
 import com.melody.education.utils.GridSpacingItemDecoration;
@@ -44,8 +46,10 @@ import rx.schedulers.Schedulers;
  * Created by K53SV on 8/29/2016.
  */
 public class ConversationFragment extends BaseFragment implements PlaylistListener<MediaItem>, ProgressListener {
+    public static final String TAG = ConversationFragment.class.getSimpleName();
     public static final String EXTRA_INDEX = "EXTRA_INDEX";
-    public static final int PLAYLIST_ID = 4;
+    public static final int PLAYLIST_ID = 2;
+
     private ProgressBar loadingBar;
     private ImageButton previousButton;
     private ImageButton playPauseButton;
@@ -173,6 +177,7 @@ public class ConversationFragment extends BaseFragment implements PlaylistListen
         }*/
 
         MediaItem mediaItem = new MediaItem(ConversationAdapter.conversationList.get(selectedIndex), true);
+        Log.e(TAG, ConversationAdapter.conversationList.get(selectedIndex).Audio);
         mediaItems.add(mediaItem);
         playlistManager.setParameters(mediaItems, selectedIndex);
         playlistManager.setId(PLAYLIST_ID);

@@ -21,16 +21,14 @@ import butterknife.ButterKnife;
  * Created by K53SV on 8/29/2016.
  */
 public class ConversationActivity extends BaseActivity {
+    private ViewPagerAdapter adapter;
+    private int selectedIndex;
     @BindView(R.id.viewpager_learning)
     ViewPager mViewPager;
     @BindView(R.id.toolbar)
     Toolbar toolbar;
 
-    private ViewPagerAdapter adapter;
-    private int selectedIndex;
-
-    @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_conversation);
         ButterKnife.bind(this);
@@ -82,7 +80,6 @@ public class ConversationActivity extends BaseActivity {
 
     }
 
-    @Override
     public boolean onOptionsItemSelected(MenuItem menuItem) {
         switch (menuItem.getItemId()) {
             case android.R.id.home:

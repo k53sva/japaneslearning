@@ -2,8 +2,6 @@ package com.melody.education.net;
 
 import android.content.Context;
 import android.net.Uri;
-import android.util.Log;
-import android.widget.Toast;
 
 import com.melody.education.utils.DataHelper;
 import com.thin.downloadmanager.DefaultRetryPolicy;
@@ -12,7 +10,6 @@ import com.thin.downloadmanager.DownloadStatusListener;
 import com.thin.downloadmanager.ThinDownloadManager;
 
 import java.util.HashMap;
-import java.util.Map;
 
 import rx.Observable;
 
@@ -21,7 +18,7 @@ import rx.Observable;
  */
 public class FetchData {
     public static final String ROOT_URL = "http://ahaheaven.esy.es/";
-    public static final String PATH_DB = ROOT_URL + "japanesedb/";
+    private static final String PATH_DB = String.format("%sjapanesedb/", ROOT_URL);
 
     private Context mContext;
 
@@ -29,16 +26,14 @@ public class FetchData {
         this.mContext = mContext;
     }
 
-    public Observable<Boolean> getDataConversation() {
-
+    private Observable<Boolean> getDataConversation() {
         return Observable.create(
                 subscriber -> {
                     ThinDownloadManager downloadManager = new ThinDownloadManager(4);
                     String url = FetchData.PATH_DB + DataHelper.DATABASE_CONVERSATION;
                     Uri downloadUri = Uri.parse(url);
-                    Uri destinationUri = Uri.parse(mContext.getExternalCacheDir() + "/" + DataHelper.DATABASE_CONVERSATION);
+                    Uri destinationUri = Uri.parse(String.format("%s/%s", mContext.getExternalCacheDir(), DataHelper.DATABASE_CONVERSATION));
                     DownloadRequest downloadRequest = new DownloadRequest(downloadUri)
-                            .addCustomHeader("Auth-Token", "YourTokenApiKey")
                             .setRetryPolicy(new DefaultRetryPolicy())
                             .setDestinationURI(destinationUri).setPriority(DownloadRequest.Priority.HIGH)
                             .setDownloadListener(new DownloadStatusListener() {
@@ -55,7 +50,7 @@ public class FetchData {
                                 }
 
                                 @Override
-                                public void onProgress(int id, long totalBytes, long downlaodedBytes, int progress) {
+                                public void onProgress(int id, long totalBytes, long bytes, int progress) {
                                 }
                             });
 
@@ -63,15 +58,14 @@ public class FetchData {
                 });
     }
 
-    public Observable<Boolean> getDataTopic() {
+    private Observable<Boolean> getDataTopic() {
         return Observable.create(
                 subscriber -> {
                     ThinDownloadManager downloadManager = new ThinDownloadManager(4);
                     String url = FetchData.PATH_DB + DataHelper.DATABASE_TOPICS;
                     Uri downloadUri = Uri.parse(url);
-                    Uri destinationUri = Uri.parse(mContext.getExternalCacheDir() + "/" + DataHelper.DATABASE_TOPICS);
+                    Uri destinationUri = Uri.parse(String.format("%s/%s", mContext.getExternalCacheDir(), DataHelper.DATABASE_TOPICS));
                     DownloadRequest downloadRequest = new DownloadRequest(downloadUri)
-                            .addCustomHeader("Auth-Token", "YourTokenApiKey")
                             .setRetryPolicy(new DefaultRetryPolicy())
                             .setDestinationURI(destinationUri).setPriority(DownloadRequest.Priority.HIGH)
                             .setDownloadListener(new DownloadStatusListener() {

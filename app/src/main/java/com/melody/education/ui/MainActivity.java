@@ -23,6 +23,7 @@ import com.melody.education.R;
 import com.melody.education.adapter.ConversationAdapter;
 import com.melody.education.fragment.ConversationFragment;
 import com.melody.education.model.Conversation;
+import com.melody.education.net.FetchData;
 import com.melody.education.utils.DataHelper;
 import com.melody.education.utils.Utils;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
@@ -94,6 +95,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 .flatMap(Observable::from)
                 .filter(m -> m.Picture != null)
                 .filter(m -> m.Picture.length() > 0)
+                .map(m -> {
+                    m.Audio = String.format("%s%s", FetchData.ROOT_URL, m.Audio);
+                    return m;
+                })
                 .toList()
                 .doOnNext(m -> ConversationAdapter.conversationList = m)
                 .flatMap(Observable::from)

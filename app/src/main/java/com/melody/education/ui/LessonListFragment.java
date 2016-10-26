@@ -2,7 +2,6 @@ package com.melody.education.ui;
 
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -20,7 +19,6 @@ import com.melody.education.utils.GridSpacingItemDecoration;
 import com.melody.education.utils.Utils;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import rx.Observable;
 

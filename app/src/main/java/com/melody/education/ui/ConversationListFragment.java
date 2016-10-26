@@ -8,15 +8,18 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
+import com.annimon.stream.Stream;
 import com.google.gson.Gson;
 import com.melody.education.R;
 import com.melody.education.adapter.ConversationAdapter;
 import com.melody.education.model.Conversation;
+import com.melody.education.net.FetchData;
 import com.melody.education.utils.DataHelper;
 import com.melody.education.utils.GridSpacingItemDecoration;
 import com.melody.education.utils.Utils;
@@ -72,9 +75,16 @@ public class ConversationListFragment extends BaseFragment {
                 .flatMap(Observable::from)
                 .filter(m -> m.Picture != null)
                 .filter(m -> m.Picture.length() > 0)
+                .map(m -> {
+                    m.Audio = String.format("%s%s", FetchData.ROOT_URL, m.Audio);
+                    return m;
+                })
                 .toList()
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(m -> adapter.setModel(m));
+                .subscribe(m -> {
+                    adapter.setModel(m);
+                    Stream.of(m).forEach(c -> Log.e(TAG, c.Audio));
+                });
     }
 
 }
