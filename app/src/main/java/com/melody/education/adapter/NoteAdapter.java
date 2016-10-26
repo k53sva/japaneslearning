@@ -62,7 +62,7 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.VocabularyHold
         return noteList.size();
     }
 
-    public class VocabularyHolder extends RecyclerView.ViewHolder {
+    class VocabularyHolder extends RecyclerView.ViewHolder {
         TextView tvFrom;
         TextView tvExplain;
         TextView tvStt;

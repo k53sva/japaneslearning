@@ -22,18 +22,17 @@ import com.melody.education.utils.Utils;
 import java.util.ArrayList;
 import java.util.List;
 
+import rx.Observable;
+
 /**
  * Created by K53SV on 8/29/2016.
  */
 public class LessonListFragment extends BaseFragment {
     private RecyclerView recyclerView;
     private LessonAdapter adapter;
-    private List<Lesson> lessonList = new ArrayList<>();
-    SwipeRefreshLayout mSwipeRefreshLayout;
+    private SwipeRefreshLayout mSwipeRefreshLayout;
 
-    @Nullable
-    @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.content_main, container, false);
         recyclerView = (RecyclerView) v.findViewById(R.id.recycler_view);
         RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(getActivity(), 1);
@@ -41,8 +40,7 @@ public class LessonListFragment extends BaseFragment {
         recyclerView.addItemDecoration(new GridSpacingItemDecoration(2, Utils.dpToPx(getActivity(), 0), true));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
 
-        lessonList = new ArrayList<>();
-        adapter = new LessonAdapter(getActivity(), lessonList);
+        adapter = new LessonAdapter(getActivity(), new ArrayList<>());
         recyclerView.setAdapter(adapter);
 
         mSwipeRefreshLayout = (SwipeRefreshLayout) v.findViewById(R.id.swipe_refresh);
@@ -65,12 +63,9 @@ public class LessonListFragment extends BaseFragment {
     }
 
     private void getData() {
-
-        for (int i = 0; i < 10; i++) {
-            lessonList.add(new Lesson("ALIGATO", "ahihi do ngoc"));
-        }
-
-        adapter.notifyDataSetChanged();
+        Observable.range(0, 9)
+                .map(m -> new Lesson(String.valueOf(m), String.valueOf(m)))
+                .toList()
+                .subscribe(m -> adapter.setModel(m));
     }
-
 }

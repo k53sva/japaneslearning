@@ -34,14 +34,12 @@ public class TopicActivity extends BaseActivity {
     private String ChungId;
     DataHelper dataHelper;
 
-
     public static void lauchActivity(Context context, String ChungId) {
         Intent intent = new Intent(context, TopicActivity.class);
         intent.putExtra(KEY_EXTRA, ChungId);
         context.startActivity(intent);
     }
 
-    @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getIntent().getExtras() != null)

@@ -15,7 +15,6 @@ import com.melody.education.data.Samples;
 import java.util.List;
 
 public class SimpleListAdapter extends BaseAdapter {
-
     private List<Samples.Sample> samples;
     private LayoutInflater inflater;
 
@@ -57,7 +56,7 @@ public class SimpleListAdapter extends BaseAdapter {
         return convertView;
     }
 
-    private static class ViewHolder {
+    static class ViewHolder {
         TextView text;
     }
 }

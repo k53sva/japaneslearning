@@ -15,7 +15,6 @@ import com.melody.education.fragment.ConversationFragment;
 import com.melody.education.model.Conversation;
 import com.melody.education.net.FetchData;
 import com.melody.education.ui.ConversationActivity;
-import com.melody.education.utils.DataHelper;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -28,7 +27,6 @@ public class ConversationAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     private static final int TYPE_HEADER = 2;
     private Context mContext;
     public static List<Conversation> conversationList = new ArrayList<>();
-
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
         public TextView title, count;
@@ -54,13 +52,11 @@ public class ConversationAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         }
     }
 
-
     class AdsHolder extends RecyclerView.ViewHolder {
         public AdsHolder(View itemView) {
             super(itemView);
         }
     }
-
 
     public ConversationAdapter(Context mContext, List<Conversation> conversationList) {
         this.mContext = mContext;

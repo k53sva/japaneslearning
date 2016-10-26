@@ -29,9 +29,9 @@ import rx.schedulers.Schedulers;
  */
 public class NotesFragment extends Fragment {
     public static final String EXTRA_INDEX = "EXTRA_INDEX";
+    private int selectedIndex = 0;
     RecyclerView recyclerView;
     NoteAdapter adapter;
-    private int selectedIndex = 0;
 
     public static NotesFragment newInstance(int index) {
         NotesFragment fragment = new NotesFragment();
@@ -46,7 +46,6 @@ public class NotesFragment extends Fragment {
             selectedIndex = getArguments().getInt(EXTRA_INDEX, 0);
         }
     }
-
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_vocabulary, container, false);
@@ -65,7 +64,6 @@ public class NotesFragment extends Fragment {
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(adapter);
     }
-
 
     private void getData() {
         Gson gson = new Gson();

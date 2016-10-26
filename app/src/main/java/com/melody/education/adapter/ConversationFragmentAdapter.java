@@ -16,15 +16,13 @@ import net.cachapa.expandablelayout.ExpandableLayout;
 import java.util.ArrayList;
 import java.util.List;
 
-
 public class ConversationFragmentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private static final int TYPE_ADS = 0;
     private static final int TYPE_ITEM = 1;
     private Context mContext;
-    public static List<Conversation> conversationList = new ArrayList<>();
+    private static List<Conversation> conversationList = new ArrayList<>();
 
-
-    public class MyViewHolder extends RecyclerView.ViewHolder {
+    private class MyViewHolder extends RecyclerView.ViewHolder {
         public TextView tvName, tvEnglish, tvRomaji, tvJapanese;
         public ExpandableLayout expandableLayout;
 
@@ -38,12 +36,11 @@ public class ConversationFragmentAdapter extends RecyclerView.Adapter<RecyclerVi
         }
     }
 
-    class AdsHolder extends RecyclerView.ViewHolder {
+    private class AdsHolder extends RecyclerView.ViewHolder {
         public AdsHolder(View itemView) {
             super(itemView);
         }
     }
-
 
     public ConversationFragmentAdapter(Context mContext, List<Conversation> conversationList) {
         this.mContext = mContext;

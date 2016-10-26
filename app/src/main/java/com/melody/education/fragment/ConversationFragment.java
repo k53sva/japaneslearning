@@ -45,27 +45,21 @@ import rx.schedulers.Schedulers;
  */
 public class ConversationFragment extends BaseFragment implements PlaylistListener<MediaItem>, ProgressListener {
     public static final String EXTRA_INDEX = "EXTRA_INDEX";
-    public static final int PLAYLIST_ID = 4; //Arbitrary, for the example
-    ProgressBar loadingBar;
+    public static final int PLAYLIST_ID = 4;
+    private ProgressBar loadingBar;
+    private ImageButton previousButton;
+    private ImageButton playPauseButton;
+    private ImageButton nextButton;
+    private TextView currentPositionView;
+    private TextView durationView;
+    private SeekBar seekBar;
+    private RecyclerView recyclerView;
 
-    TextView currentPositionView;
-    TextView durationView;
-
-    SeekBar seekBar;
     private boolean shouldSetDuration;
     private boolean userInteracting;
-
-    ImageButton previousButton;
-    ImageButton playPauseButton;
-    ImageButton nextButton;
-
-    private PlaylistManager playlistManager;
     private int selectedIndex = 0;
-
-    private RecyclerView recyclerView;
+    private PlaylistManager playlistManager;
     private ConversationFragmentAdapter adapter;
-    List<Conversation> conversationList = new ArrayList<>();
-
 
     public static ConversationFragment newInstance(int index) {
         ConversationFragment fragment = new ConversationFragment();
@@ -75,7 +69,6 @@ public class ConversationFragment extends BaseFragment implements PlaylistListen
 
         return fragment;
     }
-
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_conversation, container, false);
@@ -123,7 +116,6 @@ public class ConversationFragment extends BaseFragment implements PlaylistListen
         return true;
     }
 
-
     @Override
     public boolean onPlaybackStateChanged(@NonNull PlaylistServiceCore.PlaybackState playbackState) {
         switch (playbackState) {
@@ -169,13 +161,6 @@ public class ConversationFragment extends BaseFragment implements PlaylistListen
         return true;
     }
 
-
-    /**
-     * Retrieves the playlist instance and performs any generation
-     * of content if it hasn't already been performed.
-     *
-     * @return True if the content was generated
-     */
     private boolean setupPlaylistManager() {
         playlistManager = App.getPlaylistManager();
 
@@ -198,10 +183,6 @@ public class ConversationFragment extends BaseFragment implements PlaylistListen
         return true;
     }
 
-    /**
-     * Performs the initialization of the views and any other
-     * general setup
-     */
     private void init(View view) {
         retrieveViews(view);
         setupListeners();
@@ -223,7 +204,7 @@ public class ConversationFragment extends BaseFragment implements PlaylistListen
         nextButton = (ImageButton) view.findViewById(R.id.audio_player_next);
 
         recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view_conversation);
-        adapter = new ConversationFragmentAdapter(getActivity(), conversationList);
+        adapter = new ConversationFragmentAdapter(getActivity(), new ArrayList<>());
         RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(getActivity(), 1);
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.addItemDecoration(new GridSpacingItemDecoration(10, Utils.dpToPx(getActivity(), 1), true));
@@ -232,9 +213,6 @@ public class ConversationFragment extends BaseFragment implements PlaylistListen
 
     }
 
-    /**
-     * Makes sure to update the UI to the current playback item.
-     */
     private void updateCurrentPlaybackInformation() {
         PlaylistItemChange<MediaItem> itemChangedEvent = playlistManager.getCurrentItemChange();
         if (itemChangedEvent != null) {
@@ -252,33 +230,16 @@ public class ConversationFragment extends BaseFragment implements PlaylistListen
         }
     }
 
-
-    /**
-     * Called when we receive a notification that the current item is
-     * done loading.  This will then update the view visibilities and
-     * states accordingly.
-     *
-     * @param isPlaying True if the audio item is currently playing
-     */
     private void doneLoading(boolean isPlaying) {
         loadCompleted();
         updatePlayPauseImage(isPlaying);
     }
 
-    /**
-     * Updates the Play/Pause image to represent the correct playback state
-     *
-     * @param isPlaying True if the audio item is currently playing
-     */
     private void updatePlayPauseImage(boolean isPlaying) {
         int resId = isPlaying ? R.drawable.playlistcore_ic_pause_white : R.drawable.playlistcore_ic_play_arrow_white;
         playPauseButton.setImageResource(resId);
     }
 
-    /**
-     * Used to inform the controls to finalize their setup.  This
-     * means replacing the loading animation with the PlayPause button
-     */
     public void loadCompleted() {
         playPauseButton.setVisibility(View.VISIBLE);
         previousButton.setVisibility(View.GONE);
@@ -288,10 +249,6 @@ public class ConversationFragment extends BaseFragment implements PlaylistListen
 
     }
 
-    /**
-     * Used to inform the controls to return to the loading stage.
-     * This is the opposite of {@link #loadCompleted()}
-     */
     public void restartLoading() {
         playPauseButton.setVisibility(View.GONE);
         previousButton.setVisibility(View.INVISIBLE);
@@ -300,16 +257,10 @@ public class ConversationFragment extends BaseFragment implements PlaylistListen
         loadingBar.setVisibility(View.VISIBLE);
     }
 
-    /**
-     * Sets the {@link #seekBar}s max and updates the duration text
-     *
-     * @param duration The duration of the media item in milliseconds
-     */
     private void setDuration(long duration) {
         seekBar.setMax((int) duration);
         durationView.setText(TimeFormatUtil.formatMs(duration));
     }
-
 
     private void setupListeners() {
         seekBar.setOnSeekBarChangeListener(new SeekBarChanged());
@@ -319,19 +270,12 @@ public class ConversationFragment extends BaseFragment implements PlaylistListen
         nextButton.setOnClickListener(v -> playlistManager.invokeNext());
     }
 
-
     private void retrieveExtras() {
         if (getArguments() != null) {
             selectedIndex = getArguments().getInt(EXTRA_INDEX, 0);
         }
     }
 
-
-    /**
-     * Starts the audio playback if necessary.
-     *
-     * @param forceStart True if the audio should be started from the beginning even if it is currently playing
-     */
     private void startPlayback(boolean forceStart) {
         //If we are changing audio files, or we haven't played before then start the playback
         if (forceStart || playlistManager.getCurrentPosition() != selectedIndex) {
@@ -340,10 +284,6 @@ public class ConversationFragment extends BaseFragment implements PlaylistListen
         }
     }
 
-
-    /**
-     * Listens to the seek bar change events and correctly handles the changes
-     */
     private class SeekBarChanged implements SeekBar.OnSeekBarChangeListener {
         private int seekPosition = -1;
 

@@ -28,8 +28,7 @@ public class LessonAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     private Context mContext;
     public static List<Lesson> lessonArrayList = new ArrayList<>();
 
-
-    public class MyViewHolder extends RecyclerView.ViewHolder {
+    private class MyViewHolder extends RecyclerView.ViewHolder {
         public TextView title, des;
         public ImageView thumbnail;
         private RelativeLayout body;
@@ -44,24 +43,27 @@ public class LessonAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         }
     }
 
-    class HeaderViewHolder extends RecyclerView.ViewHolder {
+    private class HeaderViewHolder extends RecyclerView.ViewHolder {
 
         public HeaderViewHolder(View itemView) {
             super(itemView);
         }
     }
 
-
-    class AdsHolder extends RecyclerView.ViewHolder {
+    private class AdsHolder extends RecyclerView.ViewHolder {
         public AdsHolder(View itemView) {
             super(itemView);
         }
     }
 
-
     public LessonAdapter(Context mContext, List<Lesson> lessonArrayList) {
         this.mContext = mContext;
         this.lessonArrayList = lessonArrayList;
+    }
+
+    public void setModel(List<Lesson> lessonArrayList) {
+        this.lessonArrayList = lessonArrayList;
+        notifyDataSetChanged();
     }
 
     @Override

@@ -33,11 +33,10 @@ public class TopicAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     private static final int TYPE_ITEM = 1;
     private static final int TYPE_HEADER = 2;
     private Activity mContext;
+    private Gson gson = new Gson();
     public static List<Topic> topics = new ArrayList<>();
-    Gson gson = new Gson();
 
-
-    public class MyViewHolder extends RecyclerView.ViewHolder {
+    private class MyViewHolder extends RecyclerView.ViewHolder {
         public TextView title, des;
         public ImageView thumbnail;
         private RelativeLayout body;
@@ -64,13 +63,11 @@ public class TopicAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         }
     }
 
-
     private class AdsHolder extends RecyclerView.ViewHolder {
         public AdsHolder(View itemView) {
             super(itemView);
         }
     }
-
 
     public TopicAdapter(Activity mContext, List<Topic> topics) {
         this.mContext = mContext;

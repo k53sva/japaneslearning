@@ -2,7 +2,6 @@ package com.melody.education.ui;
 
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -21,8 +20,6 @@ import com.melody.education.utils.DataHelper;
 import com.melody.education.utils.GridSpacingItemDecoration;
 import com.melody.education.utils.Utils;
 
-import org.json.JSONArray;
-
 import java.util.ArrayList;
 
 import rx.Observable;
@@ -35,11 +32,10 @@ import rx.schedulers.Schedulers;
 public class ConversationListFragment extends BaseFragment {
     private static final String TAG = ConversationListFragment.class.getSimpleName();
     private ConversationAdapter adapter;
-    SwipeRefreshLayout mSwipeRefreshLayout;
+    private SwipeRefreshLayout mSwipeRefreshLayout;
 
-    @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater,  ViewGroup container,  Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.content_main, container, false);
         RecyclerView recyclerView = (RecyclerView) v.findViewById(R.id.recycler_view);
         RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(getActivity(), 1);

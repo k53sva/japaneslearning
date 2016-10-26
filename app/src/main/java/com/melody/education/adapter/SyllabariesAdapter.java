@@ -31,7 +31,6 @@ public class SyllabariesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     private Context mContext;
     public List<SyllabariesModel> syllabariesModels = new ArrayList<>();
 
-
     public class MyViewHolder extends RecyclerView.ViewHolder {
         public ImageView ivContent;
         private RelativeLayout item;
@@ -50,13 +49,11 @@ public class SyllabariesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         }
     }
 
-
     class AdsHolder extends RecyclerView.ViewHolder {
         public AdsHolder(View itemView) {
             super(itemView);
         }
     }
-
 
     public SyllabariesAdapter(Context mContext, List<SyllabariesModel> syllabariesModels) {
         this.mContext = mContext;

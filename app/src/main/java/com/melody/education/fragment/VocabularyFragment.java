@@ -32,10 +32,8 @@ import rx.schedulers.Schedulers;
  */
 public class VocabularyFragment extends Fragment {
     public static final String EXTRA_INDEX = "EXTRA_INDEX";
-    RecyclerView recyclerView;
-    VocabularyAdapter adapter;
-    List<Vocabulary> vocabularyList = new ArrayList<>();
     private int selectedIndex = 0;
+    private VocabularyAdapter adapter;
 
     public static VocabularyFragment newInstance(int index) {
         VocabularyFragment fragment = new VocabularyFragment();
@@ -51,7 +49,6 @@ public class VocabularyFragment extends Fragment {
         }
     }
 
-
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_vocabulary, container, false);
         initView(v);
@@ -61,15 +58,14 @@ public class VocabularyFragment extends Fragment {
     }
 
     private void initView(View v) {
-        recyclerView = (RecyclerView) v.findViewById(R.id.recycler_view_vocabulary);
-        adapter = new VocabularyAdapter(getActivity(), vocabularyList);
+        adapter = new VocabularyAdapter(getActivity(), new ArrayList<>());
+        RecyclerView recyclerView = (RecyclerView) v.findViewById(R.id.recycler_view_vocabulary);
         RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(getActivity(), 1);
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.addItemDecoration(new GridSpacingItemDecoration(10, Utils.dpToPx(getActivity(), 1), true));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(adapter);
     }
-
 
     private void getData() {
         Gson gson = new Gson();

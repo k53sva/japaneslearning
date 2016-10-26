@@ -1,11 +1,9 @@
 package com.melody.education.ui;
 
-import android.annotation.TargetApi;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.NavigationView;
@@ -34,8 +32,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     AppBarLayout appBarLayout;
     TextView tvTitle, tvDes;
 
-    @TargetApi(Build.VERSION_CODES.KITKAT)
-    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -53,7 +49,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     }
 
-
     private void initNavigationView() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -65,7 +60,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         navigationView.setNavigationItemSelectedListener(this);
     }
 
-    @Override
     protected void onNewIntent(Intent intent) {
         handleIntent(intent);
     }
@@ -78,7 +72,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
-    @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
@@ -88,15 +81,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
-
-    @TargetApi(Build.VERSION_CODES.KITKAT)
-    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.option_menu, menu);
 
-        // Get the SearchView and set the searchable configuration
-        // Associate searchable configuration with the SearchView
         SearchManager searchManager =
                 (SearchManager) getSystemService(Context.SEARCH_SERVICE);
         SearchView searchView =
@@ -118,8 +106,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return super.onCreateOptionsMenu(menu);
     }
 
-    @SuppressWarnings("StatementWithEmptyBody")
-    @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
