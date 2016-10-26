@@ -54,10 +54,7 @@ public class TopicActivity extends BaseActivity {
     }
 
     private void getData() throws JSONException {
-        Gson gson = new Gson();
-        Observable.just(dataHelper.convertDatabaseToJson(DataHelper.DATABASE_TOPICS, DataHelper.TABLE_TOPIC))
-                .subscribeOn(Schedulers.io())
-                .map(m -> gson.fromJson(m.toString(), Topic[].class))
+        dataHelper.getData(DataHelper.DATABASE_TOPICS, DataHelper.TABLE_TOPIC, Topic[].class)
                 .flatMap(Observable::from)
                 .filter(m -> m.ChungID.equals(ChungId))
                 .toList()

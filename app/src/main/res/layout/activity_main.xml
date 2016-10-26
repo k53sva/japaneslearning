@@ -16,25 +16,34 @@
         android:background="@android:color/white"
         android:fitsSystemWindows="false">
 
-
         <android.support.design.widget.AppBarLayout
             android:id="@+id/appbar"
             android:layout_width="match_parent"
-            android:layout_height="200dp">
+            android:layout_height="wrap_content">
 
-            <android.support.v7.widget.Toolbar
-                android:id="@+id/toolbar"
+            <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@drawable/cover"
-                android:fitsSystemWindows="true"
-                app:layout_scrollFlags="scroll|enterAlways"
-                app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-                app:theme="@style/TransparentToolbar">
+                android:layout_height="wrap_content"
+                app:layout_scrollFlags="scroll|enterAlways">
 
-                <include layout="@layout/layout_header" />
-            </android.support.v7.widget.Toolbar>
+                <android.support.v7.widget.Toolbar
+                    android:id="@+id/toolbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/cover"
+                    android:fitsSystemWindows="true"
+                    app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+                    app:theme="@style/TransparentToolbar">
 
+                    <include layout="@layout/layout_header" />
+                </android.support.v7.widget.Toolbar>
+
+                <com.miguelcatalan.materialsearchview.MaterialSearchView
+                    android:id="@+id/search_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="25dp" />
+            </FrameLayout>
         </android.support.design.widget.AppBarLayout>
 
         <include layout="@layout/layout_main" />
@@ -47,18 +56,7 @@
         android:layout_height="match_parent"
         android:layout_gravity="start"
         android:fitsSystemWindows="true"
-        app:menu="@menu/activity_main_drawer"
-        app:headerLayout="@layout/nav_header_main">
-
-  <!--      <ExpandableListView
-            android:id="@+id/navigationmenu"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_marginTop="200dp"
-            android:groupIndicator="@null"
-            android:background="@android:color/white" />-->
-
-    </android.support.design.widget.NavigationView>
-
+        app:headerLayout="@layout/nav_header_main"
+        app:menu="@menu/activity_main_drawer" />
 </android.support.v4.widget.DrawerLayout>
 

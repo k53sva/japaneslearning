@@ -1,7 +1,6 @@
 package com.melody.education.ui;
 
 import android.app.SearchManager;
-import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -12,25 +11,31 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 
-import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.WindowManager;
-import android.widget.EditText;
 import android.widget.TextView;
 
-
 import com.melody.education.R;
+import com.melody.education.adapter.ConversationAdapter;
+import com.melody.education.fragment.ConversationFragment;
+import com.melody.education.model.Conversation;
+import com.melody.education.utils.DataHelper;
 import com.melody.education.utils.Utils;
-import com.readystatesoftware.systembartint.SystemBarTintManager;
+import com.miguelcatalan.materialsearchview.MaterialSearchView;
 
+import rx.Observable;
+import rx.android.schedulers.AndroidSchedulers;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
-    Toolbar mToolbar;
-    AppBarLayout appBarLayout;
-    TextView tvTitle, tvDes;
+    private static final String TAG = MainActivity.class.getSimpleName();
+    private MaterialSearchView searchView;
+    private Toolbar mToolbar;
+    public AppBarLayout appBarLayout;
+    public TextView tvTitle, tvDes;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,11 +47,61 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         appBarLayout = (AppBarLayout) findViewById(R.id.appbar);
         tvTitle = (TextView) findViewById(R.id.tv_title);
         tvDes = (TextView) findViewById(R.id.tv_des);
-        //
+
+        searchView = (MaterialSearchView) findViewById(R.id.search_view);
+        setupSearch();
+
         initNavigationView();
         Utils.startFragment(this, new ConversationListFragment());
         handleIntent(getIntent());
 
+    }
+
+    private void setupSearch() {
+        searchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                for (int i = 0; i < ConversationAdapter.conversationList.size(); i++) {
+                    Conversation c = ConversationAdapter.conversationList.get(i);
+                    if (c.Title.equals(query)) {
+                        startLearningActivity(i);
+                        return false;
+                    }
+                }
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return false;
+            }
+        });
+
+        searchView.setOnSearchViewListener(new MaterialSearchView.SearchViewListener() {
+            @Override
+            public void onSearchViewShown() {
+                //Do some magic
+            }
+
+            @Override
+            public void onSearchViewClosed() {
+                //Do some magic
+            }
+        });
+
+        DataHelper helper = new DataHelper(this);
+        helper.getData(DataHelper.DATABASE_CONVERSATION, DataHelper.TABLE_CONVERSATION, Conversation[].class)
+                .flatMap(Observable::from)
+                .filter(m -> m.Picture != null)
+                .filter(m -> m.Picture.length() > 0)
+                .toList()
+                .doOnNext(m -> ConversationAdapter.conversationList = m)
+                .flatMap(Observable::from)
+                .map(m -> m.Title)
+                .toList()
+                .map(m -> m.toArray(new String[m.size()]))
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(m -> searchView.setSuggestions(m), throwable -> Log.e(TAG, throwable.toString()));
     }
 
     private void initNavigationView() {
@@ -84,26 +139,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.option_menu, menu);
-
-        SearchManager searchManager =
-                (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-        SearchView searchView =
-                (SearchView) menu.findItem(R.id.search).getActionView();
-        searchView.setSearchableInfo(
-                searchManager.getSearchableInfo(getComponentName()));
-        EditText searchEditText = (EditText) searchView.findViewById(android.support.v7.appcompat.R.id.search_src_text);
-        searchEditText.setOnFocusChangeListener((v, b) -> {
-            if (b) {
-                getWindow().clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-                // create manager instance after the content view is set
-                SystemBarTintManager mTintManager = new SystemBarTintManager(this);
-                // enable status bar tint
-                mTintManager.setStatusBarTintEnabled(true);
-                mTintManager.setTintColor(getResources().getColor(R.color.colorPrimaryDark));
-            } else
-                getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-        });
-        return super.onCreateOptionsMenu(menu);
+        MenuItem item = menu.findItem(R.id.action_search);
+        searchView.setMenuItem(item);
+        return true;
     }
 
     public boolean onNavigationItemSelected(MenuItem item) {
@@ -134,4 +172,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return true;
     }
 
+    private void startLearningActivity(int selectedIndex) {
+        Intent intent = new Intent(this, ConversationActivity.class);
+        intent.putExtra(ConversationFragment.EXTRA_INDEX, selectedIndex);
+        startActivity(intent);
+    }
 }

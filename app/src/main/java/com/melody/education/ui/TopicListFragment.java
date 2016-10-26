@@ -64,11 +64,8 @@ public class TopicListFragment extends BaseFragment {
     }
 
     private void getData() {
-        Gson gson = new Gson();
         DataHelper helper = new DataHelper(getActivity());
-        Observable.just(helper.convertDatabaseToJson(DataHelper.DATABASE_TOPICS, DataHelper.TABLE_TOPIC))
-                .subscribeOn(Schedulers.io())
-                .map(m -> gson.fromJson(m.toString(), Topic[].class))
+        helper.getData(DataHelper.DATABASE_TOPICS, DataHelper.TABLE_TOPIC, Topic[].class)
                 .flatMap(Observable::from)
                 .groupBy(m -> m.ChungID)
                 .flatMap(m -> m.distinctUntilChanged(n -> n.ChungID))

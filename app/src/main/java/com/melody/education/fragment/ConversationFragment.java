@@ -79,11 +79,8 @@ public class ConversationFragment extends BaseFragment implements PlaylistListen
     }
 
     private void getData() {
-        Gson gson = new Gson();
         DataHelper helper = new DataHelper(getActivity());
-        Observable.just(helper.convertDatabaseToJson(DataHelper.DATABASE_CONVERSATION, DataHelper.TABLE_CONVERSATION))
-                .subscribeOn(Schedulers.io())
-                .map(m -> gson.fromJson(m.toString(), Conversation[].class))
+        helper.getData(DataHelper.DATABASE_CONVERSATION, DataHelper.TABLE_CONVERSATION, Conversation[].class)
                 .flatMap(Observable::from)
                 .filter(m -> m.ChungID.equals(ConversationAdapter.conversationList.get(selectedIndex).ChungID))
                 .toList()

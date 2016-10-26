@@ -5,10 +5,12 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.annimon.stream.Stream;
 import com.google.gson.Gson;
 import com.melody.education.R;
 import com.melody.education.adapter.ConversationAdapter;
@@ -28,10 +30,10 @@ import rx.schedulers.Schedulers;
  * Created by K53SV on 8/29/2016.
  */
 public class NotesFragment extends Fragment {
+    private static final String TAG = NotesFragment.class.getSimpleName();
     public static final String EXTRA_INDEX = "EXTRA_INDEX";
     private int selectedIndex = 0;
-    RecyclerView recyclerView;
-    NoteAdapter adapter;
+    private NoteAdapter adapter;
 
     public static NotesFragment newInstance(int index) {
         NotesFragment fragment = new NotesFragment();
@@ -56,8 +58,8 @@ public class NotesFragment extends Fragment {
     }
 
     private void initView(View v) {
-        recyclerView = (RecyclerView) v.findViewById(R.id.recycler_view_vocabulary);
         adapter = new NoteAdapter(getActivity(), new ArrayList<>());
+        RecyclerView recyclerView = (RecyclerView) v.findViewById(R.id.recycler_view_vocabulary);
         RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(getActivity(), 1);
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.addItemDecoration(new GridSpacingItemDecoration(10, Utils.dpToPx(getActivity(), 1), true));
@@ -66,15 +68,13 @@ public class NotesFragment extends Fragment {
     }
 
     private void getData() {
-        Gson gson = new Gson();
         DataHelper helper = new DataHelper(getActivity());
-        Observable.just(helper.convertDatabaseToJson(DataHelper.DATABASE_CONVERSATION, DataHelper.TABLE_NOTES))
-                .subscribeOn(Schedulers.io())
-                .map(m -> gson.fromJson(m.toString(), Note[].class))
+        helper.getData(DataHelper.DATABASE_CONVERSATION, DataHelper.TABLE_NOTES, Note[].class)
                 .flatMap(Observable::from)
-                .filter(m -> m.ChungId.equals(ConversationAdapter.conversationList.get(selectedIndex).ChungID))
+                .filter(m -> m.ChungID != null)
+                .filter(m -> m.ChungID.equals(ConversationAdapter.conversationList.get(selectedIndex).ChungID))
                 .toList()
                 .subscribeOn(AndroidSchedulers.mainThread())
-                .subscribe(m -> adapter.setModel(m));
+                .subscribe(m -> adapter.setModel(m), Throwable::fillInStackTrace);
     }
 }

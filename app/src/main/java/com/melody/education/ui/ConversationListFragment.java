@@ -11,6 +11,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 
 import com.google.gson.Gson;
 import com.melody.education.R;
@@ -35,7 +36,7 @@ public class ConversationListFragment extends BaseFragment {
     private SwipeRefreshLayout mSwipeRefreshLayout;
 
     @Override
-    public View onCreateView(LayoutInflater inflater,  ViewGroup container,  Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.content_main, container, false);
         RecyclerView recyclerView = (RecyclerView) v.findViewById(R.id.recycler_view);
         RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(getActivity(), 1);
@@ -66,11 +67,8 @@ public class ConversationListFragment extends BaseFragment {
     }
 
     private void getData() {
-        Gson gson = new Gson();
         DataHelper helper = new DataHelper(getActivity());
-        Observable.just(helper.convertDatabaseToJson(DataHelper.DATABASE_CONVERSATION, DataHelper.TABLE_CONVERSATION))
-                .subscribeOn(Schedulers.io())
-                .map(m -> gson.fromJson(m.toString(), Conversation[].class))
+        helper.getData(DataHelper.DATABASE_CONVERSATION, DataHelper.TABLE_CONVERSATION, Conversation[].class)
                 .flatMap(Observable::from)
                 .filter(m -> m.Picture != null)
                 .filter(m -> m.Picture.length() > 0)

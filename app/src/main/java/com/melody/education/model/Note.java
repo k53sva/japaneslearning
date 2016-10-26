@@ -5,7 +5,7 @@ package com.melody.education.model;
  */
 public class Note {
     public int id;
-    public String ChungId;
+    public String ChungID;
     public String Form;
     public String Explain;
 }

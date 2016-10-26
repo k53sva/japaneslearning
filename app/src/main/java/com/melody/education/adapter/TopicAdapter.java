@@ -33,8 +33,8 @@ public class TopicAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     private static final int TYPE_ITEM = 1;
     private static final int TYPE_HEADER = 2;
     private Activity mContext;
-    private Gson gson = new Gson();
-    public static List<Topic> topics = new ArrayList<>();
+    private DataHelper dataHelper;
+    private static List<Topic> topics = new ArrayList<>();
 
     private class MyViewHolder extends RecyclerView.ViewHolder {
         public TextView title, des;
@@ -72,6 +72,7 @@ public class TopicAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     public TopicAdapter(Activity mContext, List<Topic> topics) {
         this.mContext = mContext;
         this.topics = topics;
+        dataHelper = new DataHelper(mContext);
     }
 
     @Override
@@ -97,9 +98,7 @@ public class TopicAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             Topic item = topics.get(position);
             myViewHolder.title.setText(item.LessonName.toUpperCase());
             myViewHolder.des.setText(item.Detail);
-            Observable.just(new DataHelper(mContext).convertDatabaseToJson(DataHelper.DATABASE_TOPICS, DataHelper.TABLE_TOPIC_TITLE))
-                    .subscribeOn(Schedulers.io())
-                    .map(m -> gson.fromJson(m.toString(), TopicTitle[].class))
+            dataHelper.getData(DataHelper.DATABASE_TOPICS, DataHelper.TABLE_TOPIC_TITLE, TopicTitle[].class)
                     .filter(m -> m.length > 0)
                     .map(m -> m[0])
                     .map(m -> FetchData.ROOT_URL + m.TopicImage)

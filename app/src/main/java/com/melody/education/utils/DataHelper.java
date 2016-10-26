@@ -5,42 +5,45 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
+import com.annimon.stream.Optional;
+import com.google.gson.Gson;
+import com.melody.education.model.Conversation;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
+
+import rx.Observable;
+import rx.schedulers.Schedulers;
+
+import static android.icu.lang.UCharacter.GraphemeClusterBreak.T;
 
 /**
  * Created by K53SV on 8/31/2016.
  */
 public class DataHelper {
     private static final String TAG = DataHelper.class.getSimpleName();
-    public static String DATABASE_CONVERSATION = "conversation.sqlite";
-    public static String DATABASE_TOPICS = "topics.sqlite";
+    public static final String DATABASE_CONVERSATION = "conversation.sqlite";
+    public static final String DATABASE_TOPICS = "topics.sqlite";
+    public static final String TABLE_LESSON = "Lesson";
+    public static final String TABLE_VOCABULARY = "Vocabulary";
+    public static final String TABLE_NOTES = "Notes";
+    public static final String TABLE_CONVERSATION = "Conversation";
+    public static final String TABLE_TOPIC = "Topic";
+    public static final String TABLE_TOPIC_TITLE = "TopicTitle";
 
-    public static String TABLE_LESSON = "Lesson";
-    public static String TABLE_VOCABULARY = "Vocabulary";
-    public static String TABLE_NOTES = "Notes";
-    public static String TABLE_CONVERSATION = "Conversation";
-    public static String TABLE_TOPIC = "Topic";
-    public static String TABLE_TOPIC_TITLE = "TopicTitle";
-
-    public static final String COL_CHUNGID = "ChungID";
-
-    Activity activity;
+    private Activity activity;
+    private Gson gson = new Gson();
 
     public DataHelper(Activity activity) {
         this.activity = activity;
     }
 
-    public synchronized JSONArray convertDatabaseToJson(String databaseName, String table) {
-        String myPath = activity.getExternalCacheDir().toString() + "/" + databaseName;
-        String myTable = table;//Set name of your table
+    private synchronized JSONArray convertDatabaseToJson(String databaseName, String table) {
+        String myPath = String.format("%s/%s", activity.getExternalCacheDir(), databaseName);
         SQLiteDatabase myDataBase = SQLiteDatabase.openDatabase(myPath, null, SQLiteDatabase.OPEN_READONLY);
-
-        String searchQuery = "SELECT  * FROM " + myTable;
+        String searchQuery = "SELECT  * FROM " + table;
         Cursor cursor = myDataBase.rawQuery(searchQuery, null);
-
         JSONArray resultSet = new JSONArray();
-
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {
             int totalColumn = cursor.getColumnCount();
@@ -55,7 +58,7 @@ public class DataHelper {
                             rowObject.put(cursor.getColumnName(i), "");
                         }
                     } catch (Exception e) {
-                        Log.d("TAG", e.getMessage());
+                        e.printStackTrace();
                     }
                 }
             }
@@ -65,5 +68,11 @@ public class DataHelper {
         cursor.close();
         myDataBase.close();
         return resultSet;
+    }
+
+    public <T> Observable<T> getData(String database, String table, Class<T> clazz) {
+        return Observable.just(convertDatabaseToJson(database, table))
+                .subscribeOn(Schedulers.io())
+                .map(m -> gson.fromJson(m.toString(), clazz));
     }
 }

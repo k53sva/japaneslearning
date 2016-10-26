@@ -68,11 +68,8 @@ public class VocabularyFragment extends Fragment {
     }
 
     private void getData() {
-        Gson gson = new Gson();
         DataHelper helper = new DataHelper(getActivity());
-        Observable.just(helper.convertDatabaseToJson(DataHelper.DATABASE_CONVERSATION, DataHelper.TABLE_VOCABULARY))
-                .subscribeOn(Schedulers.io())
-                .map(m -> gson.fromJson(m.toString(), Vocabulary[].class))
+        helper.getData(DataHelper.DATABASE_CONVERSATION, DataHelper.TABLE_VOCABULARY, Vocabulary[].class)
                 .flatMap(Observable::from)
                 .filter(m -> m.ChungID.equals(ConversationAdapter.conversationList.get(selectedIndex).ChungID))
                 .toList()
