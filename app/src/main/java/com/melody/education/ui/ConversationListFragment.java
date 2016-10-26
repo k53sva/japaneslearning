@@ -8,14 +8,10 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 
-import com.annimon.stream.Stream;
-import com.google.gson.Gson;
 import com.melody.education.R;
 import com.melody.education.adapter.ConversationAdapter;
 import com.melody.education.model.Conversation;
@@ -28,7 +24,6 @@ import java.util.ArrayList;
 
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
 
 /**
  * Created by K53SV on 8/29/2016.
@@ -75,16 +70,14 @@ public class ConversationListFragment extends BaseFragment {
                 .flatMap(Observable::from)
                 .filter(m -> m.Picture != null)
                 .filter(m -> m.Picture.length() > 0)
-                .map(m -> {
-                    m.Audio = String.format("%s%s", FetchData.ROOT_URL, m.Audio);
-                    return m;
-                })
+                .map(this::fillAudio)
                 .toList()
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(m -> {
-                    adapter.setModel(m);
-                    Stream.of(m).forEach(c -> Log.e(TAG, c.Audio));
-                });
+                .subscribe(m -> adapter.setModel(m));
     }
 
+    private Conversation fillAudio(Conversation c) {
+        c.Audio = String.format("%s%s", FetchData.ROOT_URL, c.Audio);
+        return c;
+    }
 }

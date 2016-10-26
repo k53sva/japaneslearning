@@ -6,12 +6,18 @@ import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
+import com.annimon.stream.Stream;
 import com.melody.education.net.FetchData;
 import com.melody.education.ui.BaseActivity;
 import com.melody.education.ui.MainActivity;
 import com.melody.education.utils.DataHelper;
 
 import java.io.File;
+import java.util.AbstractMap;
+import java.util.HashMap;
+import java.util.Map;
+
+import rx.Observable;
 
 /**
  * Created by K53SV on 8/31/2016.
@@ -25,7 +31,7 @@ public class SplashActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
         fetchData = new FetchData(this);
-        String filePath = this.getExternalCacheDir() + "/" + DataHelper.DATABASE_TOPICS;
+        String filePath = String.format("%s/%s", this.getExternalCacheDir(), DataHelper.DATABASE_TOPICS);
         File file = new File(filePath);
         if (file.exists()) {
             delay(1, "database is exist");
@@ -46,12 +52,15 @@ public class SplashActivity extends BaseActivity {
     }
 
     private void getData() {
-        fetchData.getAllData().subscribe(m -> {
-            for (int i = 0; i < m.size(); i++) {
-                Boolean data = m.get(i);
-                Log.e(TAG, i + ": " + data);
-            }
-            delay(1, "Success");
-        });
+        fetchData.getAllData()
+                .map(HashMap::entrySet)
+                .flatMapIterable(entries -> entries)
+                .filter(Map.Entry::getValue)
+                .toList()
+                .filter(m -> m.size() == 2)
+                .subscribe(m -> {
+                    delay(1, "Download success");
+                });
+
     }
 }

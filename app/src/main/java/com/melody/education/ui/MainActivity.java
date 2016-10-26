@@ -95,10 +95,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 .flatMap(Observable::from)
                 .filter(m -> m.Picture != null)
                 .filter(m -> m.Picture.length() > 0)
-                .map(m -> {
-                    m.Audio = String.format("%s%s", FetchData.ROOT_URL, m.Audio);
-                    return m;
-                })
+                .map(this::fillAudio)
                 .toList()
                 .doOnNext(m -> ConversationAdapter.conversationList = m)
                 .flatMap(Observable::from)
@@ -181,5 +178,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         Intent intent = new Intent(this, ConversationActivity.class);
         intent.putExtra(ConversationFragment.EXTRA_INDEX, selectedIndex);
         startActivity(intent);
+    }
+
+    private Conversation fillAudio(Conversation c){
+        c.Audio = String.format("%s%s", FetchData.ROOT_URL, c.Audio);
+        return c;
     }
 }

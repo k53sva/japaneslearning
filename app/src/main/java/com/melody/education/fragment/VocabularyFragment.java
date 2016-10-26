@@ -9,7 +9,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.google.gson.Gson;
 import com.melody.education.R;
 import com.melody.education.adapter.ConversationAdapter;
 import com.melody.education.adapter.VocabularyAdapter;
@@ -18,14 +17,10 @@ import com.melody.education.utils.DataHelper;
 import com.melody.education.utils.GridSpacingItemDecoration;
 import com.melody.education.utils.Utils;
 
-import org.json.JSONArray;
-
 import java.util.ArrayList;
-import java.util.List;
 
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
 
 /**
  * Created by K53SV on 8/29/2016.

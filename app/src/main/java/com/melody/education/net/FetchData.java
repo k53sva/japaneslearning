@@ -12,6 +12,7 @@ import com.thin.downloadmanager.ThinDownloadManager;
 import java.util.HashMap;
 
 import rx.Observable;
+import rx.schedulers.Schedulers;
 
 /**
  * Created by K53SV on 9/12/2016.
@@ -91,7 +92,7 @@ public class FetchData {
     }
 
     public Observable<HashMap<Integer, Boolean>> getAllData() {
-        return Observable.zip(getDataConversation(), getDataTopic(), (d1, d2) -> {
+        return Observable.zip(getDataConversation().subscribeOn(Schedulers.newThread()), getDataTopic().subscribeOn(Schedulers.newThread()), (d1, d2) -> {
             HashMap<Integer, Boolean> map = new HashMap<>();
             map.put(0, d1);
             map.put(1, d2);

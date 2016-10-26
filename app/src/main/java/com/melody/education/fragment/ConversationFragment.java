@@ -20,7 +20,6 @@ import com.devbrackets.android.playlistcore.event.PlaylistItemChange;
 import com.devbrackets.android.playlistcore.listener.PlaylistListener;
 import com.devbrackets.android.playlistcore.listener.ProgressListener;
 import com.devbrackets.android.playlistcore.service.PlaylistServiceCore;
-import com.google.gson.Gson;
 import com.melody.education.App;
 import com.melody.education.R;
 import com.melody.education.adapter.ConversationAdapter;
@@ -177,7 +176,6 @@ public class ConversationFragment extends BaseFragment implements PlaylistListen
         }*/
 
         MediaItem mediaItem = new MediaItem(ConversationAdapter.conversationList.get(selectedIndex), true);
-        Log.e(TAG, ConversationAdapter.conversationList.get(selectedIndex).Audio);
         mediaItems.add(mediaItem);
         playlistManager.setParameters(mediaItems, selectedIndex);
         playlistManager.setId(PLAYLIST_ID);
