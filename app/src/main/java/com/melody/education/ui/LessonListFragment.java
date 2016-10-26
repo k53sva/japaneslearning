@@ -56,26 +56,14 @@ public class LessonListFragment extends BaseFragment {
         return v;
     }
 
-    /**
-     * Refresh list
-     */
     void refreshItems() {
-        // Load items
-        // ...
-        // Load complete
         new Handler().postDelayed(this::onItemsLoadComplete, 5000);
     }
 
     void onItemsLoadComplete() {
-        // Update the adapter and notify data set changed
-        // ...
-        // Stop refresh animation
         mSwipeRefreshLayout.setRefreshing(false);
     }
 
-    /**
-     * get Data from dataBase
-     */
     private void getData() {
 
         for (int i = 0; i < 10; i++) {

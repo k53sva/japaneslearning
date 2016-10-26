@@ -1,7 +1,6 @@
 package com.melody.education.fragment;
 
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
@@ -23,6 +22,10 @@ import org.json.JSONArray;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import rx.Observable;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 /**
  * Created by K53SV on 8/29/2016.
@@ -49,9 +52,7 @@ public class VocabularyFragment extends Fragment {
     }
 
 
-    @Nullable
-    @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_vocabulary, container, false);
         initView(v);
         retrieveExtras();
@@ -73,20 +74,13 @@ public class VocabularyFragment extends Fragment {
     private void getData() {
         Gson gson = new Gson();
         DataHelper helper = new DataHelper(getActivity());
-        JSONArray array =
-                helper.convertDatabaseToJson(DataHelper.DATABASE_CONVERSATION, DataHelper.TABLE_VOCABULARY,
-                        DataHelper.COL_CHUNGID
-                                + " ='"
-                                + ConversationAdapter.conversationList.get(selectedIndex).ChungID
-                                + "'");
-        try {
-            for (int i = 0; i < array.length(); i++) {
-                vocabularyList.add(gson.fromJson(array.getString(i), Vocabulary.class));
-            }
-            adapter.notifyDataSetChanged();
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        Observable.just(helper.convertDatabaseToJson(DataHelper.DATABASE_CONVERSATION, DataHelper.TABLE_VOCABULARY))
+                .subscribeOn(Schedulers.io())
+                .map(m -> gson.fromJson(m.toString(), Vocabulary[].class))
+                .flatMap(Observable::from)
+                .filter(m -> m.ChungID.equals(ConversationAdapter.conversationList.get(selectedIndex).ChungID))
+                .toList()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(m -> adapter.setModel(m));
     }
 }

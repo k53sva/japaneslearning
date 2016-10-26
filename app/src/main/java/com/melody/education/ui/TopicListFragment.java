@@ -2,7 +2,6 @@ package com.melody.education.ui;
 
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -15,13 +14,11 @@ import android.view.ViewGroup;
 
 import com.google.gson.Gson;
 import com.melody.education.R;
-import com.melody.education.adapter.ConversationAdapter;
-import com.melody.education.model.Conversation;
+import com.melody.education.adapter.TopicAdapter;
+import com.melody.education.model.Topic;
 import com.melody.education.utils.DataHelper;
 import com.melody.education.utils.GridSpacingItemDecoration;
 import com.melody.education.utils.Utils;
-
-import org.json.JSONArray;
 
 import java.util.ArrayList;
 
@@ -32,14 +29,11 @@ import rx.schedulers.Schedulers;
 /**
  * Created by K53SV on 8/29/2016.
  */
-public class ConversationListFragment extends BaseFragment {
-    private static final String TAG = ConversationListFragment.class.getSimpleName();
-    private ConversationAdapter adapter;
-    SwipeRefreshLayout mSwipeRefreshLayout;
+public class TopicListFragment extends BaseFragment {
+    private TopicAdapter adapter;
+    private SwipeRefreshLayout mSwipeRefreshLayout;
 
-    @Nullable
-    @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.content_main, container, false);
         RecyclerView recyclerView = (RecyclerView) v.findViewById(R.id.recycler_view);
         RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(getActivity(), 1);
@@ -47,7 +41,7 @@ public class ConversationListFragment extends BaseFragment {
         recyclerView.addItemDecoration(new GridSpacingItemDecoration(2, Utils.dpToPx(getActivity(), 0), true));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
 
-        adapter = new ConversationAdapter(getActivity(), new ArrayList<>());
+        adapter = new TopicAdapter(getActivity(), new ArrayList<>());
         recyclerView.setAdapter(adapter);
 
         mSwipeRefreshLayout = (SwipeRefreshLayout) v.findViewById(R.id.swipe_refresh);
@@ -72,15 +66,14 @@ public class ConversationListFragment extends BaseFragment {
     private void getData() {
         Gson gson = new Gson();
         DataHelper helper = new DataHelper(getActivity());
-        Observable.just(helper.convertDatabaseToJson(DataHelper.DATABASE_CONVERSATION, DataHelper.TABLE_CONVERSATION))
+        Observable.just(helper.convertDatabaseToJson(DataHelper.DATABASE_TOPICS, DataHelper.TABLE_TOPIC))
                 .subscribeOn(Schedulers.io())
-                .map(m -> gson.fromJson(m.toString(), Conversation[].class))
+                .map(m -> gson.fromJson(m.toString(), Topic[].class))
                 .flatMap(Observable::from)
-                .filter(m -> m.Picture != null)
-                .filter(m -> m.Picture.length() > 0)
+                .groupBy(m -> m.ChungID)
+                .flatMap(m -> m.distinctUntilChanged(n -> n.ChungID))
                 .toList()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(m -> adapter.setModel(m));
     }
-
 }

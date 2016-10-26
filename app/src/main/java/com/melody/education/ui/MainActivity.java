@@ -4,14 +4,10 @@ import android.annotation.TargetApi;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.support.design.widget.AppBarLayout;
-import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -20,7 +16,6 @@ import android.support.v7.app.AppCompatActivity;
 
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -32,11 +27,6 @@ import android.widget.TextView;
 import com.melody.education.R;
 import com.melody.education.utils.Utils;
 import com.readystatesoftware.systembartint.SystemBarTintManager;
-
-import org.json.JSONArray;
-import org.json.JSONObject;
-
-import java.io.File;
 
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -60,8 +50,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         initNavigationView();
         Utils.startFragment(this, new ConversationListFragment());
         handleIntent(getIntent());
-        //getData();
-        //JSONArray array = convertDatabaseToJson();
+
     }
 
 
@@ -149,6 +138,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             Utils.startFragment(this, new SyllabariesFragment());
         } else if (id == R.id.nav_menu_lessons) {
             Utils.startFragment(this, new LessonListFragment());
+        } else if (id == R.id.nav_menu_topics) {
+            Utils.startFragment(this, new TopicListFragment());
         }
 
 
@@ -157,59 +148,4 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return true;
     }
 
-
-    /**
-     * Move file
-     */
-    public void moveFile() {
-        File from = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/kaic1/imagem.jpg");
-        File to = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/kaic2/imagem.jpg");
-        from.renameTo(to);
-    }
-
-    /**
-     * Convert DataBase to Json
-     */
-    private JSONArray convertDatabaseToJson() {
-        Uri destinationUri = Uri.parse(this.getExternalCacheDir().toString() + "/data.sqlite");
-        String myPath = destinationUri.toString();// Set path to your database
-        String myTable = "Lesson";//Set name of your table
-
-        //or you can use `context.getDatabasePath("my_db_test.db")`
-
-        SQLiteDatabase myDataBase = SQLiteDatabase.openDatabase(myPath, null, SQLiteDatabase.OPEN_READONLY);
-
-        String searchQuery = "SELECT  * FROM " + myTable;
-        Cursor cursor = myDataBase.rawQuery(searchQuery, null);
-
-        JSONArray resultSet = new JSONArray();
-
-        cursor.moveToFirst();
-        while (cursor.isAfterLast() == false) {
-
-            int totalColumn = cursor.getColumnCount();
-            JSONObject rowObject = new JSONObject();
-
-            for (int i = 0; i < totalColumn; i++) {
-                if (cursor.getColumnName(i) != null) {
-                    try {
-                        if (cursor.getString(i) != null) {
-                            Log.d("TAG_NAME", cursor.getString(i));
-                            rowObject.put(cursor.getColumnName(i), cursor.getString(i));
-                        } else {
-                            rowObject.put(cursor.getColumnName(i), "");
-                        }
-                    } catch (Exception e) {
-                        Log.d("TAG_NAME", e.getMessage());
-                    }
-                }
-            }
-            resultSet.put(rowObject);
-            cursor.moveToNext();
-        }
-        cursor.close();
-        Log.d("TAG_NAME", resultSet.toString());
-        myDataBase.close();
-        return resultSet;
-    }
 }

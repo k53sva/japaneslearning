@@ -14,10 +14,14 @@ import org.json.JSONObject;
 public class DataHelper {
     private static final String TAG = DataHelper.class.getSimpleName();
     public static String DATABASE_CONVERSATION = "conversation.sqlite";
+    public static String DATABASE_TOPICS = "topics.sqlite";
+
     public static String TABLE_LESSON = "Lesson";
     public static String TABLE_VOCABULARY = "Vocabulary";
     public static String TABLE_NOTES = "Notes";
     public static String TABLE_CONVERSATION = "Conversation";
+    public static String TABLE_TOPIC = "Topic";
+    public static String TABLE_TOPIC_TITLE = "TopicTitle";
 
     public static final String COL_CHUNGID = "ChungID";
 
@@ -27,16 +31,9 @@ public class DataHelper {
         this.activity = activity;
     }
 
-    /**
-     * Convert DataBase to Json
-     */
     public synchronized JSONArray convertDatabaseToJson(String databaseName, String table) {
-        String myPath = activity.getExternalCacheDir().toString() + "/" + databaseName;// Set path to your database
-        Log.e(TAG, myPath);
+        String myPath = activity.getExternalCacheDir().toString() + "/" + databaseName;
         String myTable = table;//Set name of your table
-
-        //or you can use `context.getDatabasePath("my_db_test.db")`
-
         SQLiteDatabase myDataBase = SQLiteDatabase.openDatabase(myPath, null, SQLiteDatabase.OPEN_READONLY);
 
         String searchQuery = "SELECT  * FROM " + myTable;
@@ -46,7 +43,6 @@ public class DataHelper {
 
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {
-
             int totalColumn = cursor.getColumnCount();
             JSONObject rowObject = new JSONObject();
 
@@ -67,95 +63,6 @@ public class DataHelper {
             cursor.moveToNext();
         }
         cursor.close();
-        Log.d("TAG", resultSet.toString());
-        myDataBase.close();
-        return resultSet;
-    }
-
-
-    /**
-     * Convert DataBase to Json
-     */
-    public synchronized JSONArray convertDatabaseToJson(String databaseName, String table, String clause) {
-        String myPath = activity.getExternalCacheDir().toString() + "/" + databaseName;// Set path to your database
-        String myTable = table;//Set name of your table
-        Log.e(TAG, myPath);
-
-        //or you can use `context.getDatabasePath("my_db_test.db")`
-
-        SQLiteDatabase myDataBase = SQLiteDatabase.openDatabase(myPath, null, SQLiteDatabase.OPEN_READONLY);
-
-        String searchQuery = "SELECT  * FROM " + myTable + " WHERE " + clause;
-        Cursor cursor = myDataBase.rawQuery(searchQuery, null);
-
-        JSONArray resultSet = new JSONArray();
-
-        cursor.moveToFirst();
-        while (!cursor.isAfterLast()) {
-
-            int totalColumn = cursor.getColumnCount();
-            JSONObject rowObject = new JSONObject();
-
-            for (int i = 0; i < totalColumn; i++) {
-                if (cursor.getColumnName(i) != null) {
-                    try {
-                        if (cursor.getString(i) != null) {
-                            rowObject.put(cursor.getColumnName(i), cursor.getString(i));
-                        } else {
-                            rowObject.put(cursor.getColumnName(i), "");
-                        }
-                    } catch (Exception e) {
-                        Log.d("TAG", e.getMessage());
-                    }
-                }
-            }
-            resultSet.put(rowObject);
-            cursor.moveToNext();
-        }
-        cursor.close();
-        Log.d("TAG", resultSet.toString());
-        myDataBase.close();
-        return resultSet;
-    }
-
-    public synchronized JSONArray convertDatabaseToJsonLike(String databaseName, String table, String clause) {
-        String myPath = activity.getExternalCacheDir().toString() + "/" + databaseName;// Set path to your database
-        String myTable = table;//Set name of your table
-        Log.e(TAG, myPath);
-
-        //or you can use `context.getDatabasePath("my_db_test.db")`
-
-        SQLiteDatabase myDataBase = SQLiteDatabase.openDatabase(myPath, null, SQLiteDatabase.OPEN_READONLY);
-
-        String searchQuery = "SELECT  * FROM " + myTable + " " + clause;
-        Cursor cursor = myDataBase.rawQuery(searchQuery, null);
-
-        JSONArray resultSet = new JSONArray();
-
-        cursor.moveToFirst();
-        while (!cursor.isAfterLast()) {
-
-            int totalColumn = cursor.getColumnCount();
-            JSONObject rowObject = new JSONObject();
-
-            for (int i = 0; i < totalColumn; i++) {
-                if (cursor.getColumnName(i) != null) {
-                    try {
-                        if (cursor.getString(i) != null) {
-                            rowObject.put(cursor.getColumnName(i), cursor.getString(i));
-                        } else {
-                            rowObject.put(cursor.getColumnName(i), "");
-                        }
-                    } catch (Exception e) {
-                        Log.d("TAG", e.getMessage());
-                    }
-                }
-            }
-            resultSet.put(rowObject);
-            cursor.moveToNext();
-        }
-        cursor.close();
-        Log.d("TAG", resultSet.toString());
         myDataBase.close();
         return resultSet;
     }

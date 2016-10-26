@@ -52,6 +52,11 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.VocabularyHold
 
     }
 
+    public void setModel(List<Note> noteList) {
+        this.noteList = noteList;
+        notifyDataSetChanged();
+    }
+
     @Override
     public int getItemCount() {
         return noteList.size();

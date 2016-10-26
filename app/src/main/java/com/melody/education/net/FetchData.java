@@ -11,6 +11,9 @@ import com.thin.downloadmanager.DownloadRequest;
 import com.thin.downloadmanager.DownloadStatusListener;
 import com.thin.downloadmanager.ThinDownloadManager;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import rx.Observable;
 
 /**
@@ -32,11 +35,8 @@ public class FetchData {
                 subscriber -> {
                     ThinDownloadManager downloadManager = new ThinDownloadManager(4);
                     String url = FetchData.PATH_DB + DataHelper.DATABASE_CONVERSATION;
-                    //String url = "http://japaneselearning.comli.com/conversation.sqlite";
-                    Log.e("URL", url);
                     Uri downloadUri = Uri.parse(url);
-                    Uri destinationUri = Uri.parse(mContext.getExternalCacheDir().toString() + "/" + DataHelper.DATABASE_CONVERSATION);
-                    Log.e("URI", destinationUri.toString());
+                    Uri destinationUri = Uri.parse(mContext.getExternalCacheDir() + "/" + DataHelper.DATABASE_CONVERSATION);
                     DownloadRequest downloadRequest = new DownloadRequest(downloadUri)
                             .addCustomHeader("Auth-Token", "YourTokenApiKey")
                             .setRetryPolicy(new DefaultRetryPolicy())
@@ -50,7 +50,8 @@ public class FetchData {
 
                                 @Override
                                 public void onDownloadFailed(int id, int errorCode, String errorMessage) {
-                                    subscriber.onError(new Exception(errorCode + ": " + errorMessage));
+                                    subscriber.onNext(false);
+                                    subscriber.onCompleted();
                                 }
 
                                 @Override
@@ -60,5 +61,47 @@ public class FetchData {
 
                     downloadManager.add(downloadRequest);
                 });
+    }
+
+    public Observable<Boolean> getDataTopic() {
+        return Observable.create(
+                subscriber -> {
+                    ThinDownloadManager downloadManager = new ThinDownloadManager(4);
+                    String url = FetchData.PATH_DB + DataHelper.DATABASE_TOPICS;
+                    Uri downloadUri = Uri.parse(url);
+                    Uri destinationUri = Uri.parse(mContext.getExternalCacheDir() + "/" + DataHelper.DATABASE_TOPICS);
+                    DownloadRequest downloadRequest = new DownloadRequest(downloadUri)
+                            .addCustomHeader("Auth-Token", "YourTokenApiKey")
+                            .setRetryPolicy(new DefaultRetryPolicy())
+                            .setDestinationURI(destinationUri).setPriority(DownloadRequest.Priority.HIGH)
+                            .setDownloadListener(new DownloadStatusListener() {
+                                @Override
+                                public void onDownloadComplete(int id) {
+                                    subscriber.onNext(true);
+                                    subscriber.onCompleted();
+                                }
+
+                                @Override
+                                public void onDownloadFailed(int id, int errorCode, String errorMessage) {
+                                    subscriber.onNext(false);
+                                    subscriber.onCompleted();
+                                }
+
+                                @Override
+                                public void onProgress(int id, long totalBytes, long downlaodedBytes, int progress) {
+                                }
+                            });
+
+                    downloadManager.add(downloadRequest);
+                });
+    }
+
+    public Observable<HashMap<Integer, Boolean>> getAllData() {
+        return Observable.zip(getDataConversation(), getDataTopic(), (d1, d2) -> {
+            HashMap<Integer, Boolean> map = new HashMap<>();
+            map.put(0, d1);
+            map.put(1, d2);
+            return map;
+        });
     }
 }

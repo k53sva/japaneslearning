@@ -1,6 +1,6 @@
 package com.melody.education.adapter;
 
-import android.content.Context;
+import android.app.Activity;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -10,44 +10,54 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
 import com.melody.education.R;
 import com.melody.education.fragment.ConversationFragment;
-import com.melody.education.model.Conversation;
+import com.melody.education.model.Topic;
+import com.melody.education.model.TopicTitle;
 import com.melody.education.net.FetchData;
-import com.melody.education.ui.ConversationActivity;
+import com.melody.education.ui.TopicActivity;
 import com.melody.education.utils.DataHelper;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import rx.Observable;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
-public class ConversationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+
+public class TopicAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private static final int TYPE_ADS = 0;
     private static final int TYPE_ITEM = 1;
     private static final int TYPE_HEADER = 2;
-    private Context mContext;
-    public static List<Conversation> conversationList = new ArrayList<>();
+    private Activity mContext;
+    public static List<Topic> topics = new ArrayList<>();
+    Gson gson = new Gson();
 
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        public TextView title, count;
-        public ImageView overflow;
+        public TextView title, des;
         public ImageView thumbnail;
         private RelativeLayout body;
 
 
         public MyViewHolder(View view) {
             super(view);
-            title = (TextView) view.findViewById(R.id.title);
-            count = (TextView) view.findViewById(R.id.count);
-            thumbnail = (ImageView) view.findViewById(R.id.thumbnail);
-            overflow = (ImageView) view.findViewById(R.id.overflow);
-            body = (RelativeLayout) view.findViewById(R.id.item_content);
+            title = (TextView) view.findViewById(R.id.tv_title);
+            des = (TextView) view.findViewById(R.id.tv_des);
+            thumbnail = (ImageView) view.findViewById(R.id.iv_bg_lesson);
+            body = (RelativeLayout) view.findViewById(R.id.body);
         }
     }
 
-    class HeaderViewHolder extends RecyclerView.ViewHolder {
+    public void setModel(List<Topic> list) {
+        this.topics = list;
+        notifyDataSetChanged();
+    }
+
+    private class HeaderViewHolder extends RecyclerView.ViewHolder {
 
         public HeaderViewHolder(View itemView) {
             super(itemView);
@@ -55,21 +65,16 @@ public class ConversationAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     }
 
 
-    class AdsHolder extends RecyclerView.ViewHolder {
+    private class AdsHolder extends RecyclerView.ViewHolder {
         public AdsHolder(View itemView) {
             super(itemView);
         }
     }
 
 
-    public ConversationAdapter(Context mContext, List<Conversation> conversationList) {
+    public TopicAdapter(Activity mContext, List<Topic> topics) {
         this.mContext = mContext;
-        this.conversationList = conversationList;
-    }
-
-    public void setModel(List<Conversation> list) {
-        this.conversationList = list;
-        notifyDataSetChanged();
+        this.topics = topics;
     }
 
     @Override
@@ -79,7 +84,7 @@ public class ConversationAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             return new HeaderViewHolder(v);
         } else if (viewType == TYPE_ITEM) {
             View itemView = LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.item_conversation, parent, false);
+                    .inflate(R.layout.item_list_lesson, parent, false);
 
             return new MyViewHolder(itemView);
         } else {
@@ -92,20 +97,24 @@ public class ConversationAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     public void onBindViewHolder(final RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof MyViewHolder) {
             MyViewHolder myViewHolder = (MyViewHolder) holder;
-            Conversation item = conversationList.get(position);
-            myViewHolder.title.setText(item.Title);
-            myViewHolder.count.setText(item.Description);
-
-            Picasso.with(mContext)
-                    .load(FetchData.ROOT_URL + item.Picture)
-                    .placeholder(R.drawable.album1)
-                    .into(myViewHolder.thumbnail);
-
-            //Click item
+            Topic item = topics.get(position);
+            myViewHolder.title.setText(item.LessonName.toUpperCase());
+            myViewHolder.des.setText(item.Detail);
+            Observable.just(new DataHelper(mContext).convertDatabaseToJson(DataHelper.DATABASE_TOPICS, DataHelper.TABLE_TOPIC_TITLE))
+                    .subscribeOn(Schedulers.io())
+                    .map(m -> gson.fromJson(m.toString(), TopicTitle[].class))
+                    .filter(m -> m.length > 0)
+                    .map(m -> m[0])
+                    .map(m -> FetchData.ROOT_URL + m.TopicImage)
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(m ->
+                            Picasso.with(mContext).load(m)
+                                    .placeholder(R.drawable.album1)
+                                    .into(myViewHolder.thumbnail)
+                    );
             ((MyViewHolder) holder).body.setOnClickListener(v -> startLearningActivity(position));
 
         } else if (holder instanceof AdsHolder) {
-            //cast holder to VHHeader and set data for header.
         } else if (holder instanceof HeaderViewHolder) {
 
         }
@@ -123,11 +132,11 @@ public class ConversationAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
     @Override
     public int getItemCount() {
-        return conversationList.size();
+        return topics.size();
     }
 
     private void startLearningActivity(int selectedIndex) {
-        Intent intent = new Intent(mContext, ConversationActivity.class);
+        Intent intent = new Intent(mContext, TopicActivity.class);
         intent.putExtra(ConversationFragment.EXTRA_INDEX, selectedIndex);
         mContext.startActivity(intent);
     }

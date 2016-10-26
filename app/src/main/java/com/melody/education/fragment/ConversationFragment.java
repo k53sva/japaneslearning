@@ -2,7 +2,6 @@ package com.melody.education.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -33,12 +32,13 @@ import com.melody.education.utils.DataHelper;
 import com.melody.education.utils.GridSpacingItemDecoration;
 import com.melody.education.utils.Utils;
 
-
-import org.json.JSONArray;
-
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+
+import rx.Observable;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 /**
  * Created by K53SV on 8/29/2016.
@@ -46,7 +46,6 @@ import java.util.List;
 public class ConversationFragment extends BaseFragment implements PlaylistListener<MediaItem>, ProgressListener {
     public static final String EXTRA_INDEX = "EXTRA_INDEX";
     public static final int PLAYLIST_ID = 4; //Arbitrary, for the example
-
     ProgressBar loadingBar;
 
     TextView currentPositionView;
@@ -78,9 +77,7 @@ public class ConversationFragment extends BaseFragment implements PlaylistListen
     }
 
 
-    @Nullable
-    @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_conversation, container, false);
         retrieveExtras();
         init(view);
@@ -91,47 +88,37 @@ public class ConversationFragment extends BaseFragment implements PlaylistListen
     private void getData() {
         Gson gson = new Gson();
         DataHelper helper = new DataHelper(getActivity());
-        JSONArray array =
-                helper.convertDatabaseToJsonLike(DataHelper.DATABASE_CONVERSATION, DataHelper.TABLE_CONVERSATION,
-                        "WHERE ChungId = '"
-                                + ConversationAdapter.conversationList.get(selectedIndex).ChungID
-                                + "'");
-        try {
-            for (int i = 0; i < array.length(); i++) {
-                conversationList.add(gson.fromJson(array.getString(i), Conversation.class));
-            }
-            adapter.notifyDataSetChanged();
+        Observable.just(helper.convertDatabaseToJson(DataHelper.DATABASE_CONVERSATION, DataHelper.TABLE_CONVERSATION))
+                .subscribeOn(Schedulers.io())
+                .map(m -> gson.fromJson(m.toString(), Conversation[].class))
+                .flatMap(Observable::from)
+                .filter(m -> m.ChungID.equals(ConversationAdapter.conversationList.get(selectedIndex).ChungID))
+                .toList()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(m -> adapter.setModel(m));
 
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 
-    @Override
     public void onPause() {
         super.onPause();
         playlistManager.unRegisterPlaylistListener(this);
         playlistManager.unRegisterProgressListener(this);
     }
 
-    @Override
     public void onResume() {
         super.onResume();
         playlistManager = App.getPlaylistManager();
         playlistManager.registerPlaylistListener(this);
         playlistManager.registerProgressListener(this);
 
-        //Makes sure to retrieve the current playback information
         updateCurrentPlaybackInformation();
     }
 
     @Override
     public boolean onPlaylistItemChanged(MediaItem currentItem, boolean hasNext, boolean hasPrevious) {
         shouldSetDuration = true;
-        //Updates the button states
         nextButton.setEnabled(hasNext);
         previousButton.setEnabled(hasPrevious);
-        //Update data
 
         return true;
     }

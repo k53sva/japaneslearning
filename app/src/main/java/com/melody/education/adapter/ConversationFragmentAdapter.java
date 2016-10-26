@@ -22,7 +22,6 @@ public class ConversationFragmentAdapter extends RecyclerView.Adapter<RecyclerVi
     private static final int TYPE_ITEM = 1;
     private Context mContext;
     public static List<Conversation> conversationList = new ArrayList<>();
-    private List<Boolean> isExpandList = new ArrayList<>();
 
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
@@ -49,6 +48,11 @@ public class ConversationFragmentAdapter extends RecyclerView.Adapter<RecyclerVi
     public ConversationFragmentAdapter(Context mContext, List<Conversation> conversationList) {
         this.mContext = mContext;
         this.conversationList = conversationList;
+    }
+
+    public void setModel(List<Conversation> conversationList) {
+        this.conversationList = conversationList;
+        notifyDataSetChanged();
     }
 
     @Override
@@ -102,10 +106,6 @@ public class ConversationFragmentAdapter extends RecyclerView.Adapter<RecyclerVi
 
     @Override
     public int getItemCount() {
-        isExpandList.clear();
-        for (Conversation c : conversationList) {
-            isExpandList.add(false);
-        }
         return conversationList.size();
     }
 }

@@ -1,7 +1,6 @@
 package com.melody.education.fragment;
 
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
@@ -14,17 +13,16 @@ import com.google.gson.Gson;
 import com.melody.education.R;
 import com.melody.education.adapter.ConversationAdapter;
 import com.melody.education.adapter.NoteAdapter;
-import com.melody.education.adapter.VocabularyAdapter;
 import com.melody.education.model.Note;
-import com.melody.education.model.Vocabulary;
 import com.melody.education.utils.DataHelper;
 import com.melody.education.utils.GridSpacingItemDecoration;
 import com.melody.education.utils.Utils;
 
-import org.json.JSONArray;
-
 import java.util.ArrayList;
-import java.util.List;
+
+import rx.Observable;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 /**
  * Created by K53SV on 8/29/2016.
@@ -33,7 +31,6 @@ public class NotesFragment extends Fragment {
     public static final String EXTRA_INDEX = "EXTRA_INDEX";
     RecyclerView recyclerView;
     NoteAdapter adapter;
-    List<Note> noteList = new ArrayList<>();
     private int selectedIndex = 0;
 
     public static NotesFragment newInstance(int index) {
@@ -51,9 +48,7 @@ public class NotesFragment extends Fragment {
     }
 
 
-    @Nullable
-    @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_vocabulary, container, false);
         initView(v);
         retrieveExtras();
@@ -63,7 +58,7 @@ public class NotesFragment extends Fragment {
 
     private void initView(View v) {
         recyclerView = (RecyclerView) v.findViewById(R.id.recycler_view_vocabulary);
-        adapter = new NoteAdapter(getActivity(), noteList);
+        adapter = new NoteAdapter(getActivity(), new ArrayList<>());
         RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(getActivity(), 1);
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.addItemDecoration(new GridSpacingItemDecoration(10, Utils.dpToPx(getActivity(), 1), true));
@@ -75,20 +70,13 @@ public class NotesFragment extends Fragment {
     private void getData() {
         Gson gson = new Gson();
         DataHelper helper = new DataHelper(getActivity());
-        JSONArray array =
-                helper.convertDatabaseToJson(DataHelper.DATABASE_CONVERSATION, DataHelper.TABLE_NOTES,
-                        DataHelper.COL_CHUNGID
-                                + " ='"
-                                + ConversationAdapter.conversationList.get(selectedIndex).ChungID
-                                + "'");
-        try {
-            for (int i = 0; i < array.length(); i++) {
-                noteList.add(gson.fromJson(array.getString(i), Note.class));
-            }
-            adapter.notifyDataSetChanged();
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        Observable.just(helper.convertDatabaseToJson(DataHelper.DATABASE_CONVERSATION, DataHelper.TABLE_NOTES))
+                .subscribeOn(Schedulers.io())
+                .map(m -> gson.fromJson(m.toString(), Note[].class))
+                .flatMap(Observable::from)
+                .filter(m -> m.ChungId.equals(ConversationAdapter.conversationList.get(selectedIndex).ChungID))
+                .toList()
+                .subscribeOn(AndroidSchedulers.mainThread())
+                .subscribe(m -> adapter.setModel(m));
     }
 }

@@ -53,6 +53,11 @@ public class VocabularyAdapter extends RecyclerView.Adapter<VocabularyAdapter.Vo
 
     }
 
+    public void setModel(List<Vocabulary> vocabularyList) {
+        this.vocabularyList = vocabularyList;
+        notifyDataSetChanged();
+    }
+
     @Override
     public int getItemCount() {
         return vocabularyList.size();
