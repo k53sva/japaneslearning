@@ -39,7 +39,6 @@ public class SplashActivity extends BaseActivity {
         } else {
             getData();
         }
-
     }
 
     private void delay(int s, String message) {
@@ -48,7 +47,6 @@ public class SplashActivity extends BaseActivity {
             startActivity(new Intent(this, MainActivity.class));
             finish();
         }, s * 1000);
-
     }
 
     private void getData() {
@@ -61,6 +59,5 @@ public class SplashActivity extends BaseActivity {
                 .subscribe(m -> {
                     delay(1, "Download success");
                 });
-
     }
 }

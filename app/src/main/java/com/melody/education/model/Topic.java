@@ -6,14 +6,11 @@ package com.melody.education.model;
 public class Topic {
     public String LessonName;
     public String Anh;
-    public String audioAnh;
     public String Nhat;
-    public String audioNhat;
     public String Romaji;
-    public String audioRomaji;
     public String Detail;
     public String ImageUrl;
-    public String Thumnail;
     public String ChungID;
+    public String AudioUrl;
 
 }

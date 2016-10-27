@@ -81,7 +81,9 @@ public class MediaService extends BasePlaylistService<MediaItem, PlaylistManager
     @Override
     protected PendingIntent getNotificationClickPendingIntent() {
         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-        return PendingIntent.getActivity(getApplicationContext(), FOREGROUND_REQUEST_CODE, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        return PendingIntent.getActivity(getApplicationContext(),
+                FOREGROUND_REQUEST_CODE,
+                intent, PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
     @Override

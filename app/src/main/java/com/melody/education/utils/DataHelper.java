@@ -3,19 +3,14 @@ package com.melody.education.utils;
 import android.app.Activity;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.util.Log;
 
-import com.annimon.stream.Optional;
 import com.google.gson.Gson;
-import com.melody.education.model.Conversation;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import rx.Observable;
 import rx.schedulers.Schedulers;
-
-import static android.icu.lang.UCharacter.GraphemeClusterBreak.T;
 
 /**
  * Created by K53SV on 8/31/2016.

@@ -5,7 +5,6 @@ import android.support.annotation.NonNull;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,7 +26,6 @@ import com.melody.education.adapter.ConversationFragmentAdapter;
 import com.melody.education.data.MediaItem;
 import com.melody.education.manager.PlaylistManager;
 import com.melody.education.model.Conversation;
-import com.melody.education.net.FetchData;
 import com.melody.education.ui.BaseFragment;
 import com.melody.education.utils.DataHelper;
 import com.melody.education.utils.GridSpacingItemDecoration;
@@ -39,7 +37,6 @@ import java.util.List;
 
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
 
 /**
  * Created by K53SV on 8/29/2016.
@@ -56,7 +53,6 @@ public class ConversationFragment extends BaseFragment implements PlaylistListen
     private TextView currentPositionView;
     private TextView durationView;
     private SeekBar seekBar;
-    private RecyclerView recyclerView;
 
     private boolean shouldSetDuration;
     private boolean userInteracting;
@@ -120,7 +116,8 @@ public class ConversationFragment extends BaseFragment implements PlaylistListen
     public boolean onPlaybackStateChanged(@NonNull PlaylistServiceCore.PlaybackState playbackState) {
         switch (playbackState) {
             case STOPPED:
-                playlistManager.play(0, true);
+                //playlistManager.invokeSeekEnded(0);
+                playlistManager.invokePausePlay();
                 //getActivity().finish();
                 break;
 
@@ -163,21 +160,14 @@ public class ConversationFragment extends BaseFragment implements PlaylistListen
 
     private boolean setupPlaylistManager() {
         playlistManager = App.getPlaylistManager();
-
-        //There is nothing to do if the currently playing values are the same
+        playlistManager.reset();
         if (playlistManager.getId() == PLAYLIST_ID) {
             return false;
         }
 
         List<MediaItem> mediaItems = new LinkedList<>();
-       /* for (Conversation conversation : ConversationAdapter.lessonArrayList) {
-            MediaItem mediaItem = new MediaItem(conversation, true);
-            mediaItems.add(mediaItem);
-        }*/
-
-        MediaItem mediaItem = new MediaItem(ConversationAdapter.conversationList.get(selectedIndex), true);
-        mediaItems.add(mediaItem);
-        playlistManager.setParameters(mediaItems, selectedIndex);
+        mediaItems.add(new MediaItem(ConversationAdapter.conversationList.get(selectedIndex), true));
+        playlistManager.setParameters(mediaItems, 0);
         playlistManager.setId(PLAYLIST_ID);
 
         return true;
@@ -193,24 +183,20 @@ public class ConversationFragment extends BaseFragment implements PlaylistListen
 
     private void retrieveViews(View view) {
         loadingBar = (ProgressBar) view.findViewById(R.id.audio_player_loading);
-
         currentPositionView = (TextView) view.findViewById(R.id.audio_player_position);
         durationView = (TextView) view.findViewById(R.id.audio_player_duration);
-
         seekBar = (SeekBar) view.findViewById(R.id.audio_player_seek);
-
         previousButton = (ImageButton) view.findViewById(R.id.audio_player_previous);
         playPauseButton = (ImageButton) view.findViewById(R.id.audio_player_play_pause);
         nextButton = (ImageButton) view.findViewById(R.id.audio_player_next);
 
-        recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view_conversation);
+        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view_conversation);
         adapter = new ConversationFragmentAdapter(getActivity(), new ArrayList<>());
         RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(getActivity(), 1);
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.addItemDecoration(new GridSpacingItemDecoration(10, Utils.dpToPx(getActivity(), 1), true));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(adapter);
-
     }
 
     private void updateCurrentPlaybackInformation() {

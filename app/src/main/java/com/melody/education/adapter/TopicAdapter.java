@@ -1,7 +1,6 @@
 package com.melody.education.adapter;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,9 +9,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.google.gson.Gson;
 import com.melody.education.R;
-import com.melody.education.fragment.ConversationFragment;
 import com.melody.education.model.Topic;
 import com.melody.education.model.TopicTitle;
 import com.melody.education.net.FetchData;
@@ -23,9 +20,7 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.List;
 
-import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
 
 
 public class TopicAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
@@ -108,7 +103,8 @@ public class TopicAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                                     .placeholder(R.drawable.album1)
                                     .into(myViewHolder.thumbnail)
                     );
-            ((MyViewHolder) holder).body.setOnClickListener(v -> startLearningActivity(position));
+            ((MyViewHolder) holder).body.setOnClickListener(v ->
+                    TopicActivity.launchActivity(mContext, topics.get(position).ChungID));
 
         } else if (holder instanceof AdsHolder) {
         } else if (holder instanceof HeaderViewHolder) {
@@ -129,11 +125,5 @@ public class TopicAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     @Override
     public int getItemCount() {
         return topics.size();
-    }
-
-    private void startLearningActivity(int selectedIndex) {
-        Intent intent = new Intent(mContext, TopicActivity.class);
-        intent.putExtra(ConversationFragment.EXTRA_INDEX, selectedIndex);
-        mContext.startActivity(intent);
     }
 }

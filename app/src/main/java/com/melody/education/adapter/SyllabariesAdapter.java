@@ -1,28 +1,19 @@
 package com.melody.education.adapter;
 
 import android.content.Context;
-import android.content.Intent;
 import android.media.MediaPlayer;
-import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import com.melody.education.R;
-import com.melody.education.fragment.ConversationFragment;
 import com.melody.education.model.SyllabariesModel;
-import com.melody.education.ui.ConversationActivity;
-import com.squareup.picasso.Picasso;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
 
 public class SyllabariesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private static final int TYPE_ADS = 0;
@@ -116,6 +107,5 @@ public class SyllabariesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
 }

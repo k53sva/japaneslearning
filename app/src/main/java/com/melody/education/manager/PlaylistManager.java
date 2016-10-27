@@ -30,7 +30,7 @@ public class PlaylistManager extends ListPlaylistManager<MediaItem> {
 
     @NonNull
     @Override
-    protected Class<? extends Service> getMediaServiceClass() {
+    public Class<? extends Service> getMediaServiceClass() {
         return MediaService.class;
     }
 

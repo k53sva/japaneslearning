@@ -19,6 +19,7 @@ import rx.schedulers.Schedulers;
  */
 public class FetchData {
     public static final String ROOT_URL = "http://ahaheaven.esy.es/";
+    public static final String TOPICS_URL = String.format("%stopics/", ROOT_URL);
     private static final String PATH_DB = String.format("%sjapanesedb/", ROOT_URL);
 
     private Context mContext;

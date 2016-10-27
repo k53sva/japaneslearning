@@ -14,6 +14,7 @@ import com.melody.education.R;
 import com.melody.education.fragment.ConversationFragment;
 import com.melody.education.model.Conversation;
 import com.melody.education.net.FetchData;
+import com.melody.education.service.MediaService;
 import com.melody.education.ui.ConversationActivity;
 import com.squareup.picasso.Picasso;
 
@@ -123,6 +124,9 @@ public class ConversationAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     }
 
     private void startLearningActivity(int selectedIndex) {
+        Intent isv = new Intent(mContext, MediaService.class);
+        mContext.stopService(isv);
+
         Intent intent = new Intent(mContext, ConversationActivity.class);
         intent.putExtra(ConversationFragment.EXTRA_INDEX, selectedIndex);
         mContext.startActivity(intent);
