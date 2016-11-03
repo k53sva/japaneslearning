@@ -31,7 +31,8 @@
 
         <activity
             android:name=".ui.TopicActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:label="@string/activity_topics"
+            android:theme="@style/AppTheme.NoActionBar1" />
 
         <activity
             android:name=".ui.MainActivity"
@@ -41,8 +42,8 @@
 
         <activity
             android:name=".ui.kanji.KanjiActivity"
-            android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:label="@string/activity_kanji"
+            android:theme="@style/AppTheme.NoActionBar1" />
 
         <service
             android:name=".service.MediaService"

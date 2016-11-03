@@ -7,6 +7,7 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 
 import com.melody.education.R;
 import com.melody.education.adapter.TopicDetailAdapter;
@@ -43,6 +44,8 @@ public class TopicActivity extends BaseActivity {
         setContentView(R.layout.activity_topic);
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(this, 1);
@@ -70,6 +73,18 @@ public class TopicActivity extends BaseActivity {
         t.ImageUrl = String.format("%s%s", FetchData.TOPICS_URL, t.ImageUrl);
         t.AudioUrl = String.format("%s%s", FetchData.TOPICS_URL, t.AudioUrl);
         return t;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                break;
+            default:
+                break;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override

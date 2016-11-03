@@ -1,20 +1,17 @@
 package com.melody.education.ui.kanji;
 
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
+import android.support.v7.widget.Toolbar;
 import android.util.Pair;
+import android.view.MenuItem;
 
-import com.annimon.stream.Stream;
 import com.melody.education.R;
-import com.melody.education.adapter.ConversationAdapter;
-import com.melody.education.model.Conversation;
 import com.melody.education.model.KanjiGroup;
 import com.melody.education.utils.DataHelper;
 
@@ -38,6 +35,10 @@ public class KanjiActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_kanji);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.my_toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
         viewPager = (ViewPager) findViewById(R.id.viewpager);
         adapter = new ViewPagerAdapter(getSupportFragmentManager());
         tabLayout = (TabLayout) findViewById(R.id.tabs);
@@ -53,19 +54,30 @@ public class KanjiActivity extends AppCompatActivity {
                 .map(this::fillListKanji)
                 .flatMap(Observable::from)
                 .groupBy(m -> m.id / 10)
-                .publish(groups -> groups
-                        .map(g -> new Pair<>(g.getKey(), g.takeUntil(groups))))
+                //.publish(groups -> groups.map(g -> new Pair<>(g.getKey(), g.takeUntil(groups))))
                 .doOnNext(group -> {
                     KanjiLevelFragment fragment = new KanjiLevelFragment();
-                    adapter.addFragment(fragment, String.format("Level %s", group.first + 1));
-                    group.second.toList().subscribe(fragment::setModel);
+                    adapter.addFragment(fragment, String.format("Level %s", group.getKey() + 1));
+                    group.toList().subscribe(fragment::setModel);
                 })
                 .toList()
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(group -> {
+                .subscribe(list -> {
                     viewPager.setAdapter(adapter);
                     tabLayout.setupWithViewPager(viewPager);
                 }, Throwable::printStackTrace);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                break;
+            default:
+                break;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     private List<KanjiGroup> fillListKanji(List<KanjiGroup> list) {
