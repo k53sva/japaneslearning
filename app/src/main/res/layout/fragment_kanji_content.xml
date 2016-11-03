@@ -73,6 +73,73 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:background="@android:color/holo_orange_dark"
+                    android:text="Word" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="100dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:text="@{kanjiContent.onR.get()}" />
+
+                    <android.support.v7.widget.RecyclerView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="@dimen/dimen_5dp"
+                        android:layout_marginRight="@dimen/dimen_5dp"
+                        android:layout_weight="5"
+                        app:configuration="@{kanjiContent.configurationWordOn}" />
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/holo_purple"
+                    android:text="@{kanjiContent.wOn}" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="100dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:text="@{kanjiContent.kunR.get()}" />
+
+                    <android.support.v7.widget.RecyclerView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="@dimen/dimen_5dp"
+                        android:layout_marginRight="@dimen/dimen_5dp"
+                        android:layout_weight="5"
+                        app:configuration="@{kanjiContent.configurationWordKun}" />
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/holo_purple"
+                    android:text="@{kanjiContent.wKun}" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:visibility="visible">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/holo_orange_dark"
                     android:text="Reference" />
 
                 <android.support.v7.widget.RecyclerView

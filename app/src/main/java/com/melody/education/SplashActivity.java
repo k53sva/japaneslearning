@@ -31,7 +31,7 @@ public class SplashActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
         fetchData = new FetchData(this);
-        String filePath = String.format("%s/%s", this.getExternalCacheDir(), DataHelper.DATABASE_TOPICS);
+        String filePath = String.format("%s/%s", this.getExternalCacheDir(), DataHelper.DATABASE_KANJI);
         File file = new File(filePath);
         if (file.exists()) {
             delay(1, "database is exist");
@@ -55,7 +55,7 @@ public class SplashActivity extends BaseActivity {
                 .flatMapIterable(entries -> entries)
                 .filter(Map.Entry::getValue)
                 .toList()
-                .filter(m -> m.size() == 2)
+                .filter(m -> m.size() == 3)
                 .subscribe(m -> {
                     delay(1, "Download success");
                 });

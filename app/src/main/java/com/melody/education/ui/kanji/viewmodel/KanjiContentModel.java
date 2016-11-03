@@ -10,6 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.TypedValue;
 import android.view.View;
 
+import com.annimon.stream.Stream;
 import com.melody.education.BR;
 import com.melody.education.R;
 import com.melody.education.binding.RecyclerBindingAdapter;
@@ -17,6 +18,8 @@ import com.melody.education.binding.fields.ObservableString;
 import com.melody.education.binding.fields.RecyclerConfiguration;
 import com.melody.education.model.KanjiContent;
 import com.melody.education.model.Reference;
+import com.melody.education.model.WordKunReading;
+import com.melody.education.model.WordOnReading;
 import com.melody.education.net.FetchData;
 import com.melody.education.utils.DataHelper;
 
@@ -37,15 +40,27 @@ public class KanjiContentModel {
     public final ObservableString onR = new ObservableString();
     public final ObservableString kunR = new ObservableString();
     public final ObservableString means = new ObservableString();
+    public final ObservableString wOn = new ObservableString();
+    public final ObservableString wKun = new ObservableString();
+    private DataHelper helper;
     public KanjiContent content;
     private Context context;
     public final RecyclerConfiguration recyclerConfiguration = new RecyclerConfiguration();
     private RecyclerBindingAdapter<Reference>
             adapter = new RecyclerBindingAdapter<>(R.layout.item_kanji_reference, BR.reference, new ArrayList<>());
 
+    public final RecyclerConfiguration configurationWordOn = new RecyclerConfiguration();
+    private RecyclerBindingAdapter<WordOnReading>
+            adapterWordOn = new RecyclerBindingAdapter<>(R.layout.item_kanji_word_on, BR.wordOn, new ArrayList<>());
+
+    public final RecyclerConfiguration configurationWordKun = new RecyclerConfiguration();
+    private RecyclerBindingAdapter<WordKunReading>
+            adapterWordKun = new RecyclerBindingAdapter<>(R.layout.item_kanji_word_kun, BR.wordKun, new ArrayList<>());
+
 
     public KanjiContentModel(Context context, KanjiContent content) {
         this.context = context;
+        helper = new DataHelper((Activity) context);
         String image = FetchData.ROOT_URL + "kanji/" + content.KanjiIMG;
         onR.set(content.OnReading);
         kunR.set(content.KunReading);
@@ -53,11 +68,13 @@ public class KanjiContentModel {
         name.set(content.KanjiName);
         this.image.set(image);
         initRecycler();
+        initRecyclerWordOn();
+        initRecyclerWordKun();
         setReference(content);
+        setWord(content);
     }
 
     public void setReference(KanjiContent content) {
-        DataHelper helper = new DataHelper((Activity) context);
         helper.getData(DataHelper.DATABASE_KANJI, DataHelper.TABLE_REFRENCE, Reference[].class)
                 .subscribeOn(Schedulers.io())
                 .flatMap(Observable::from)
@@ -68,6 +85,28 @@ public class KanjiContentModel {
                 .subscribe(m -> adapter.setItems(m));
     }
 
+    private void setWord(KanjiContent content) {
+        helper.getData(DataHelper.DATABASE_KANJI, DataHelper.TABLE_WORK_ON_READING, WordOnReading[].class)
+                .subscribeOn(Schedulers.io())
+                .flatMap(Observable::from)
+                .filter(m -> m.KanjiNumber.equals(content.KanjiNumber))
+                .toList()
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnNext(m -> wOn.set(Stream.of(m).map(n -> n.KanjiLook).filter(n -> n != null).reduce("", (x, y) -> String.format("%s,%s", x, y))))
+                .map(ArrayList::new)
+                .subscribe(m -> adapterWordOn.setItems(m));
+
+        helper.getData(DataHelper.DATABASE_KANJI, DataHelper.TABLE_WORK_KUN_READING, WordKunReading[].class)
+                .subscribeOn(Schedulers.io())
+                .flatMap(Observable::from)
+                .filter(m -> m.KanjiNumber.equals(content.KanjiNumber))
+                .observeOn(AndroidSchedulers.mainThread())
+                .toList()
+                .doOnNext(m -> wKun.set(Stream.of(m).map(n -> n.KanjiLook).filter(n -> n != null).reduce("", (x, y) -> String.format("%s,%s", x, y))))
+                .map(ArrayList::new)
+                .subscribe(m -> adapterWordKun.setItems(m));
+    }
+
     private void initRecycler() {
         LinearLayoutManager layout = new LinearLayoutManager(context);
         recyclerConfiguration.setLayoutManager(layout);
@@ -76,12 +115,46 @@ public class KanjiContentModel {
             @Override
             public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
                 super.getItemOffsets(outRect, view, parent, state);
-                outRect.top = dpToPx(context, 10);
+                outRect.top = dpToPx(context, 2);
             }
         });
 
         recyclerConfiguration.setAdapter(adapter);
         adapter.setOnItemClickListener((position, item) -> {
+        });
+    }
+
+    private void initRecyclerWordOn() {
+        LinearLayoutManager layout = new LinearLayoutManager(context);
+        configurationWordOn.setLayoutManager(layout);
+        configurationWordOn.setItemAnimator(new DefaultItemAnimator());
+        configurationWordOn.setItemDecoration(new RecyclerView.ItemDecoration() {
+            @Override
+            public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
+                super.getItemOffsets(outRect, view, parent, state);
+                outRect.top = dpToPx(context, 2);
+            }
+        });
+
+        configurationWordOn.setAdapter(adapterWordOn);
+        adapterWordOn.setOnItemClickListener((position, item) -> {
+        });
+    }
+
+    private void initRecyclerWordKun() {
+        LinearLayoutManager layout = new LinearLayoutManager(context);
+        configurationWordKun.setLayoutManager(layout);
+        configurationWordKun.setItemAnimator(new DefaultItemAnimator());
+        configurationWordKun.setItemDecoration(new RecyclerView.ItemDecoration() {
+            @Override
+            public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
+                super.getItemOffsets(outRect, view, parent, state);
+                outRect.top = dpToPx(context, 2);
+            }
+        });
+
+        configurationWordKun.setAdapter(adapterWordKun);
+        adapterWordKun.setOnItemClickListener((position, item) -> {
         });
     }
 

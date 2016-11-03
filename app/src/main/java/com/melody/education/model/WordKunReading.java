@@ -9,5 +9,6 @@ public class WordKunReading {
     public String KanjiNumber;
     public String KanjiWords;
     public String KanjiLook;
+    public String English;
     public String Sound;
 }
