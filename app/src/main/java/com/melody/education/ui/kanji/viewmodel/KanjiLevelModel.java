@@ -1,6 +1,7 @@
 package com.melody.education.ui.kanji.viewmodel;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Rect;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -12,9 +13,10 @@ import android.view.View;
 import com.melody.education.BR;
 import com.melody.education.R;
 import com.melody.education.binding.RecyclerBindingAdapter;
-import com.melody.education.binding.fields.ObservableBoolean;
 import com.melody.education.binding.fields.RecyclerConfiguration;
 import com.melody.education.model.KanjiGroup;
+import com.melody.education.ui.kanji.KanjiContentActivity;
+import com.melody.education.utils.DataCache;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,6 +31,7 @@ public class KanjiLevelModel {
     public static final String TAG = KanjiLevelModel.class.getSimpleName();
     public final RecyclerConfiguration recyclerConfiguration = new RecyclerConfiguration();
     private Context context;
+    private List<KanjiGroup> list;
     private RecyclerBindingAdapter<ItemKanjiLevel>
             adapter = new RecyclerBindingAdapter<>(R.layout.item_kanji_level, BR.itemKanji, new ArrayList<>());
 
@@ -38,6 +41,7 @@ public class KanjiLevelModel {
     }
 
     public void setItems(List<KanjiGroup> list) {
+        this.list = list;
         Observable.from(list)
                 .map(m -> new ItemKanjiLevel(m.Title))
                 .toList()
@@ -59,6 +63,8 @@ public class KanjiLevelModel {
 
         recyclerConfiguration.setAdapter(adapter);
         adapter.setOnItemClickListener((position, item) -> {
+            DataCache.getInstance().push(list.get(position));
+            context.startActivity(new Intent(context, KanjiContentActivity.class));
         });
     }
 

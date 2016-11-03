@@ -3,6 +3,7 @@ package com.melody.education.utils;
 import android.app.Activity;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import com.google.gson.Gson;
 
@@ -31,7 +32,7 @@ public class DataHelper {
     public static final String TABLE_KANJI_GROUP = "KanjiGroup";
     public static final String TABLE_REFRENCE = "Reference";
     public static final String TABLE_WORK_KUN_READING = "WordKunReading";
-    public static final String TABLE_WORK_ON_READING =  "WordOnReading";
+    public static final String TABLE_WORK_ON_READING = "WordOnReading";
 
 
     private Activity activity;
@@ -70,6 +71,7 @@ public class DataHelper {
         }
         cursor.close();
         myDataBase.close();
+        Log.e(TAG, resultSet.toString());
         return resultSet;
     }
 

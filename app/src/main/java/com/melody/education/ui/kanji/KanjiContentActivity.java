@@ -11,8 +11,11 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
 import com.melody.education.R;
+import com.melody.education.model.KanjiContent;
 import com.melody.education.model.KanjiGroup;
+import com.melody.education.utils.DataCache;
 import com.melody.education.utils.DataHelper;
+import com.viewpagerindicator.PageIndicator;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,45 +28,45 @@ import rx.schedulers.Schedulers;
  * Created by K53SV on 11/2/2016.
  */
 
-public class KanjiActivity extends AppCompatActivity {
-    private TabLayout tabLayout;
+public class KanjiContentActivity extends AppCompatActivity {
     private ViewPager viewPager;
-    ViewPagerAdapter adapter;
+    private ViewPagerAdapter adapter;
+    private PageIndicator titleIndicator;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_kanji);
+        setContentView(R.layout.activity_kanji_content);
         Toolbar toolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         viewPager = (ViewPager) findViewById(R.id.viewpager);
         adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        tabLayout = (TabLayout) findViewById(R.id.tabs);
+        titleIndicator = (PageIndicator) findViewById(R.id.indicator);
+
         getData();
     }
 
     private void getData() {
+        KanjiGroup group = DataCache.getInstance().pop(KanjiGroup.class);
         DataHelper helper = new DataHelper(this);
-        helper.getData(DataHelper.DATABASE_KANJI, DataHelper.TABLE_KANJI_GROUP, KanjiGroup[].class)
+        helper.getData(DataHelper.DATABASE_KANJI, DataHelper.TABLE_KANJI_CONTENT, KanjiContent[].class)
                 .subscribeOn(Schedulers.io())
                 .flatMap(Observable::from)
-                .toSortedList((p1, p2) -> p1.ChungID.compareToIgnoreCase(p2.ChungID))
-                .map(this::fillListKanji)
+                .filter(m -> m.ChungID.equals(group.ChungID))
+                .toSortedList((p1, p2) -> p1.KanjiNumber.compareToIgnoreCase(p2.KanjiNumber))
                 .flatMap(Observable::from)
-                .groupBy(m -> m.id / 10)
-                //.publish(groups -> groups.map(g -> new Pair<>(g.getKey(), g.takeUntil(groups))))
-                .doOnNext(group -> {
-                    KanjiLevelFragment fragment = new KanjiLevelFragment();
-                    adapter.addFragment(fragment, String.format("Level %s", group.getKey() + 1));
-                    group.toList().subscribe(fragment::setModel);
+                .doOnNext(m -> {
+                    KanjiContentFragment fragment = new KanjiContentFragment();
+                    adapter.addFragment(fragment, "");
+                    fragment.setModel(m);
                 })
                 .toList()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(list -> {
                     viewPager.setAdapter(adapter);
-                    tabLayout.setupWithViewPager(viewPager);
+                    titleIndicator.setViewPager(viewPager);
                 }, Throwable::printStackTrace);
     }
 
@@ -77,13 +80,6 @@ public class KanjiActivity extends AppCompatActivity {
                 break;
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    private List<KanjiGroup> fillListKanji(List<KanjiGroup> list) {
-        for (int i = 0; i < list.size(); i++) {
-            list.get(i).id = i;
-        }
-        return list;
     }
 
     class ViewPagerAdapter extends FragmentPagerAdapter {
