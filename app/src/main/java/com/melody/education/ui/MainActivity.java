@@ -13,6 +13,7 @@ import android.support.v7.app.AppCompatActivity;
 
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.util.Pair;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -21,9 +22,10 @@ import android.widget.TextView;
 
 import com.melody.education.R;
 import com.melody.education.adapter.ConversationAdapter;
-import com.melody.education.fragment.ConversationFragment;
+import com.melody.education.ui.fragment.ConversationFragment;
 import com.melody.education.model.Conversation;
 import com.melody.education.net.FetchData;
+import com.melody.education.ui.kanji.KanjiActivity;
 import com.melody.education.utils.DataHelper;
 import com.melody.education.utils.Utils;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
@@ -55,6 +57,19 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         initNavigationView();
         Utils.startFragment(this, new ConversationListFragment());
         handleIntent(getIntent());
+
+     /*   Observable<Integer> source = Observable.range(0, 100);
+        source.groupBy(k -> k / 10)
+                .publish(groups -> groups
+                        .map(g -> new Pair<>(g.getKey(), g.takeUntil(groups)))
+                        .flatMap(kv ->
+                                kv.second
+                                        .doOnNext(v -> Log.e("TAG", kv.first + " value " + v))
+                                        .doOnCompleted(() -> Log.e("TAG", kv.first + " done"))
+                        ))
+                .subscribe(v -> {
+
+                });*/
 
     }
 
@@ -147,27 +162,42 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
         int id = item.getItemId();
+        switch (id) {
+            case R.id.nav_setting:
+                startActivity(new Intent(this, UserSettingActivity.class));
+                break;
 
-        if (id == R.id.nav_setting) {
-            startActivity(new Intent(this, UserSettingActivity.class));
-        } else if (id == R.id.nav_feedback) {
-            Intent emailIntent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts(
-                    "mailto", "abc@gmail.com", null));
-            emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Subject");
-            emailIntent.putExtra(Intent.EXTRA_TEXT, "Body");
-            startActivity(Intent.createChooser(emailIntent, "Send email..."));
-        } else if (id == R.id.nav_beginner_conversation) {
-            Utils.startFragment(MainActivity.this, new ConversationListFragment());
-        } else if (id == R.id.menu_syllabaries) {
-            Utils.startFragment(this, new SyllabariesFragment());
-        } else if (id == R.id.nav_menu_lessons) {
-            Utils.startFragment(this, new LessonListFragment());
-        } else if (id == R.id.nav_menu_topics) {
-            Utils.startFragment(this, new TopicListFragment());
+            case R.id.nav_feedback:
+                Intent emailIntent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts(
+                        "mailto", "abc@gmail.com", null));
+                emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Subject");
+                emailIntent.putExtra(Intent.EXTRA_TEXT, "Body");
+                break;
+
+            case R.id.nav_beginner_conversation:
+                Utils.startFragment(MainActivity.this, new ConversationListFragment());
+                break;
+
+            case R.id.menu_syllabaries:
+                Utils.startFragment(this, new SyllabariesFragment());
+                break;
+
+            case R.id.nav_menu_lessons:
+                Utils.startFragment(this, new LessonListFragment());
+                break;
+
+            case R.id.nav_menu_topics:
+                Utils.startFragment(this, new TopicListFragment());
+                break;
+
+            case R.id.nav_menu_kanji:
+                startActivity(new Intent(this, KanjiActivity.class));
+                break;
+
+            default:
+                break;
         }
-
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
@@ -180,7 +210,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         startActivity(intent);
     }
 
-    private Conversation fillAudio(Conversation c){
+    private Conversation fillAudio(Conversation c) {
         c.Audio = String.format("%s%s", FetchData.ROOT_URL, c.Audio);
         return c;
     }

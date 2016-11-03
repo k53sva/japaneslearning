@@ -19,12 +19,20 @@ public class DataHelper {
     private static final String TAG = DataHelper.class.getSimpleName();
     public static final String DATABASE_CONVERSATION = "conversation.sqlite";
     public static final String DATABASE_TOPICS = "topics.sqlite";
-    public static final String TABLE_LESSON = "Lesson";
+    public static final String DATABASE_KANJI = "kanji.sqlite";
+
     public static final String TABLE_VOCABULARY = "Vocabulary";
     public static final String TABLE_NOTES = "Notes";
     public static final String TABLE_CONVERSATION = "Conversation";
     public static final String TABLE_TOPIC = "Topic";
     public static final String TABLE_TOPIC_TITLE = "TopicTitle";
+    public static final String TABLE_EXAMPLES = "Examples";
+    public static final String TABLE_KANJI_CONTENT = "KanjiContent";
+    public static final String TABLE_KANJI_GROUP = "KanjiGroup";
+    public static final String TABLE_REFRENCE = "Reference";
+    public static final String TABLE_WORK_KUN_READING = "WordKunReading";
+    public static final String TABLE_WORK_ON_READING =  "WordOnReading";
+
 
     private Activity activity;
     private Gson gson = new Gson();

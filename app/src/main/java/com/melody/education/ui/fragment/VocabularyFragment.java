@@ -1,21 +1,18 @@
-package com.melody.education.fragment;
+package com.melody.education.ui.fragment;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.annimon.stream.Stream;
-import com.google.gson.Gson;
 import com.melody.education.R;
 import com.melody.education.adapter.ConversationAdapter;
-import com.melody.education.adapter.NoteAdapter;
-import com.melody.education.model.Note;
+import com.melody.education.adapter.VocabularyAdapter;
+import com.melody.education.model.Vocabulary;
 import com.melody.education.utils.DataHelper;
 import com.melody.education.utils.GridSpacingItemDecoration;
 import com.melody.education.utils.Utils;
@@ -24,19 +21,17 @@ import java.util.ArrayList;
 
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
 
 /**
  * Created by K53SV on 8/29/2016.
  */
-public class NotesFragment extends Fragment {
-    private static final String TAG = NotesFragment.class.getSimpleName();
+public class VocabularyFragment extends Fragment {
     public static final String EXTRA_INDEX = "EXTRA_INDEX";
     private int selectedIndex = 0;
-    private NoteAdapter adapter;
+    private VocabularyAdapter adapter;
 
-    public static NotesFragment newInstance(int index) {
-        NotesFragment fragment = new NotesFragment();
+    public static VocabularyFragment newInstance(int index) {
+        VocabularyFragment fragment = new VocabularyFragment();
         Bundle bundle = new Bundle();
         bundle.putInt(EXTRA_INDEX, index);
         fragment.setArguments(bundle);
@@ -58,7 +53,7 @@ public class NotesFragment extends Fragment {
     }
 
     private void initView(View v) {
-        adapter = new NoteAdapter(getActivity(), new ArrayList<>());
+        adapter = new VocabularyAdapter(getActivity(), new ArrayList<>());
         RecyclerView recyclerView = (RecyclerView) v.findViewById(R.id.recycler_view_vocabulary);
         RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(getActivity(), 1);
         recyclerView.setLayoutManager(mLayoutManager);
@@ -69,12 +64,11 @@ public class NotesFragment extends Fragment {
 
     private void getData() {
         DataHelper helper = new DataHelper(getActivity());
-        helper.getData(DataHelper.DATABASE_CONVERSATION, DataHelper.TABLE_NOTES, Note[].class)
+        helper.getData(DataHelper.DATABASE_CONVERSATION, DataHelper.TABLE_VOCABULARY, Vocabulary[].class)
                 .flatMap(Observable::from)
-                .filter(m -> m.ChungID != null)
                 .filter(m -> m.ChungID.equals(ConversationAdapter.conversationList.get(selectedIndex).ChungID))
                 .toList()
-                .subscribeOn(AndroidSchedulers.mainThread())
-                .subscribe(m -> adapter.setModel(m), Throwable::fillInStackTrace);
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(m -> adapter.setModel(m));
     }
 }

@@ -1,10 +1,11 @@
-package com.melody.education.fragment;
+package com.melody.education.ui.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -85,7 +86,6 @@ public class ConversationFragment extends BaseFragment implements PlaylistListen
                 .toList()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(m -> adapter.setModel(m));
-
     }
 
     public void onPause() {
@@ -116,26 +116,32 @@ public class ConversationFragment extends BaseFragment implements PlaylistListen
     public boolean onPlaybackStateChanged(@NonNull PlaylistServiceCore.PlaybackState playbackState) {
         switch (playbackState) {
             case STOPPED:
-                //playlistManager.invokeSeekEnded(0);
                 playlistManager.invokePausePlay();
-                //getActivity().finish();
                 break;
 
             case RETRIEVING:
+                Log.e(TAG, "RETRIEVING");
+                break;
             case PREPARING:
+                Log.e(TAG, "PREPARING");
+                break;
             case SEEKING:
-                restartLoading();
+                //restartLoading();
+                Log.e(TAG, "SEEKING");
                 break;
 
             case PLAYING:
                 doneLoading(true);
+                Log.e(TAG, "PLAYING");
                 break;
 
             case PAUSED:
                 doneLoading(false);
+                Log.e(TAG, "PAUSED");
                 break;
 
             default:
+                Log.e(TAG, "DEFAULT");
                 break;
         }
 
@@ -168,8 +174,8 @@ public class ConversationFragment extends BaseFragment implements PlaylistListen
         List<MediaItem> mediaItems = new LinkedList<>();
         mediaItems.add(new MediaItem(ConversationAdapter.conversationList.get(selectedIndex), true));
         playlistManager.setParameters(mediaItems, 0);
-        playlistManager.setId(PLAYLIST_ID);
-
+        playlistManager.setId(0);
+        playlistManager.invokeRepeat();
         return true;
     }
 
@@ -264,8 +270,8 @@ public class ConversationFragment extends BaseFragment implements PlaylistListen
 
     private void startPlayback(boolean forceStart) {
         //If we are changing audio files, or we haven't played before then start the playback
-        if (forceStart || playlistManager.getCurrentPosition() != selectedIndex) {
-            playlistManager.setCurrentPosition(selectedIndex);
+        if (forceStart) {
+            playlistManager.setCurrentPosition(0);
             playlistManager.play(0, false);
         }
     }
@@ -275,9 +281,9 @@ public class ConversationFragment extends BaseFragment implements PlaylistListen
 
         @Override
         public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-            if (!fromUser) {
+            /*if (!fromUser) {
                 return;
-            }
+            }*/
 
             seekPosition = progress;
             currentPositionView.setText(TimeFormatUtil.formatMs(progress));

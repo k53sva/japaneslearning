@@ -8,9 +8,9 @@ import android.view.WindowManager;
 
 import com.melody.education.R;
 import com.melody.education.adapter.ViewPagerAdapter;
-import com.melody.education.fragment.ConversationFragment;
-import com.melody.education.fragment.NotesFragment;
-import com.melody.education.fragment.VocabularyFragment;
+import com.melody.education.ui.fragment.ConversationFragment;
+import com.melody.education.ui.fragment.NotesFragment;
+import com.melody.education.ui.fragment.VocabularyFragment;
 import com.viewpagerindicator.PageIndicator;
 
 import butterknife.BindView;

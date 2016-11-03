@@ -11,8 +11,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.melody.education.R;
-import com.melody.education.fragment.ConversationFragment;
-import com.melody.education.model.Conversation;
+import com.melody.education.ui.fragment.ConversationFragment;
 import com.melody.education.model.Lesson;
 import com.melody.education.ui.ConversationActivity;
 import com.squareup.picasso.Picasso;

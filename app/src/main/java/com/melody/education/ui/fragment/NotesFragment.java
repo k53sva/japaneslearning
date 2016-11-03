@@ -1,4 +1,4 @@
-package com.melody.education.fragment;
+package com.melody.education.ui.fragment;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -11,8 +11,8 @@ import android.view.ViewGroup;
 
 import com.melody.education.R;
 import com.melody.education.adapter.ConversationAdapter;
-import com.melody.education.adapter.VocabularyAdapter;
-import com.melody.education.model.Vocabulary;
+import com.melody.education.adapter.NoteAdapter;
+import com.melody.education.model.Note;
 import com.melody.education.utils.DataHelper;
 import com.melody.education.utils.GridSpacingItemDecoration;
 import com.melody.education.utils.Utils;
@@ -25,13 +25,14 @@ import rx.android.schedulers.AndroidSchedulers;
 /**
  * Created by K53SV on 8/29/2016.
  */
-public class VocabularyFragment extends Fragment {
+public class NotesFragment extends Fragment {
+    private static final String TAG = NotesFragment.class.getSimpleName();
     public static final String EXTRA_INDEX = "EXTRA_INDEX";
     private int selectedIndex = 0;
-    private VocabularyAdapter adapter;
+    private NoteAdapter adapter;
 
-    public static VocabularyFragment newInstance(int index) {
-        VocabularyFragment fragment = new VocabularyFragment();
+    public static NotesFragment newInstance(int index) {
+        NotesFragment fragment = new NotesFragment();
         Bundle bundle = new Bundle();
         bundle.putInt(EXTRA_INDEX, index);
         fragment.setArguments(bundle);
@@ -53,7 +54,7 @@ public class VocabularyFragment extends Fragment {
     }
 
     private void initView(View v) {
-        adapter = new VocabularyAdapter(getActivity(), new ArrayList<>());
+        adapter = new NoteAdapter(getActivity(), new ArrayList<>());
         RecyclerView recyclerView = (RecyclerView) v.findViewById(R.id.recycler_view_vocabulary);
         RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(getActivity(), 1);
         recyclerView.setLayoutManager(mLayoutManager);
@@ -64,11 +65,12 @@ public class VocabularyFragment extends Fragment {
 
     private void getData() {
         DataHelper helper = new DataHelper(getActivity());
-        helper.getData(DataHelper.DATABASE_CONVERSATION, DataHelper.TABLE_VOCABULARY, Vocabulary[].class)
+        helper.getData(DataHelper.DATABASE_CONVERSATION, DataHelper.TABLE_NOTES, Note[].class)
                 .flatMap(Observable::from)
+                .filter(m -> m.ChungID != null)
                 .filter(m -> m.ChungID.equals(ConversationAdapter.conversationList.get(selectedIndex).ChungID))
                 .toList()
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(m -> adapter.setModel(m));
+                .subscribeOn(AndroidSchedulers.mainThread())
+                .subscribe(m -> adapter.setModel(m), Throwable::fillInStackTrace);
     }
 }

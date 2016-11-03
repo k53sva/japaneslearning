@@ -11,11 +11,12 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.melody.education.R;
-import com.melody.education.fragment.ConversationFragment;
+import com.melody.education.ui.fragment.ConversationFragment;
 import com.melody.education.model.Conversation;
 import com.melody.education.net.FetchData;
 import com.melody.education.service.MediaService;
 import com.melody.education.ui.ConversationActivity;
+import com.melody.education.utils.DataCache;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -125,10 +126,9 @@ public class ConversationAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
     private void startLearningActivity(int selectedIndex) {
         Intent isv = new Intent(mContext, MediaService.class);
-        mContext.stopService(isv);
-
         Intent intent = new Intent(mContext, ConversationActivity.class);
         intent.putExtra(ConversationFragment.EXTRA_INDEX, selectedIndex);
+        DataCache.getInstance().push(conversationList.get(selectedIndex));
         mContext.startActivity(intent);
     }
 }
