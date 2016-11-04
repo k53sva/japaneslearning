@@ -15,6 +15,7 @@ import com.melody.education.R;
 import com.melody.education.binding.RecyclerBindingAdapter;
 import com.melody.education.binding.fields.RecyclerConfiguration;
 import com.melody.education.model.KanjiGroup;
+import com.melody.education.net.FetchData;
 import com.melody.education.ui.kanji.KanjiContentActivity;
 import com.melody.education.utils.DataCache;
 
@@ -32,7 +33,7 @@ public class KanjiLevelModel {
     public final RecyclerConfiguration recyclerConfiguration = new RecyclerConfiguration();
     private Context context;
     private List<KanjiGroup> list;
-    private RecyclerBindingAdapter<ItemKanjiLevel>
+    private RecyclerBindingAdapter<KanjiGroup>
             adapter = new RecyclerBindingAdapter<>(R.layout.item_kanji_level, BR.itemKanji, new ArrayList<>());
 
     public KanjiLevelModel(Context context) {
@@ -43,10 +44,16 @@ public class KanjiLevelModel {
     public void setItems(List<KanjiGroup> list) {
         this.list = list;
         Observable.from(list)
-                .map(m -> new ItemKanjiLevel(m.Title))
+                .map(this::fillImage)
                 .toList()
                 .map(ArrayList::new)
                 .subscribe(m -> adapter.setItems(m));
+    }
+
+    private KanjiGroup fillImage(KanjiGroup g) {
+        g.TitleImage = FetchData.ROOT_URL + "kanji/" + g.TitleImage;
+        g.Title = g.Title.toUpperCase();
+        return g;
     }
 
     private void initRecycler() {

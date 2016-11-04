@@ -1,14 +1,12 @@
 package com.melody.education.ui.kanji;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.melody.education.databinding.FragmentKanjiContentBinding;
 import com.melody.education.model.KanjiContent;
-import com.melody.education.net.FetchData;
 import com.melody.education.ui.BaseFragment;
 import com.melody.education.ui.kanji.viewmodel.KanjiContentModel;
 

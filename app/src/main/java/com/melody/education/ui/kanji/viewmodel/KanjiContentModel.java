@@ -92,7 +92,16 @@ public class KanjiContentModel {
                 .filter(m -> m.KanjiNumber.equals(content.KanjiNumber))
                 .toList()
                 .observeOn(AndroidSchedulers.mainThread())
-                .doOnNext(m -> wOn.set(Stream.of(m).map(n -> n.KanjiLook).filter(n -> n != null).reduce("", (x, y) -> String.format("%s,%s", x, y))))
+                .doOnNext(m -> wOn.set(Stream.of(m)
+                        .map(n -> n.KanjiLook)
+                        .filter(n -> n != null)
+                        .filter(n -> n.length() > 0)
+                        .reduce("", (x, y) -> {
+                            if (x.length() > 0)
+                                return String.format("%s,%s", x, y);
+                            else
+                                return y;
+                        })))
                 .map(ArrayList::new)
                 .subscribe(m -> adapterWordOn.setItems(m));
 
@@ -102,7 +111,16 @@ public class KanjiContentModel {
                 .filter(m -> m.KanjiNumber.equals(content.KanjiNumber))
                 .observeOn(AndroidSchedulers.mainThread())
                 .toList()
-                .doOnNext(m -> wKun.set(Stream.of(m).map(n -> n.KanjiLook).filter(n -> n != null).reduce("", (x, y) -> String.format("%s,%s", x, y))))
+                .doOnNext(m -> wKun.set(Stream.of(m)
+                        .map(n -> n.KanjiLook)
+                        .filter(n -> n != null)
+                        .filter(n -> n.length() > 0)
+                        .reduce("", (x, y) -> {
+                            if (x.length() > 0)
+                                return String.format("%s,%s", x, y);
+                            else
+                                return y;
+                        })))
                 .map(ArrayList::new)
                 .subscribe(m -> adapterWordKun.setItems(m));
     }
