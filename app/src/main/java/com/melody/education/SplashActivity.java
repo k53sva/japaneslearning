@@ -31,14 +31,15 @@ public class SplashActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
         fetchData = new FetchData(this);
-        String filePath = String.format("%s/%s", this.getExternalCacheDir(), DataHelper.DATABASE_KANJI);
+        getData();
+        /*String filePath = String.format("%s/%s", this.getExternalCacheDir(), DataHelper.DATABASE_KANJI);
         File file = new File(filePath);
         if (file.exists()) {
             delay(1, "database is exist");
             Log.e(TAG, filePath);
         } else {
             getData();
-        }
+        }*/
     }
 
     private void delay(int s, String message) {

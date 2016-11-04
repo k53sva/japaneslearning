@@ -88,6 +88,7 @@ public class TopicDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                         .load(item.ImageUrl)
                         .placeholder(R.drawable.album1)
                         .into(myViewHolder.ivDetail);
+                myViewHolder.expandableLayout.expand();
 
                 myViewHolder.tvAnh.setOnClickListener(v -> {
                     if (myViewHolder.expandableLayout.isExpanded())

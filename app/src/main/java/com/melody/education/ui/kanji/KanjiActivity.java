@@ -13,6 +13,7 @@ import android.view.MenuItem;
 import com.melody.education.R;
 import com.melody.education.model.KanjiGroup;
 import com.melody.education.utils.DataHelper;
+import com.viewpagerindicator.PageIndicator;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,9 +27,9 @@ import rx.schedulers.Schedulers;
  */
 
 public class KanjiActivity extends AppCompatActivity {
-    private TabLayout tabLayout;
     private ViewPager viewPager;
-    ViewPagerAdapter adapter;
+    private PageIndicator titleIndicator;
+    private ViewPagerAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +41,7 @@ public class KanjiActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         viewPager = (ViewPager) findViewById(R.id.viewpager);
         adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        tabLayout = (TabLayout) findViewById(R.id.tabs);
+        titleIndicator = (PageIndicator) findViewById(R.id.indicator);
         getData();
     }
 
@@ -52,7 +53,7 @@ public class KanjiActivity extends AppCompatActivity {
                 .toSortedList((p1, p2) -> p1.ChungID.compareToIgnoreCase(p2.ChungID))
                 .map(this::fillListKanji)
                 .flatMap(Observable::from)
-                .groupBy(m -> m.id / 10)
+                .groupBy(m -> m.id / 20)
                 //.publish(groups -> groups.map(g -> new Pair<>(g.getKey(), g.takeUntil(groups))))
                 .doOnNext(group -> {
                     KanjiLevelFragment fragment = new KanjiLevelFragment();
@@ -63,7 +64,7 @@ public class KanjiActivity extends AppCompatActivity {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(list -> {
                     viewPager.setAdapter(adapter);
-                    tabLayout.setupWithViewPager(viewPager);
+                    titleIndicator.setViewPager(viewPager);
                 }, Throwable::printStackTrace);
     }
 
