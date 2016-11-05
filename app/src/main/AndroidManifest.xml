@@ -30,7 +30,7 @@
         <activity android:name=".ui.UserSettingActivity" />
 
         <activity
-            android:name=".ui.TopicActivity"
+            android:name=".ui.topic.TopicDetailActivity"
             android:label="@string/activity_topics"
             android:theme="@style/AppTheme.NoActionBar1" />
 

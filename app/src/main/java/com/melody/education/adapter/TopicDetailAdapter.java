@@ -98,17 +98,7 @@ public class TopicDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
                 });
 
-
-                myViewHolder.ivPlay.setOnClickListener(v -> {
-                    if (mp.isPlaying()) {
-                        mp.stop();
-                        myViewHolder.ivPlay.setImageResource(R.drawable.playlistcore_ic_play_arrow_black);
-
-                    } else {
-                        playAudio(item.AudioUrl);
-                        myViewHolder.ivPlay.setImageResource(R.drawable.playlistcore_ic_pause_black);
-                    }
-                });
+                myViewHolder.ivPlay.setOnClickListener(v -> playAudio(item.AudioUrl, myViewHolder.ivPlay));
 
             }
         } else if (holder instanceof AdsHolder) {
@@ -126,18 +116,20 @@ public class TopicDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         return topics.size();
     }
 
-    private void playAudio(String name) {
+    private void playAudio(String name, ImageView view) {
         try {
+            view.setImageResource(R.drawable.playlistcore_ic_pause_black);
+            MediaPlayer mp = new MediaPlayer();
             mp.setDataSource(name);
             mp.setOnPreparedListener(m -> mp.start());
+            mp.setOnCompletionListener(m -> {
+                m.reset();
+                view.setImageResource(R.drawable.playlistcore_ic_play_arrow_black);
+            });
             mp.prepareAsync();
+
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    public void stopAudio() {
-        if (mp != null)
-            mp.stop();
     }
 }

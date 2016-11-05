@@ -34,6 +34,7 @@ import rx.schedulers.Schedulers;
  */
 
 public class KanjiContentModel {
+    public static final String FUNCTION_NAME = "kanji/";
     public static final String TAG = KanjiContentModel.class.getSimpleName();
     public final ObservableString name = new ObservableString();
     public final ObservableString image = new ObservableString();
@@ -61,7 +62,7 @@ public class KanjiContentModel {
     public KanjiContentModel(Context context, KanjiContent content) {
         this.context = context;
         helper = new DataHelper((Activity) context);
-        String image = FetchData.ROOT_URL + "kanji/" + content.KanjiIMG;
+        String image = FetchData.ROOT_URL + FUNCTION_NAME + content.KanjiIMG;
         onR.set(content.OnReading);
         kunR.set(content.KunReading);
         means.set(content.Meaning);
@@ -85,11 +86,22 @@ public class KanjiContentModel {
                 .subscribe(m -> adapter.setItems(m));
     }
 
+    private WordKunReading fillDataKun(WordKunReading kun) {
+        kun.Sound = FetchData.ROOT_URL + FUNCTION_NAME + kun.Sound;
+        return kun;
+    }
+
+    private WordOnReading fillDataOn(WordOnReading on) {
+        on.Sound = FetchData.ROOT_URL + FUNCTION_NAME + on.Sound;
+        return on;
+    }
+
     private void setWord(KanjiContent content) {
         helper.getData(DataHelper.DATABASE_KANJI, DataHelper.TABLE_WORK_ON_READING, WordOnReading[].class)
                 .subscribeOn(Schedulers.io())
                 .flatMap(Observable::from)
                 .filter(m -> m.KanjiNumber.equals(content.KanjiNumber))
+                .map(this::fillDataOn)
                 .toList()
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnNext(m -> wOn.set(Stream.of(m)
@@ -109,6 +121,7 @@ public class KanjiContentModel {
                 .subscribeOn(Schedulers.io())
                 .flatMap(Observable::from)
                 .filter(m -> m.KanjiNumber.equals(content.KanjiNumber))
+                .map(this::fillDataKun)
                 .observeOn(AndroidSchedulers.mainThread())
                 .toList()
                 .doOnNext(m -> wKun.set(Stream.of(m)

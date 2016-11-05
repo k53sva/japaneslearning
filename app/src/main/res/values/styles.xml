@@ -14,7 +14,7 @@
         <item name="android:windowTranslucentStatus" tools:targetApi="kitkat">true</item>
     </style>
 
-    <style name="AppTheme.NoActionBar1">
+    <style name="AppTheme.NoActionBar1" parent="AppTheme">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
     </style>

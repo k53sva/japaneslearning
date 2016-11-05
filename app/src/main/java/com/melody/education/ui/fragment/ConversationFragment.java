@@ -1,6 +1,7 @@
 package com.melody.education.ui.fragment;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
@@ -86,6 +87,7 @@ public class ConversationFragment extends BaseFragment implements PlaylistListen
                 .toList()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(m -> adapter.setModel(m));
+
     }
 
     public void onPause() {
@@ -116,7 +118,7 @@ public class ConversationFragment extends BaseFragment implements PlaylistListen
     public boolean onPlaybackStateChanged(@NonNull PlaylistServiceCore.PlaybackState playbackState) {
         switch (playbackState) {
             case STOPPED:
-                playlistManager.invokePausePlay();
+                playlistManager.play(0, true);
                 break;
 
             case RETRIEVING:

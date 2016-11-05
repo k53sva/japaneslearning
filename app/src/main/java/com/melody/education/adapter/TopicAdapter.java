@@ -14,6 +14,8 @@ import com.melody.education.model.Topic;
 import com.melody.education.model.TopicTitle;
 import com.melody.education.net.FetchData;
 import com.melody.education.ui.TopicActivity;
+import com.melody.education.ui.topic.TopicDetailActivity;
+import com.melody.education.ui.topic.TopicDetailViewModel;
 import com.melody.education.utils.DataHelper;
 import com.squareup.picasso.Picasso;
 
@@ -104,7 +106,7 @@ public class TopicAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                                     .into(myViewHolder.thumbnail)
                     );
             ((MyViewHolder) holder).body.setOnClickListener(v ->
-                    TopicActivity.launchActivity(mContext, topics.get(position).ChungID));
+                    TopicDetailActivity.launchActivity(mContext, topics.get(position).ChungID));
 
         } else if (holder instanceof AdsHolder) {
         } else if (holder instanceof HeaderViewHolder) {
