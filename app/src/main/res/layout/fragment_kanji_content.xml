@@ -147,6 +147,30 @@
                     android:layout_height="wrap_content"
                     android:background="@android:color/holo_orange_dark"
                     android:padding="@dimen/dimen_5dp"
+                    android:text="Examples"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+                <android.support.v7.widget.RecyclerView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="@dimen/dimen_5dp"
+                    android:layout_marginRight="@dimen/dimen_5dp"
+                    app:configuration="@{kanjiContent.configurationExample}" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:visibility="visible">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/holo_orange_dark"
+                    android:padding="@dimen/dimen_5dp"
                     android:text="Reference"
                     android:textSize="20sp"
                     android:textStyle="bold" />

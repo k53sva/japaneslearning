@@ -16,6 +16,7 @@ import com.melody.education.R;
 import com.melody.education.binding.RecyclerBindingAdapter;
 import com.melody.education.binding.fields.ObservableString;
 import com.melody.education.binding.fields.RecyclerConfiguration;
+import com.melody.education.model.Examples;
 import com.melody.education.model.KanjiContent;
 import com.melody.education.model.Reference;
 import com.melody.education.model.WordKunReading;
@@ -58,6 +59,10 @@ public class KanjiContentModel {
     private RecyclerBindingAdapter<WordKunReading>
             adapterWordKun = new RecyclerBindingAdapter<>(R.layout.item_kanji_word_kun, BR.wordKun, new ArrayList<>());
 
+    public final RecyclerConfiguration configurationExample = new RecyclerConfiguration();
+    private RecyclerBindingAdapter<Examples>
+            adapterExample = new RecyclerBindingAdapter<>(R.layout.item_kanji_example, BR.example, new ArrayList<>());
+
 
     public KanjiContentModel(Context context, KanjiContent content) {
         this.context = context;
@@ -94,6 +99,11 @@ public class KanjiContentModel {
     private WordOnReading fillDataOn(WordOnReading on) {
         on.Sound = FetchData.ROOT_URL + FUNCTION_NAME + on.Sound;
         return on;
+    }
+
+    private Examples fillExample(Examples ex) {
+        ex.Sound = FetchData.ROOT_URL + FUNCTION_NAME + ex.Sound;
+        return ex;
     }
 
     private void setWord(KanjiContent content) {
@@ -136,7 +146,20 @@ public class KanjiContentModel {
                         })))
                 .map(ArrayList::new)
                 .subscribe(m -> adapterWordKun.setItems(m));
+
+        helper.getData(DataHelper.DATABASE_KANJI, DataHelper.TABLE_EXAMPLES, Examples[].class)
+                .subscribeOn(Schedulers.io())
+                .flatMap(Observable::from)
+                .filter(m -> m.KanjiNumber.equals(content.KanjiNumber))
+                .map(this::fillExample)
+                .observeOn(AndroidSchedulers.mainThread())
+                .toList()
+                .map(ArrayList::new)
+                .subscribe(m -> adapterExample.setItems(m));
+
+
     }
+
 
     private void initRecycler() {
         LinearLayoutManager layout = new LinearLayoutManager(context);
@@ -152,6 +175,23 @@ public class KanjiContentModel {
 
         recyclerConfiguration.setAdapter(adapter);
         adapter.setOnItemClickListener((position, item) -> {
+        });
+    }
+
+    private void initRecyclerExample() {
+        LinearLayoutManager layout = new LinearLayoutManager(context);
+        configurationExample.setLayoutManager(layout);
+        configurationExample.setItemAnimator(new DefaultItemAnimator());
+        configurationExample.setItemDecoration(new RecyclerView.ItemDecoration() {
+            @Override
+            public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
+                super.getItemOffsets(outRect, view, parent, state);
+                outRect.top = dpToPx(context, 2);
+            }
+        });
+
+        configurationExample.setAdapter(adapterExample);
+        adapterExample.setOnItemClickListener((position, item) -> {
         });
     }
 
