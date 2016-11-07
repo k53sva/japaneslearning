@@ -1,5 +1,7 @@
 package com.melody.education.ui;
 
+import android.app.AlertDialog;
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.PersistableBundle;
@@ -59,5 +61,22 @@ public class BaseActivity extends AppCompatActivity {
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public void showAlertAction(Context c, AlertListener listener, String message) {
+        AlertDialog.Builder builder1 = new AlertDialog.Builder(c);
+        builder1.setMessage(message);
+        builder1.setCancelable(false);
+        builder1.setPositiveButton("OK", (dialog, id) -> {
+            listener.bundle(id);
+            dialog.dismiss();
+        });
+        AlertDialog alert11 = builder1.create();
+        alert11.show();
+    }
+
+    public interface AlertListener {
+        void bundle(int id);
+
     }
 }

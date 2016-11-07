@@ -99,7 +99,6 @@ public class ConversationAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                     .placeholder(R.drawable.album1)
                     .into(myViewHolder.thumbnail);
 
-            //Click item
             ((MyViewHolder) holder).body.setOnClickListener(v -> startLearningActivity(position));
 
         } else if (holder instanceof AdsHolder) {

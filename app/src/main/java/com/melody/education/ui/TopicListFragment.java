@@ -23,6 +23,7 @@ import java.util.ArrayList;
 
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 /**
  * Created by K53SV on 8/29/2016.
@@ -64,6 +65,7 @@ public class TopicListFragment extends BaseFragment {
     private void getData() {
         DataHelper helper = new DataHelper(getActivity());
         helper.getData(DataHelper.DATABASE_TOPICS, DataHelper.TABLE_TOPIC, Topic[].class)
+                .subscribeOn(Schedulers.io())
                 .flatMap(Observable::from)
                 .groupBy(m -> m.ChungID)
                 .flatMap(m -> m.distinctUntilChanged(n -> n.ChungID))

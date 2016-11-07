@@ -1,6 +1,7 @@
 package com.melody.education.ui.kanji;
 
 import android.os.Bundle;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -12,7 +13,6 @@ import android.view.MenuItem;
 import com.melody.education.R;
 import com.melody.education.model.KanjiGroup;
 import com.melody.education.utils.DataHelper;
-import com.viewpagerindicator.PageIndicator;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,7 +27,7 @@ import rx.schedulers.Schedulers;
 
 public class KanjiActivity extends AppCompatActivity {
     private ViewPager viewPager;
-    private PageIndicator titleIndicator;
+    private TabLayout tabLayout;
     private ViewPagerAdapter adapter;
 
     @Override
@@ -40,7 +40,7 @@ public class KanjiActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         viewPager = (ViewPager) findViewById(R.id.viewpager);
         adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        titleIndicator = (PageIndicator) findViewById(R.id.indicator);
+        tabLayout = (TabLayout) findViewById(R.id.tabs);
         getData();
     }
 
@@ -63,7 +63,7 @@ public class KanjiActivity extends AppCompatActivity {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(list -> {
                     viewPager.setAdapter(adapter);
-                    titleIndicator.setViewPager(viewPager);
+                    tabLayout.setupWithViewPager(viewPager);
                 }, Throwable::printStackTrace);
     }
 

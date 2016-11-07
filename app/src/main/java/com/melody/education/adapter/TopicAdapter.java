@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 
 public class TopicAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
@@ -96,6 +97,7 @@ public class TopicAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             myViewHolder.title.setText(item.LessonName.toUpperCase());
             myViewHolder.des.setText(item.Detail);
             dataHelper.getData(DataHelper.DATABASE_TOPICS, DataHelper.TABLE_TOPIC_TITLE, TopicTitle[].class)
+                    .subscribeOn(Schedulers.io())
                     .filter(m -> m.length > 0)
                     .map(m -> m[0])
                     .map(m -> FetchData.ROOT_URL + m.TopicImage)

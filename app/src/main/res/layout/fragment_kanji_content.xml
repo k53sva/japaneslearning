@@ -103,8 +103,8 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingLeft="@dimen/dimen_5dp"
                     android:background="@android:color/holo_purple"
+                    android:paddingLeft="@dimen/dimen_5dp"
                     android:text="@{kanjiContent.wOn}" />
 
                 <LinearLayout
@@ -140,7 +140,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
-                android:visibility="visible">
+                android:visibility="@{kanjiContent.isExample.get()}">
 
                 <TextView
                     android:layout_width="match_parent"

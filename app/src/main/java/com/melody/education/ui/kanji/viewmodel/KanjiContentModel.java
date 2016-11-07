@@ -14,6 +14,7 @@ import com.annimon.stream.Stream;
 import com.melody.education.BR;
 import com.melody.education.R;
 import com.melody.education.binding.RecyclerBindingAdapter;
+import com.melody.education.binding.fields.ObservableBoolean;
 import com.melody.education.binding.fields.ObservableString;
 import com.melody.education.binding.fields.RecyclerConfiguration;
 import com.melody.education.model.Examples;
@@ -44,6 +45,7 @@ public class KanjiContentModel {
     public final ObservableString means = new ObservableString();
     public final ObservableString wOn = new ObservableString();
     public final ObservableString wKun = new ObservableString();
+    public final ObservableBoolean isExample = new ObservableBoolean();
     private DataHelper helper;
     public KanjiContent content;
     private Context context;
@@ -72,8 +74,10 @@ public class KanjiContentModel {
         kunR.set(content.KunReading);
         means.set(content.Meaning);
         name.set(content.KanjiName);
+        isExample.set(false);
         this.image.set(image);
         initRecycler();
+        initRecyclerExample();
         initRecyclerWordOn();
         initRecyclerWordKun();
         setReference(content);
@@ -132,8 +136,8 @@ public class KanjiContentModel {
                 .flatMap(Observable::from)
                 .filter(m -> m.KanjiNumber.equals(content.KanjiNumber))
                 .map(this::fillDataKun)
-                .observeOn(AndroidSchedulers.mainThread())
                 .toList()
+                .observeOn(AndroidSchedulers.mainThread())
                 .doOnNext(m -> wKun.set(Stream.of(m)
                         .map(n -> n.KanjiLook)
                         .filter(n -> n != null)
@@ -152,8 +156,10 @@ public class KanjiContentModel {
                 .flatMap(Observable::from)
                 .filter(m -> m.KanjiNumber.equals(content.KanjiNumber))
                 .map(this::fillExample)
-                .observeOn(AndroidSchedulers.mainThread())
                 .toList()
+                .filter(m -> m.size() > 0)
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnNext(m -> isExample.set(true))
                 .map(ArrayList::new)
                 .subscribe(m -> adapterExample.setItems(m));
 

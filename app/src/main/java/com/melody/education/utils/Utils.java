@@ -2,6 +2,8 @@ package com.melody.education.utils;
 
 import android.content.Context;
 import android.content.res.Resources;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Environment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -10,8 +12,10 @@ import android.support.v4.app.FragmentTransaction;
 import android.util.TypedValue;
 
 import com.melody.education.R;
+import com.melody.education.net.FetchData;
 
 import java.io.File;
+import java.net.InetAddress;
 
 /**
  * Created by K53SV on 8/29/2016.
@@ -49,5 +53,12 @@ public class Utils {
         File from = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/kaic1/imagem.jpg");
         File to = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/kaic2/imagem.jpg");
         from.renameTo(to);
+    }
+
+    public static boolean isNetworkAvailable(Context context) {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 }

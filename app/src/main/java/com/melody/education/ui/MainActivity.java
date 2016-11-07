@@ -31,6 +31,7 @@ import com.miguelcatalan.materialsearchview.MaterialSearchView;
 
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private static final String TAG = MainActivity.class.getSimpleName();
@@ -56,6 +57,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         initNavigationView();
         Utils.startFragment(this, new ConversationListFragment());
         handleIntent(getIntent());
+    }
+
+    public interface test extends MaterialSearchView.SearchViewListener{
+
     }
 
     private void setupSearch() {
@@ -92,6 +97,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         DataHelper helper = new DataHelper(this);
         helper.getData(DataHelper.DATABASE_CONVERSATION, DataHelper.TABLE_CONVERSATION, Conversation[].class)
+                .subscribeOn(Schedulers.io())
                 .flatMap(Observable::from)
                 .filter(m -> m.Picture != null)
                 .filter(m -> m.Picture.length() > 0)

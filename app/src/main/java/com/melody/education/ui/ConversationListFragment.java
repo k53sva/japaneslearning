@@ -24,6 +24,7 @@ import java.util.ArrayList;
 
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 /**
  * Created by K53SV on 8/29/2016.
@@ -67,6 +68,7 @@ public class ConversationListFragment extends BaseFragment {
     private void getData() {
         DataHelper helper = new DataHelper(getActivity());
         helper.getData(DataHelper.DATABASE_CONVERSATION, DataHelper.TABLE_CONVERSATION, Conversation[].class)
+                .subscribeOn(Schedulers.io())
                 .flatMap(Observable::from)
                 .filter(m -> m.Picture != null)
                 .filter(m -> m.Picture.length() > 0)
