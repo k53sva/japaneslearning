@@ -53,6 +53,8 @@ public class Topic {
             mp.prepareAsync();
 
         } catch (IOException e) {
+            isLoading.set(false);
+            view.setVisibility(View.VISIBLE);
             e.printStackTrace();
         }
     }
