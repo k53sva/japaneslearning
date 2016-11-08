@@ -24,6 +24,7 @@ public class DataCache {
 
     private Map<Class<?>, Object> dataMap;
     public Map<Integer, Object> dataListMap = new HashMap<>();
+    private HashMap<Integer, Boolean> mapConversation = new HashMap<>();
 
     public <T> void push(T data) {
         if (dataMap == null) {
@@ -53,4 +54,15 @@ public class DataCache {
         T value = (T) dataListMap.get(position);
         return value;
     }
+
+    public boolean getCacheConversation(int id) {
+        if (mapConversation.get(id) != null) {
+            return mapConversation.get(id);
+        } else return false;
+    }
+
+    public void pushConversation(int id, boolean expand) {
+        mapConversation.put(id, expand);
+    }
+
 }

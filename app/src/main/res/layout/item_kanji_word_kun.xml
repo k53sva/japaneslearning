@@ -5,6 +5,8 @@
         <variable
             name="wordKun"
             type="com.melody.education.model.WordKunReading" />
+
+        <import type="android.view.View" />
     </data>
 
     <LinearLayout
@@ -31,7 +33,8 @@
                 android:layout_height="20dp"
                 android:layout_margin="@dimen/dimen_5dp"
                 android:onClick="@{(view) -> wordKun.playAudio(view)}"
-                android:src="@drawable/playlistcore_ic_play_arrow_black" />
+                android:src="@drawable/playlistcore_ic_play_arrow_black"
+                android:visibility="@{wordKun.isSound ? View.VISIBLE : View.GONE}" />
         </LinearLayout>
 
         <TextView

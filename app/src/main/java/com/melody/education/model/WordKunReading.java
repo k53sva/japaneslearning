@@ -19,6 +19,7 @@ public class WordKunReading {
     public String KanjiLook;
     public String English;
     public String Sound;
+    public boolean isSound = false;
 
     public void playAudio(View view) {
         try {

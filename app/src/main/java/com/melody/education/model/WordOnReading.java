@@ -19,6 +19,7 @@ public class WordOnReading {
     public String English;
     public String KanjiLook;
     public String Sound;
+    public boolean isSound = false;
 
     public void playAudio(View view) {
         try {

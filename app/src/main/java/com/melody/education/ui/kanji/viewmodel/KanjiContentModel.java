@@ -96,17 +96,32 @@ public class KanjiContentModel {
     }
 
     private WordKunReading fillDataKun(WordKunReading kun) {
-        kun.Sound = FetchData.ROOT_URL + FUNCTION_NAME + kun.Sound;
+        Observable.just(kun.Sound)
+                .filter(m -> m != null)
+                .filter(m -> m.length() > 0)
+                .doOnNext(m -> kun.isSound = true)
+                .subscribe(m -> kun.Sound = FetchData.ROOT_URL + FUNCTION_NAME + m);
+
         return kun;
     }
 
     private WordOnReading fillDataOn(WordOnReading on) {
-        on.Sound = FetchData.ROOT_URL + FUNCTION_NAME + on.Sound;
+        Observable.just(on.Sound)
+                .filter(m -> m != null)
+                .filter(m -> m.length() > 0)
+                .doOnNext(m -> on.isSound = true)
+                .subscribe(m -> on.Sound = FetchData.ROOT_URL + FUNCTION_NAME + m);
+
         return on;
     }
 
     private Examples fillExample(Examples ex) {
-        ex.Sound = FetchData.ROOT_URL + FUNCTION_NAME + ex.Sound;
+        Observable.just(ex.Sound)
+                .filter(m -> m != null)
+                .filter(m -> m.length() > 0)
+                .doOnNext(m -> ex.isSound = true)
+                .subscribe(m -> ex.Sound = FetchData.ROOT_URL + FUNCTION_NAME + m);
+
         return ex;
     }
 

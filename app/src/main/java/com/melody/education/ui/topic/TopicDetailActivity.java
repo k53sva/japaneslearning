@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.MenuItem;
 
+import com.annimon.stream.Stream;
 import com.melody.education.R;
 import com.melody.education.databinding.ActivityTopicsBinding;
 import com.melody.education.model.Topic;
@@ -66,7 +67,12 @@ public class TopicDetailActivity extends BaseActivity {
 
     private Topic fillData(Topic t) {
         t.ImageUrl = String.format("%s%s", FetchData.TOPICS_URL, t.ImageUrl);
-        t.AudioUrl = String.format("%s%s", FetchData.TOPICS_URL, t.AudioUrl);
+        Observable.just(t.AudioUrl)
+                .filter(m -> m != null)
+                .filter(m -> m.length() > 0)
+                .doOnNext(m -> t.isSound = true)
+                .subscribe(m -> t.AudioUrl = String.format("%s%s", FetchData.TOPICS_URL, m));
+
         return t;
     }
 

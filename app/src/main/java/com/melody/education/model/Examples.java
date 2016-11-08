@@ -20,6 +20,7 @@ public class Examples {
     public String Translate;
     public String KanjiLook;
     public String Sound;
+    public boolean isSound = false;
 
     public void playAudio(View view) {
         try {

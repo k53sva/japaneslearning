@@ -10,10 +10,12 @@ import android.widget.TextView;
 
 import com.melody.education.R;
 import com.melody.education.model.Conversation;
+import com.melody.education.utils.DataCache;
 
 import net.cachapa.expandablelayout.ExpandableLayout;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class ConversationFragmentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
@@ -75,12 +77,20 @@ public class ConversationFragmentAdapter extends RecyclerView.Adapter<RecyclerVi
                 myViewHolder.tvEnglish.setText(item.Anh);
                 myViewHolder.tvJapanese.setText(item.Nhat);
                 myViewHolder.tvRomaji.setText(item.Romaji);
+                boolean expand = DataCache.getInstance().getCacheConversation(item.id);
+                if (expand)
+                    myViewHolder.expandableLayout.expand();
+                else
+                    myViewHolder.expandableLayout.collapse();
 
                 myViewHolder.tvEnglish.setOnClickListener(v -> {
-                    if (myViewHolder.expandableLayout.isExpanded())
+                    if (myViewHolder.expandableLayout.isExpanded()) {
                         myViewHolder.expandableLayout.collapse();
-                    else
+                        DataCache.getInstance().pushConversation(item.id, false);
+                    } else {
                         myViewHolder.expandableLayout.expand();
+                        DataCache.getInstance().pushConversation(item.id, true);
+                    }
 
                 });
 

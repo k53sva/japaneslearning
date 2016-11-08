@@ -5,6 +5,8 @@
         <variable
             name="wordOn"
             type="com.melody.education.model.WordOnReading" />
+
+        <import type="android.view.View" />
     </data>
 
     <LinearLayout
@@ -31,7 +33,8 @@
                 android:layout_height="20dp"
                 android:layout_margin="@dimen/dimen_5dp"
                 android:onClick="@{(view) -> wordOn.playAudio(view)}"
-                android:src="@drawable/playlistcore_ic_play_arrow_black" />
+                android:src="@drawable/playlistcore_ic_play_arrow_black"
+                android:visibility="@{wordOn.isSound ? View.VISIBLE : View.GONE}" />
         </LinearLayout>
 
         <TextView
