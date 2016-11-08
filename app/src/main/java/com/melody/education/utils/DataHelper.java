@@ -21,6 +21,7 @@ public class DataHelper {
     public static final String DATABASE_CONVERSATION = "conversation.sqlite";
     public static final String DATABASE_TOPICS = "topics.sqlite";
     public static final String DATABASE_KANJI = "kanji.sqlite";
+    public static final String DATABASE_LESSON = "Lesson.sqlite";
 
     public static final String TABLE_VOCABULARY = "Vocabulary";
     public static final String TABLE_NOTES = "Notes";
@@ -30,9 +31,14 @@ public class DataHelper {
     public static final String TABLE_EXAMPLES = "Examples";
     public static final String TABLE_KANJI_CONTENT = "KanjiContent";
     public static final String TABLE_KANJI_GROUP = "KanjiGroup";
-    public static final String TABLE_REFRENCE = "Reference";
+    public static final String TABLE_REFERENCE = "Reference";
     public static final String TABLE_WORK_KUN_READING = "WordKunReading";
     public static final String TABLE_WORK_ON_READING = "WordOnReading";
+    public static final String TABLE_LESSON_TITLE = "LessonTitle";
+    public static final String TABLE_DIAGLOGUE_1 = "Dialogue1";
+    public static final String TABLE_DIAGLOGUE_2 = "Dialogue2";
+    public static final String TABLE_SHORTQUIZ = "ShortQuiz";
+    public static final String TABLE_KEY_SENTENCES = "KeySentences";
 
 
     private Activity activity;

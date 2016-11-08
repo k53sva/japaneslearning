@@ -85,7 +85,7 @@ public class KanjiContentModel {
     }
 
     public void setReference(KanjiContent content) {
-        helper.getData(DataHelper.DATABASE_KANJI, DataHelper.TABLE_REFRENCE, Reference[].class)
+        helper.getData(DataHelper.DATABASE_KANJI, DataHelper.TABLE_REFERENCE, Reference[].class)
                 .subscribeOn(Schedulers.io())
                 .flatMap(Observable::from)
                 .filter(m -> m.KanjiNumber.equals(content.KanjiNumber))
