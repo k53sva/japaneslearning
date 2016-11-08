@@ -22,9 +22,10 @@
 
         <TextView
             android:id="@+id/tv_title"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/backdrop_title"
+            android:gravity="center"
             android:textColor="@color/colorPrimary"
             android:textSize="@dimen/lesson_list_title" />
 
@@ -33,7 +34,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/backdrop_subtitle"
-            android:textColor="@android:color/white"
             android:textSize="@dimen/lesson_list_des" />
 
     </LinearLayout>

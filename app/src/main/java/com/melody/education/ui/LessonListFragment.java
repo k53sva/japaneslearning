@@ -15,12 +15,17 @@ import android.view.ViewGroup;
 import com.melody.education.R;
 import com.melody.education.adapter.LessonAdapter;
 import com.melody.education.model.Lesson;
+import com.melody.education.model.LessonTitle;
+import com.melody.education.net.FetchData;
+import com.melody.education.utils.DataHelper;
 import com.melody.education.utils.GridSpacingItemDecoration;
 import com.melody.education.utils.Utils;
 
 import java.util.ArrayList;
 
 import rx.Observable;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 /**
  * Created by K53SV on 8/29/2016.
@@ -61,9 +66,19 @@ public class LessonListFragment extends BaseFragment {
     }
 
     private void getData() {
-        Observable.range(0, 9)
-                .map(m -> new Lesson(String.valueOf(m), String.valueOf(m)))
+        DataHelper dataHelper = new DataHelper(getActivity());
+        dataHelper.getData(DataHelper.DATABASE_LESSON, DataHelper.TABLE_LESSON_TITLE, LessonTitle[].class)
+                .subscribeOn(Schedulers.io())
+                .flatMap(Observable::from)
+                .map(this::fillData)
                 .toList()
+                .map(ArrayList::new)
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(m -> adapter.setModel(m));
+    }
+
+    private LessonTitle fillData(LessonTitle title) {
+        title.Picture = FetchData.ROOT_URL + "Lesson/" + title.Picture;
+        return title;
     }
 }

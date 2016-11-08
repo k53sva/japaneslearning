@@ -124,14 +124,49 @@ public class FetchData {
                 });
     }
 
+    private Observable<Boolean> getDataLesson() {
+        return Observable.create(
+                subscriber -> {
+                    ThinDownloadManager downloadManager = new ThinDownloadManager(4);
+                    String url = FetchData.PATH_DB + DataHelper.DATABASE_LESSON;
+                    Uri downloadUri = Uri.parse(url);
+                    Uri destinationUri = Uri.parse(String.format("%s/%s", mContext.getExternalCacheDir(), DataHelper.DATABASE_LESSON));
+                    DownloadRequest downloadRequest = new DownloadRequest(downloadUri)
+                            .setRetryPolicy(new DefaultRetryPolicy())
+                            .setDestinationURI(destinationUri).setPriority(DownloadRequest.Priority.HIGH)
+                            .setDownloadListener(new DownloadStatusListener() {
+                                @Override
+                                public void onDownloadComplete(int id) {
+                                    subscriber.onNext(true);
+                                    subscriber.onCompleted();
+                                }
+
+                                @Override
+                                public void onDownloadFailed(int id, int errorCode, String errorMessage) {
+                                    subscriber.onNext(false);
+                                    subscriber.onCompleted();
+                                }
+
+                                @Override
+                                public void onProgress(int id, long totalBytes, long downlaodedBytes, int progress) {
+                                }
+                            });
+
+                    downloadManager.add(downloadRequest);
+                });
+    }
+
     public Observable<HashMap<Integer, Boolean>> getAllData() {
-        return Observable.zip(getDataConversation().subscribeOn(Schedulers.newThread()),
-                getDataTopic().subscribeOn(Schedulers.newThread()),
-                getDataKanji().subscribeOn(Schedulers.newThread()), (d1, d2, d3) -> {
+        return Observable.zip(getDataConversation().subscribeOn(Schedulers.io()),
+                getDataTopic().subscribeOn(Schedulers.io()),
+                getDataKanji().subscribeOn(Schedulers.io()),
+                getDataLesson().subscribeOn(Schedulers.io()),
+                (d1, d2, d3, d4) -> {
                     HashMap<Integer, Boolean> map = new HashMap<>();
                     map.put(0, d1);
                     map.put(1, d2);
                     map.put(2, d3);
+                    map.put(2, d4);
                     return map;
                 });
     }

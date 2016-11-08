@@ -10,7 +10,9 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.annimon.stream.Optional;
 import com.melody.education.R;
+import com.melody.education.model.LessonTitle;
 import com.melody.education.ui.fragment.ConversationFragment;
 import com.melody.education.model.Lesson;
 import com.melody.education.ui.ConversationActivity;
@@ -25,7 +27,7 @@ public class LessonAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     private static final int TYPE_ITEM = 1;
     private static final int TYPE_HEADER = 2;
     private Context mContext;
-    public static List<Lesson> lessonArrayList = new ArrayList<>();
+    public static List<LessonTitle> lessonArrayList = new ArrayList<>();
 
     private class MyViewHolder extends RecyclerView.ViewHolder {
         public TextView title, des;
@@ -55,12 +57,12 @@ public class LessonAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         }
     }
 
-    public LessonAdapter(Context mContext, List<Lesson> lessonArrayList) {
+    public LessonAdapter(Context mContext, List<LessonTitle> lessonArrayList) {
         this.mContext = mContext;
         this.lessonArrayList = lessonArrayList;
     }
 
-    public void setModel(List<Lesson> lessonArrayList) {
+    public void setModel(List<LessonTitle> lessonArrayList) {
         this.lessonArrayList = lessonArrayList;
         notifyDataSetChanged();
     }
@@ -85,12 +87,11 @@ public class LessonAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     public void onBindViewHolder(final RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof MyViewHolder) {
             MyViewHolder myViewHolder = (MyViewHolder) holder;
-            Lesson item = lessonArrayList.get(position);
-            myViewHolder.title.setText(item.Anh);
+            LessonTitle item = lessonArrayList.get(position);
+            myViewHolder.title.setText(item.Title);
             myViewHolder.des.setText(item.Detail);
-
             Picasso.with(mContext)
-                    .load(R.drawable.album4)
+                    .load(item.Picture)
                     .placeholder(R.drawable.album1)
                     .into(myViewHolder.thumbnail);
 
