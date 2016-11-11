@@ -1,0 +1,19 @@
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+        <variable
+            name="notes"
+            type="com.melody.education.model.Notes" />
+    </data>
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/dimen_5dp"
+        android:layout_marginLeft="@dimen/dimen_5dp"
+        android:text="@{notes.v}" />
+
+
+</layout>

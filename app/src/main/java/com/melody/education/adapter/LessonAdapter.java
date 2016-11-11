@@ -1,7 +1,6 @@
 package com.melody.education.adapter;
 
 import android.content.Context;
-import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,7 +11,6 @@ import android.widget.TextView;
 
 import com.melody.education.R;
 import com.melody.education.model.LessonTitle;
-import com.melody.education.ui.fragment.ConversationFragment;
 import com.melody.education.ui.lesson.LessonActivity;
 import com.squareup.picasso.Picasso;
 

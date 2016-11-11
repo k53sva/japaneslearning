@@ -55,14 +55,30 @@ public class LessonActivity extends AppCompatActivity {
 
     private void getData() {
         tabLayout.addTab(tabLayout.newTab().setText("Dialog"));
+        tabLayout.addTab(tabLayout.newTab().setText("Key Sentences"));
+        tabLayout.addTab(tabLayout.newTab().setText("Vocabulary"));
+        tabLayout.addTab(tabLayout.newTab().setText("Notes"));
+
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 int position = tab.getPosition();
                 switch (position) {
                     case 0:
-                        DialogFragment fragment =  DialogFragment.newInstance(ChungID, title, image);
+                        DialogFragment fragment = DialogFragment.newInstance(ChungID, title, image);
                         Utils.startFragment(LessonActivity.this, fragment);
+                        break;
+                    case 1:
+                        KeySentencesFragment key = KeySentencesFragment.newInstance(ChungID);
+                        Utils.startFragment(LessonActivity.this, key);
+                        break;
+                    case 2:
+                        LessonVocabularyFragment voca = LessonVocabularyFragment.newInstance(ChungID);
+                        Utils.startFragment(LessonActivity.this, voca);
+                        break;
+                    case 3:
+                        NotesFragment note = NotesFragment.newInstance(ChungID);
+                        Utils.startFragment(LessonActivity.this, note);
                         break;
                     default:
                         break;

@@ -11,6 +11,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
 import com.melody.education.R;
 import com.melody.education.adapter.ConversationAdapter;
@@ -33,11 +34,13 @@ public class ConversationListFragment extends BaseFragment {
     private static final String TAG = ConversationListFragment.class.getSimpleName();
     private ConversationAdapter adapter;
     private SwipeRefreshLayout mSwipeRefreshLayout;
+    private ProgressBar progressBar;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.content_main, container, false);
         RecyclerView recyclerView = (RecyclerView) v.findViewById(R.id.recycler_view);
+        progressBar = (ProgressBar) v.findViewById(R.id.loading);
         RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(getActivity(), 1);
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.addItemDecoration(new GridSpacingItemDecoration(2, Utils.dpToPx(getActivity(), 0), true));
@@ -58,6 +61,12 @@ public class ConversationListFragment extends BaseFragment {
     }
 
     void refreshItems() {
+        new FetchData(getActivity()).getDataConversation()
+                .doOnNext(m -> onItemsLoadComplete())
+                .filter(m -> m)
+                .subscribe(m -> {
+                    getData();
+                });
         new Handler().postDelayed(this::onItemsLoadComplete, 5000);
     }
 
@@ -66,6 +75,7 @@ public class ConversationListFragment extends BaseFragment {
     }
 
     private void getData() {
+        progressBar.setVisibility(View.VISIBLE);
         DataHelper helper = new DataHelper(getActivity());
         helper.getData(DataHelper.DATABASE_CONVERSATION, DataHelper.TABLE_CONVERSATION, Conversation[].class)
                 .subscribeOn(Schedulers.io())
@@ -75,6 +85,7 @@ public class ConversationListFragment extends BaseFragment {
                 .map(this::fillAudio)
                 .toList()
                 .observeOn(AndroidSchedulers.mainThread())
+                .doOnNext(m -> progressBar.setVisibility(View.GONE))
                 .subscribe(m -> adapter.setModel(m));
     }
 
