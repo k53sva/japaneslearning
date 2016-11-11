@@ -223,7 +223,7 @@ public class ConversationFragment extends BaseFragment implements PlaylistListen
     }
 
     private void updatePlayPauseImage(boolean isPlaying) {
-        int resId = isPlaying ? R.drawable.playlistcore_ic_pause_white : R.drawable.playlistcore_ic_play_arrow_white;
+        int resId = isPlaying ? R.drawable.playlistcore_ic_pause_black : R.drawable.playlistcore_ic_play_arrow_black;
         playPauseButton.setImageResource(resId);
     }
 

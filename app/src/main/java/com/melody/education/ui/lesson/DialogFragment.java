@@ -33,7 +33,7 @@ public class DialogFragment extends BaseFragment {
     public static final String EXTRA_INDEX = "EXTRA_INDEX";
     private ViewPagerAdapter adapter;
     private ViewPager mViewPager;
-    PageIndicator titleIndicator;
+    private PageIndicator titleIndicator;
     private View mPlayMedia;
     private View mPauseMedia;
     private SeekBar mMediaSeekBar;
