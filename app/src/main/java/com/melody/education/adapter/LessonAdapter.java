@@ -10,12 +10,9 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.annimon.stream.Optional;
 import com.melody.education.R;
 import com.melody.education.model.LessonTitle;
 import com.melody.education.ui.fragment.ConversationFragment;
-import com.melody.education.model.Lesson;
-import com.melody.education.ui.ConversationActivity;
 import com.melody.education.ui.lesson.LessonActivity;
 import com.squareup.picasso.Picasso;
 
@@ -97,7 +94,7 @@ public class LessonAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                     .into(myViewHolder.thumbnail);
 
             //Click item
-            ((MyViewHolder) holder).body.setOnClickListener(v -> startLearningActivity(position));
+            ((MyViewHolder) holder).body.setOnClickListener(v -> startLearningActivity(item));
 
         } else if (holder instanceof AdsHolder) {
             //cast holder to VHHeader and set data for header.
@@ -121,9 +118,7 @@ public class LessonAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         return lessonArrayList.size();
     }
 
-    private void startLearningActivity(int selectedIndex) {
-        Intent intent = new Intent(mContext, LessonActivity.class);
-        intent.putExtra(ConversationFragment.EXTRA_INDEX, selectedIndex);
-        mContext.startActivity(intent);
+    private void startLearningActivity(LessonTitle item) {
+        LessonActivity.launchActivity(mContext, "Ch1", item.Title, item.Picture);
     }
 }

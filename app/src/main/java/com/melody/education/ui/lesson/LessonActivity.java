@@ -1,5 +1,7 @@
 package com.melody.education.ui.lesson;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 
@@ -8,6 +10,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
 import com.melody.education.R;
+import com.melody.education.ui.TopicActivity;
 import com.melody.education.utils.Utils;
 
 /**
@@ -15,11 +18,30 @@ import com.melody.education.utils.Utils;
  */
 
 public class LessonActivity extends AppCompatActivity {
+    public static final String EXTRA_INDEX = "EXTRA_INDEX";
+    public static final String EXTRA_TITLE = "EXTRA_TITLE";
+    public static final String EXTRA_IMAGE = "EXTRA_IMAGE";
     private TabLayout tabLayout;
+    private String ChungID;
+    private String title;
+    private String image;
+
+    public static void launchActivity(Context context, String ChungId, String title, String image) {
+        Intent intent = new Intent(context, LessonActivity.class);
+        intent.putExtra(EXTRA_INDEX, ChungId);
+        intent.putExtra(EXTRA_TITLE, title);
+        intent.putExtra(EXTRA_IMAGE, image);
+        context.startActivity(intent);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (getIntent().getExtras() != null) {
+            ChungID = getIntent().getExtras().getString(EXTRA_INDEX);
+            title = getIntent().getExtras().getString(EXTRA_TITLE);
+            image = getIntent().getExtras().getString(EXTRA_IMAGE);
+        }
         setContentView(R.layout.activity_lesson);
         Toolbar toolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(toolbar);
@@ -27,7 +49,7 @@ public class LessonActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         tabLayout = (TabLayout) findViewById(R.id.tabs);
         getData();
-        DialogFragment fragment = DialogFragment.newInstance("Ch1");
+        DialogFragment fragment = DialogFragment.newInstance(ChungID, title, image);
         Utils.startFragment(LessonActivity.this, fragment);
     }
 
@@ -39,7 +61,7 @@ public class LessonActivity extends AppCompatActivity {
                 int position = tab.getPosition();
                 switch (position) {
                     case 0:
-                        DialogFragment fragment = DialogFragment.newInstance("Ch1");
+                        DialogFragment fragment =  DialogFragment.newInstance(ChungID, title, image);
                         Utils.startFragment(LessonActivity.this, fragment);
                         break;
                     default:

@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
     android:fitsSystemWindows="true">
 
     <com.viewpagerindicator.CirclePageIndicator
@@ -24,6 +25,13 @@
         android:layout_above="@+id/player"
         android:layout_marginTop="30dp" />
 
+    <ProgressBar
+        android:id="@+id/audio_player_loading"
+        style="?android:progressBarStyleLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true" />
+
     <LinearLayout
         android:id="@+id/player"
         android:layout_width="match_parent"
@@ -34,94 +42,75 @@
         android:orientation="vertical"
         android:paddingLeft="4dp">
 
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:gravity="center_vertical">
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
 
-            <FrameLayout
-                android:id="@+id/play_pause_layout"
-                android:layout_width="50dp"
-                android:layout_height="match_parent"
-                android:layout_alignParentLeft="true"
-                android:paddingBottom="5dp"
-                android:paddingRight="5dp"
-                android:paddingTop="5dp">
+            <ImageButton
+                android:id="@+id/audio_player_play_pause"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:scaleType="centerInside"
+                android:src="@drawable/playlistcore_ic_play_arrow_black"
+                tools:ignore="ContentDescription" />
 
-                <ImageView
-                    android:id="@+id/play"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="6dp"
-                    android:src="@drawable/btn_play" />
-
-                <ImageView
-                    android:id="@+id/pause"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="6dp"
-                    android:src="@drawable/btn_pause"
-                    android:visibility="gone" />
-            </FrameLayout>
-
-            <FrameLayout
+            <RelativeLayout
                 android:id="@+id/seekbar_layout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_toRightOf="@id/play_pause_layout"
+                android:orientation="vertical"
                 android:paddingBottom="5dp"
                 android:paddingRight="5dp"
                 android:paddingTop="5dp">
-
-                <SeekBar
-                    android:id="@+id/media_seekbar"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical" />
 
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="right|top"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_gravity="end"
                     android:orientation="horizontal"
                     android:paddingBottom="5dp"
                     android:paddingRight="10dp"
                     android:paddingTop="5dp">
 
+
                     <TextView
-                        android:id="@+id/run_time"
+                        android:id="@+id/audio_player_position"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:ellipsize="end"
-                        android:inputType="text"
-                        android:text="00:00"
-                        android:textColor="@android:color/darker_gray"
-                        android:textSize="11sp" />
+                        android:layout_marginLeft="10dp"
+                        tools:ignore="RtlHardcoded"
+                        tools:text="00:00" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
                         android:ellipsize="end"
-                        android:inputType="text"
-                        android:text=" / "
-                        android:textColor="@android:color/darker_gray"
-                        android:textSize="11sp" />
+                        android:text=" / " />
 
                     <TextView
-                        android:id="@+id/total_time"
+                        android:id="@+id/audio_player_duration"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:ellipsize="end"
-                        android:inputType="text"
-                        android:text="00:00"
-                        android:textColor="@android:color/darker_gray"
-                        android:textSize="11sp" />
+                        android:layout_marginRight="10dp"
+                        tools:ignore="RelativeOverlap,RtlHardcoded"
+                        tools:text="00:00" />
                 </LinearLayout>
-            </FrameLayout>
-        </RelativeLayout>
+
+                <SeekBar
+                    android:id="@+id/audio_player_seek"
+                    style="?android:seekBarStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true" />
+
+            </RelativeLayout>
+        </LinearLayout>
     </LinearLayout>
+
 
 </RelativeLayout>
