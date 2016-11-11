@@ -78,16 +78,6 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1" />
 
-            <ImageButton
-                android:id="@+id/audio_player_previous"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@android:color/transparent"
-                android:scaleType="centerInside"
-                android:src="@drawable/playlistcore_ic_skip_previous_white"
-                android:visibility="invisible"
-                tools:ignore="ContentDescription"
-                tools:visibility="gone" />
 
             <android.support.v4.widget.Space
                 android:layout_width="44dp"
@@ -106,16 +96,6 @@
                 android:layout_width="44dp"
                 android:layout_height="match_parent" />
 
-            <ImageButton
-                android:id="@+id/audio_player_next"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@android:color/transparent"
-                android:scaleType="centerInside"
-                android:src="@drawable/playlistcore_ic_skip_next_white"
-                android:visibility="invisible"
-                tools:ignore="ContentDescription"
-                tools:visibility="gone" />
 
             <android.support.v4.widget.Space
                 android:layout_width="0dp"

@@ -49,9 +49,7 @@ public class ConversationFragment extends BaseFragment implements PlaylistListen
     public static final int PLAYLIST_ID = 2;
 
     private ProgressBar loadingBar;
-    private ImageButton previousButton;
     private ImageButton playPauseButton;
-    private ImageButton nextButton;
     private TextView currentPositionView;
     private TextView durationView;
     private SeekBar seekBar;
@@ -108,9 +106,6 @@ public class ConversationFragment extends BaseFragment implements PlaylistListen
     @Override
     public boolean onPlaylistItemChanged(MediaItem currentItem, boolean hasNext, boolean hasPrevious) {
         shouldSetDuration = true;
-        nextButton.setEnabled(hasNext);
-        previousButton.setEnabled(hasPrevious);
-
         return true;
     }
 
@@ -194,9 +189,7 @@ public class ConversationFragment extends BaseFragment implements PlaylistListen
         currentPositionView = (TextView) view.findViewById(R.id.audio_player_position);
         durationView = (TextView) view.findViewById(R.id.audio_player_duration);
         seekBar = (SeekBar) view.findViewById(R.id.audio_player_seek);
-        previousButton = (ImageButton) view.findViewById(R.id.audio_player_previous);
         playPauseButton = (ImageButton) view.findViewById(R.id.audio_player_play_pause);
-        nextButton = (ImageButton) view.findViewById(R.id.audio_player_next);
 
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view_conversation);
         adapter = new ConversationFragmentAdapter(getActivity(), new ArrayList<>());
@@ -236,20 +229,10 @@ public class ConversationFragment extends BaseFragment implements PlaylistListen
 
     public void loadCompleted() {
         playPauseButton.setVisibility(View.VISIBLE);
-        previousButton.setVisibility(View.GONE);
-        nextButton.setVisibility(View.GONE);
-
         loadingBar.setVisibility(View.INVISIBLE);
 
     }
 
-    public void restartLoading() {
-        playPauseButton.setVisibility(View.GONE);
-        previousButton.setVisibility(View.INVISIBLE);
-        nextButton.setVisibility(View.GONE);
-
-        loadingBar.setVisibility(View.VISIBLE);
-    }
 
     private void setDuration(long duration) {
         seekBar.setMax((int) duration);
@@ -258,10 +241,7 @@ public class ConversationFragment extends BaseFragment implements PlaylistListen
 
     private void setupListeners() {
         seekBar.setOnSeekBarChangeListener(new SeekBarChanged());
-
-        previousButton.setOnClickListener(v -> playlistManager.invokePrevious());
         playPauseButton.setOnClickListener(v -> playlistManager.invokePausePlay());
-        nextButton.setOnClickListener(v -> playlistManager.invokeNext());
     }
 
     private void retrieveExtras() {

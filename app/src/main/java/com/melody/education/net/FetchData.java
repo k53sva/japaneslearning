@@ -2,6 +2,7 @@ package com.melody.education.net;
 
 import android.content.Context;
 import android.net.Uri;
+import android.util.Log;
 
 import com.melody.education.utils.DataHelper;
 import com.thin.downloadmanager.DefaultRetryPolicy;
@@ -20,7 +21,7 @@ import rx.schedulers.Schedulers;
 public class FetchData {
     public static final String ROOT_URL = "http://ahaheaven.esy.es/";
     public static final String TOPICS_URL = String.format("%stopics/", ROOT_URL);
-    private static final String PATH_DB = String.format("%sjapanesedb/", ROOT_URL);
+    public static final String PATH_DB = String.format("%sjapanesedb/", ROOT_URL);
 
     private Context mContext;
 
@@ -28,7 +29,7 @@ public class FetchData {
         this.mContext = mContext;
     }
 
-    private Observable<Boolean> getDataConversation() {
+    public Observable<Boolean> getDataConversation() {
         return Observable.create(
                 subscriber -> {
                     ThinDownloadManager downloadManager = new ThinDownloadManager(4);
@@ -60,7 +61,41 @@ public class FetchData {
                 });
     }
 
-    private Observable<Boolean> getDataTopic() {
+    public Observable<Uri> getAudio(String path, String name) {
+        return Observable.create(
+                subscriber -> {
+                    ThinDownloadManager downloadManager = new ThinDownloadManager(4);
+                    String url = "http://ahaheaven.esy.es/conversation/le10_v_scall.mp3";
+                    Uri downloadUri = Uri.parse(url);
+                    Uri destinationUri = Uri.parse(String.format("%s/%s", mContext.getExternalCacheDir(), name));
+                    DownloadRequest downloadRequest = new DownloadRequest(downloadUri)
+                            .setRetryPolicy(new DefaultRetryPolicy())
+                            .setDestinationURI(destinationUri).setPriority(DownloadRequest.Priority.HIGH)
+                            .setDownloadListener(new DownloadStatusListener() {
+                                @Override
+                                public void onDownloadComplete(int id) {
+                                    subscriber.onNext(destinationUri);
+                                    subscriber.onCompleted();
+                                    Log.e("TAG", destinationUri.toString());
+                                }
+
+                                @Override
+                                public void onDownloadFailed(int id, int errorCode, String errorMessage) {
+                                    subscriber.onNext(null);
+                                    subscriber.onCompleted();
+                                    Log.e("TAG", "ERROR");
+                                }
+
+                                @Override
+                                public void onProgress(int id, long totalBytes, long bytes, int progress) {
+                                }
+                            });
+
+                    downloadManager.add(downloadRequest);
+                });
+    }
+
+    public Observable<Boolean> getDataTopic() {
         return Observable.create(
                 subscriber -> {
                     ThinDownloadManager downloadManager = new ThinDownloadManager(4);
@@ -92,7 +127,7 @@ public class FetchData {
                 });
     }
 
-    private Observable<Boolean> getDataKanji() {
+    public Observable<Boolean> getDataKanji() {
         return Observable.create(
                 subscriber -> {
                     ThinDownloadManager downloadManager = new ThinDownloadManager(4);
@@ -124,7 +159,7 @@ public class FetchData {
                 });
     }
 
-    private Observable<Boolean> getDataLesson() {
+    public Observable<Boolean> getDataLesson() {
         return Observable.create(
                 subscriber -> {
                     ThinDownloadManager downloadManager = new ThinDownloadManager(4);

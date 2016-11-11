@@ -51,6 +51,11 @@
             android:label="@string/activity_kanji"
             android:theme="@style/AppTheme.NoActionBar1" />
 
+        <activity
+            android:name=".ui.lesson.LessonActivity"
+            android:label="@string/activity_kanji"
+            android:theme="@style/AppTheme.NoActionBar1" />
+
 
         <service
             android:name=".service.MediaService"

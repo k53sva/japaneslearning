@@ -55,7 +55,7 @@ dependencies {
     compile 'com.squareup.picasso:picasso:2.5.2'
     compile 'com.devbrackets.android:playlistcore:1.1.1'
     compile 'com.google.code.gson:gson:2.6.2'
-    compile 'com.mani:ThinDownloadManager:1.2.5'
+    compile 'com.mani:ThinDownloadManager:1.2.7'
     compile 'com.jakewharton:butterknife:8.4.0'
     compile 'com.android.support:support-v4:25.0.0'
     compile 'com.readystatesoftware.systembartint:systembartint:1.0.3'
@@ -63,6 +63,7 @@ dependencies {
     compile 'net.cachapa.expandablelayout:expandablelayout:2.2'
     compile 'com.amulyakhare:com.amulyakhare.textdrawable:1.0.1'
     compile 'com.miguelcatalan:materialsearchview:1.4.0'
+    compile 'net.the4thdimension:audio-wife:1.0.3'
 
     compile 'io.reactivex:rxandroid:1.2.1'
     compile 'io.reactivex:rxjava:1.1.6'

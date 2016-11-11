@@ -1,5 +1,6 @@
 package com.melody.education.ui;
 
+import android.app.ProgressDialog;
 import android.app.SearchManager;
 import android.content.Intent;
 import android.net.Uri;
@@ -39,6 +40,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private Toolbar mToolbar;
     public AppBarLayout appBarLayout;
     public TextView tvTitle, tvDes;
+    public ProgressDialog dialog;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,6 +48,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         setSupportActionBar(mToolbar);
+        dialog = new ProgressDialog(this);
+        dialog.setCancelable(false);
 
         appBarLayout = (AppBarLayout) findViewById(R.id.appbar);
         tvTitle = (TextView) findViewById(R.id.tv_title);
@@ -59,7 +63,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         handleIntent(getIntent());
     }
 
-    public interface test extends MaterialSearchView.SearchViewListener{
+    public interface test extends MaterialSearchView.SearchViewListener {
 
     }
 
@@ -175,15 +179,42 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 break;
 
             case R.id.nav_menu_lessons:
-                Utils.startFragment(this, new LessonListFragment());
+                if (Utils.checkFileExits(FetchData.PATH_DB + DataHelper.DATABASE_LESSON)) {
+                    Utils.startFragment(this, new LessonListFragment());
+                } else {
+                    dialog.show();
+                    new FetchData(this).getDataLesson()
+                            .doOnNext(m -> dialog.dismiss())
+                            .filter(m -> m)
+                            .subscribe(m -> Utils.startFragment(this, new LessonListFragment()));
+                }
+
                 break;
 
             case R.id.nav_menu_topics:
-                Utils.startFragment(this, new TopicListFragment());
+                if (Utils.checkFileExits(FetchData.PATH_DB + DataHelper.DATABASE_TOPICS)) {
+                    Utils.startFragment(this, new TopicListFragment());
+                } else {
+                    dialog.show();
+                    new FetchData(this).getDataTopic()
+                            .doOnNext(m -> dialog.dismiss())
+                            .filter(m -> m)
+                            .subscribe(m -> Utils.startFragment(this, new TopicListFragment()));
+                }
+
                 break;
 
             case R.id.nav_menu_kanji:
-                startActivity(new Intent(this, KanjiActivity.class));
+                if (Utils.checkFileExits(FetchData.PATH_DB + DataHelper.DATABASE_KANJI)) {
+                    startActivity(new Intent(this, KanjiActivity.class));
+                } else {
+                    dialog.show();
+                    new FetchData(this).getDataKanji()
+                            .doOnNext(m -> dialog.dismiss())
+                            .filter(m -> m)
+                            .subscribe(m -> startActivity(new Intent(this, KanjiActivity.class)));
+                }
+
                 break;
 
             default:

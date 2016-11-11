@@ -16,6 +16,7 @@ import com.melody.education.model.LessonTitle;
 import com.melody.education.ui.fragment.ConversationFragment;
 import com.melody.education.model.Lesson;
 import com.melody.education.ui.ConversationActivity;
+import com.melody.education.ui.lesson.LessonActivity;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -121,7 +122,7 @@ public class LessonAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     }
 
     private void startLearningActivity(int selectedIndex) {
-        Intent intent = new Intent(mContext, ConversationActivity.class);
+        Intent intent = new Intent(mContext, LessonActivity.class);
         intent.putExtra(ConversationFragment.EXTRA_INDEX, selectedIndex);
         mContext.startActivity(intent);
     }

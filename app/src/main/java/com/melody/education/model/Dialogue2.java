@@ -7,10 +7,17 @@ package com.melody.education.model;
 public class Dialogue2 {
     public int id;
     public String ChungID;
-    public String Name2;
     public String Kanji2;
     public String Romaji2;
     public String Translate2;
     public String Audio2;
     public String Look2;
+
+    public Dialogue2() {
+        ChungID = "";
+        Look2 = "";
+        Kanji2 = "";
+        Romaji2 = "";
+        Translate2 = "";
+    }
 }

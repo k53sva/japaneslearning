@@ -49,35 +49,38 @@ public class DataHelper {
     }
 
     private synchronized JSONArray convertDatabaseToJson(String databaseName, String table) {
-        String myPath = String.format("%s/%s", activity.getExternalCacheDir(), databaseName);
-        SQLiteDatabase myDataBase = SQLiteDatabase.openDatabase(myPath, null, SQLiteDatabase.OPEN_READONLY);
-        String searchQuery = "SELECT  * FROM " + table;
-        Cursor cursor = myDataBase.rawQuery(searchQuery, null);
         JSONArray resultSet = new JSONArray();
-        cursor.moveToFirst();
-        while (!cursor.isAfterLast()) {
-            int totalColumn = cursor.getColumnCount();
-            JSONObject rowObject = new JSONObject();
+        try {
+            String myPath = String.format("%s/%s", activity.getExternalCacheDir(), databaseName);
+            SQLiteDatabase myDataBase = SQLiteDatabase.openDatabase(myPath, null, SQLiteDatabase.OPEN_READONLY);
+            String searchQuery = "SELECT  * FROM " + table;
+            Cursor cursor = myDataBase.rawQuery(searchQuery, null);
+            cursor.moveToFirst();
+            while (!cursor.isAfterLast()) {
+                int totalColumn = cursor.getColumnCount();
+                JSONObject rowObject = new JSONObject();
 
-            for (int i = 0; i < totalColumn; i++) {
-                if (cursor.getColumnName(i) != null) {
-                    try {
-                        if (cursor.getString(i) != null) {
-                            rowObject.put(cursor.getColumnName(i), cursor.getString(i));
-                        } else {
-                            rowObject.put(cursor.getColumnName(i), "");
+                for (int i = 0; i < totalColumn; i++) {
+                    if (cursor.getColumnName(i) != null) {
+                        try {
+                            if (cursor.getString(i) != null) {
+                                rowObject.put(cursor.getColumnName(i), cursor.getString(i));
+                            } else {
+                                rowObject.put(cursor.getColumnName(i), "");
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
                         }
-                    } catch (Exception e) {
-                        e.printStackTrace();
                     }
                 }
+                resultSet.put(rowObject);
+                cursor.moveToNext();
             }
-            resultSet.put(rowObject);
-            cursor.moveToNext();
+            cursor.close();
+            myDataBase.close();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        cursor.close();
-        myDataBase.close();
-        Log.e(TAG, resultSet.toString());
         return resultSet;
     }
 

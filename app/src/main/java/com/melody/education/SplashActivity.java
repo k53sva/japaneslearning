@@ -9,6 +9,7 @@ import android.util.Log;
 import com.melody.education.net.FetchData;
 import com.melody.education.ui.BaseActivity;
 import com.melody.education.ui.MainActivity;
+import com.melody.education.utils.DataHelper;
 import com.melody.education.utils.Utils;
 
 import java.util.HashMap;
@@ -26,18 +27,20 @@ public class SplashActivity extends BaseActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
+        delay(1, "");
 
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        fetchData = new FetchData(this);
-        if (Utils.isNetworkAvailable(this)) {
-            getData();
+
+        if (Utils.checkFileExits(FetchData.PATH_DB + DataHelper.DATABASE_CONVERSATION)) {
+            delay(1, "");
         } else {
-            showAlertAction(this, id -> startActivity(new Intent(android.provider.Settings.ACTION_WIRELESS_SETTINGS)),
-                    "Can not connect. Please check connect to Internet");
+            new FetchData(this).getDataConversation()
+                    .filter(m -> m)
+                    .subscribe(m -> delay(0, ""));
         }
     }
 

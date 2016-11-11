@@ -61,4 +61,9 @@ public class Utils {
         NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
+
+    public static boolean checkFileExits(String path) {
+        File file = new File(path);
+        return file.exists();
+    }
 }
