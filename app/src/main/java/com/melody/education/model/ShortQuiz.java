@@ -7,5 +7,8 @@ package com.melody.education.model;
 public class ShortQuiz {
     public int id;
     public String ChungID;
-    public String Detail;
+    public String idCon;
+    public String RomajiSentence1;
+    public String KanjiSentence1;
+    public String Look;
 }

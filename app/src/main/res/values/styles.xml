@@ -38,4 +38,6 @@
         <item name="windowActionBarOverlay">true</item>
     </style>
 
+    <style name="appSpinner" parent="@android:style/Widget.Holo.Light.Spinner"></style>
+
 </resources>

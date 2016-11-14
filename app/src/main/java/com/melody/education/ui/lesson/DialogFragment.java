@@ -1,6 +1,5 @@
 package com.melody.education.ui.lesson;
 
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.view.ViewPager;
@@ -21,24 +20,19 @@ import com.devbrackets.android.playlistcore.listener.ProgressListener;
 import com.devbrackets.android.playlistcore.service.PlaylistServiceCore;
 import com.melody.education.App;
 import com.melody.education.R;
-import com.melody.education.adapter.ConversationAdapter;
 import com.melody.education.adapter.ViewPagerAdapter;
 import com.melody.education.data.MediaItem;
 import com.melody.education.manager.PlaylistManager;
 import com.melody.education.model.Conversation;
 import com.melody.education.model.Dialogue1;
 import com.melody.education.model.Dialogue2;
-import com.melody.education.net.FetchData;
 import com.melody.education.ui.BaseFragment;
-import com.melody.education.ui.fragment.ConversationFragment;
 import com.melody.education.utils.DataHelper;
-import com.melody.education.utils.Utils;
 import com.viewpagerindicator.PageIndicator;
 
 import java.util.LinkedList;
 import java.util.List;
 
-import nl.changer.audiowife.AudioWife;
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -111,14 +105,14 @@ public class DialogFragment extends BaseFragment implements PlaylistListener<Med
 
     private void progressData() {
         DataHelper helper = new DataHelper(getActivity());
-        Observable<Dialogue1> z1 = helper.getData(DataHelper.DATABASE_LESSON, DataHelper.TABLE_DIAGLOGUE_1, Dialogue1[].class)
+        Observable<Dialogue1> z1 = helper.getData(DataHelper.DATABASE_LESSON, DataHelper.TABLE_DIALOGUE_1, Dialogue1[].class)
                 .subscribeOn(Schedulers.io())
                 .flatMap(Observable::from)
                 .filter(m -> m.ChungID.equals(ChungID))
                 .doOnNext(m -> Log.e("TAG", ChungID))
                 .take(1);
 
-        Observable<Dialogue2> z2 = helper.getData(DataHelper.DATABASE_LESSON, DataHelper.TABLE_DIAGLOGUE_2, Dialogue2[].class)
+        Observable<Dialogue2> z2 = helper.getData(DataHelper.DATABASE_LESSON, DataHelper.TABLE_DIALOGUE_2, Dialogue2[].class)
                 .subscribeOn(Schedulers.io())
                 .flatMap(Observable::from)
                 .filter(m -> m.ChungID.equals(ChungID))

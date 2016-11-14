@@ -10,7 +10,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
 import com.melody.education.R;
-import com.melody.education.ui.TopicActivity;
+import com.melody.education.ui.lesson.viewmodel.ListQuizFragment;
 import com.melody.education.utils.Utils;
 
 /**
@@ -58,6 +58,7 @@ public class LessonActivity extends AppCompatActivity {
         tabLayout.addTab(tabLayout.newTab().setText("Key Sentences"));
         tabLayout.addTab(tabLayout.newTab().setText("Vocabulary"));
         tabLayout.addTab(tabLayout.newTab().setText("Notes"));
+        tabLayout.addTab(tabLayout.newTab().setText("ShortQuiz"));
 
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
@@ -79,6 +80,10 @@ public class LessonActivity extends AppCompatActivity {
                     case 3:
                         NotesFragment note = NotesFragment.newInstance(ChungID);
                         Utils.startFragment(LessonActivity.this, note);
+
+                    case 4:
+                        ShortQuizFragment quiz = new ShortQuizFragment();
+                        Utils.startFragment(LessonActivity.this, quiz);
                         break;
                     default:
                         break;

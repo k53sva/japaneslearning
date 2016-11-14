@@ -35,9 +35,9 @@ public class DataHelper {
     public static final String TABLE_WORK_KUN_READING = "WordKunReading";
     public static final String TABLE_WORK_ON_READING = "WordOnReading";
     public static final String TABLE_LESSON_TITLE = "LessonTitle";
-    public static final String TABLE_DIAGLOGUE_1 = "Dialogue1";
-    public static final String TABLE_DIAGLOGUE_2 = "Dialogue2";
-    public static final String TABLE_SHORTQUIZ = "ShortQuiz";
+    public static final String TABLE_DIALOGUE_1 = "Dialogue1";
+    public static final String TABLE_DIALOGUE_2 = "Dialogue2";
+    public static final String TABLE_SHORT_QUIZ = "ShortQuiz1";
     public static final String TABLE_KEY_SENTENCES = "KeySentences";
 
 
@@ -78,15 +78,15 @@ public class DataHelper {
             }
             cursor.close();
             myDataBase.close();
-        } catch (Exception e) {
-            e.printStackTrace();
+} catch (Exception e) {
+        e.printStackTrace();
         }
         return resultSet;
-    }
+        }
 
-    public <T> Observable<T> getData(String database, String table, Class<T> clazz) {
+public synchronized <T> Observable<T> getData(String database, String table, Class<T> clazz) {
         return Observable.just(convertDatabaseToJson(database, table))
-                .subscribeOn(Schedulers.io())
-                .map(m -> gson.fromJson(m.toString(), clazz));
-    }
-}
+        .subscribeOn(Schedulers.io())
+        .map(m -> gson.fromJson(m.toString(), clazz));
+        }
+        }
