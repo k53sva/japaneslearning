@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.melody.education.App;
 import com.melody.education.R;
 import com.melody.education.adapter.LessonAdapter;
 import com.melody.education.model.Lesson;
@@ -66,8 +67,7 @@ public class LessonListFragment extends BaseFragment {
     }
 
     private void getData() {
-        DataHelper dataHelper = new DataHelper(getActivity());
-        dataHelper.getData(DataHelper.DATABASE_LESSON, DataHelper.TABLE_LESSON_TITLE, LessonTitle[].class)
+        App.getDataHelper().getData(DataHelper.DATABASE_LESSON, DataHelper.TABLE_LESSON_TITLE, LessonTitle[].class)
                 .subscribeOn(Schedulers.io())
                 .flatMap(Observable::from)
                 .map(this::fillData)

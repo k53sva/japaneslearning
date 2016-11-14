@@ -20,6 +20,7 @@ import android.view.MenuItem;
 import android.view.WindowManager;
 import android.widget.TextView;
 
+import com.melody.education.App;
 import com.melody.education.R;
 import com.melody.education.adapter.ConversationAdapter;
 import com.melody.education.ui.fragment.ConversationFragment;
@@ -99,8 +100,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
         });
 
-        DataHelper helper = new DataHelper(this);
-        helper.getData(DataHelper.DATABASE_CONVERSATION, DataHelper.TABLE_CONVERSATION, Conversation[].class)
+        App.getDataHelper().getData(DataHelper.DATABASE_CONVERSATION, DataHelper.TABLE_CONVERSATION, Conversation[].class)
                 .subscribeOn(Schedulers.io())
                 .flatMap(Observable::from)
                 .filter(m -> m.Picture != null)

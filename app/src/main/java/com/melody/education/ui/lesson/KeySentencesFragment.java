@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.melody.education.App;
 import com.melody.education.R;
 import com.melody.education.adapter.ConversationAdapter;
 import com.melody.education.adapter.LessonKeySentencesAdapter;
@@ -65,8 +66,7 @@ public class KeySentencesFragment extends Fragment {
     }
 
     private void getData() {
-        DataHelper helper = new DataHelper(getActivity());
-        helper.getData(DataHelper.DATABASE_LESSON, DataHelper.TABLE_KEY_SENTENCES, KeySentences[].class)
+        App.getDataHelper().getData(DataHelper.DATABASE_LESSON, DataHelper.TABLE_KEY_SENTENCES, KeySentences[].class)
                 .flatMap(Observable::from)
                 .filter(m -> m.ChungID.equals(ChungID))
                 .toList()

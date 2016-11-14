@@ -4,12 +4,14 @@ import android.app.Application;
 import android.os.StrictMode;
 
 import com.melody.education.manager.PlaylistManager;
+import com.melody.education.utils.DataHelper;
 
 
 public class App extends Application {
 
     private static App application;
     private static PlaylistManager playlistManager;
+    private static DataHelper dataHelper;
 
     @Override
     public void onCreate() {
@@ -25,6 +27,13 @@ public class App extends Application {
 
         application = null;
         playlistManager = null;
+    }
+
+    public static DataHelper getDataHelper() {
+        if (dataHelper == null) {
+            dataHelper = new DataHelper(getApplication());
+        }
+        return dataHelper;
     }
 
     public static PlaylistManager getPlaylistManager() {

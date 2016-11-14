@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 
+import com.melody.education.App;
 import com.melody.education.R;
 import com.melody.education.adapter.ConversationAdapter;
 import com.melody.education.model.Conversation;
@@ -76,8 +77,7 @@ public class ConversationListFragment extends BaseFragment {
 
     private void getData() {
         progressBar.setVisibility(View.VISIBLE);
-        DataHelper helper = new DataHelper(getActivity());
-        helper.getData(DataHelper.DATABASE_CONVERSATION, DataHelper.TABLE_CONVERSATION, Conversation[].class)
+        App.getDataHelper().getData(DataHelper.DATABASE_CONVERSATION, DataHelper.TABLE_CONVERSATION, Conversation[].class)
                 .subscribeOn(Schedulers.io())
                 .flatMap(Observable::from)
                 .filter(m -> m.Picture != null)

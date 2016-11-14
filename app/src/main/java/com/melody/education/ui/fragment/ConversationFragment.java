@@ -78,8 +78,7 @@ public class ConversationFragment extends BaseFragment implements PlaylistListen
     }
 
     private void getData() {
-        DataHelper helper = new DataHelper(getActivity());
-        helper.getData(DataHelper.DATABASE_CONVERSATION, DataHelper.TABLE_CONVERSATION, Conversation[].class)
+        App.getDataHelper().getData(DataHelper.DATABASE_CONVERSATION, DataHelper.TABLE_CONVERSATION, Conversation[].class)
                 .flatMap(Observable::from)
                 .filter(m -> m.ChungID.equals(ConversationAdapter.conversationList.get(selectedIndex).ChungID))
                 .toList()

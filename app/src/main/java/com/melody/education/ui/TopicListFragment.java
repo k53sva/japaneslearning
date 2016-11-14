@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.melody.education.App;
 import com.melody.education.R;
 import com.melody.education.adapter.TopicAdapter;
 import com.melody.education.model.Topic;
@@ -63,8 +64,7 @@ public class TopicListFragment extends BaseFragment {
     }
 
     private void getData() {
-        DataHelper helper = new DataHelper(getActivity());
-        helper.getData(DataHelper.DATABASE_TOPICS, DataHelper.TABLE_TOPIC, Topic[].class)
+        App.getDataHelper().getData(DataHelper.DATABASE_TOPICS, DataHelper.TABLE_TOPIC, Topic[].class)
                 .subscribeOn(Schedulers.io())
                 .flatMap(Observable::from)
                 .groupBy(m -> m.ChungID)

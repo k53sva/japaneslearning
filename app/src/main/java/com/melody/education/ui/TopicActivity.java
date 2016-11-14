@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
+import com.melody.education.App;
 import com.melody.education.R;
 import com.melody.education.adapter.TopicDetailAdapter;
 import com.melody.education.model.Topic;
@@ -59,8 +60,7 @@ public class TopicActivity extends BaseActivity {
     }
 
     private void getData() {
-        DataHelper dataHelper = new DataHelper(this);
-        dataHelper.getData(DataHelper.DATABASE_TOPICS, DataHelper.TABLE_TOPIC, Topic[].class)
+        App.getDataHelper().getData(DataHelper.DATABASE_TOPICS, DataHelper.TABLE_TOPIC, Topic[].class)
                 .flatMap(Observable::from)
                 .filter(m -> m.ChungID.equals(ChungId))
                 .map(this::fillData)

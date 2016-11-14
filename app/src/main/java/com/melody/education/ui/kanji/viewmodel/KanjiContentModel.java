@@ -11,6 +11,7 @@ import android.util.TypedValue;
 import android.view.View;
 
 import com.annimon.stream.Stream;
+import com.melody.education.App;
 import com.melody.education.BR;
 import com.melody.education.R;
 import com.melody.education.binding.RecyclerBindingAdapter;
@@ -46,7 +47,6 @@ public class KanjiContentModel {
     public final ObservableString wOn = new ObservableString();
     public final ObservableString wKun = new ObservableString();
     public final ObservableBoolean isExample = new ObservableBoolean();
-    private DataHelper helper;
     public KanjiContent content;
     private Context context;
     public final RecyclerConfiguration recyclerConfiguration = new RecyclerConfiguration();
@@ -68,7 +68,6 @@ public class KanjiContentModel {
 
     public KanjiContentModel(Context context, KanjiContent content) {
         this.context = context;
-        helper = new DataHelper((Activity) context);
         String image = FetchData.ROOT_URL + FUNCTION_NAME + content.KanjiIMG;
         onR.set(content.OnReading);
         kunR.set(content.KunReading);
@@ -85,7 +84,7 @@ public class KanjiContentModel {
     }
 
     public void setReference(KanjiContent content) {
-        helper.getData(DataHelper.DATABASE_KANJI, DataHelper.TABLE_REFERENCE, Reference[].class)
+        App.getDataHelper().getData(DataHelper.DATABASE_KANJI, DataHelper.TABLE_REFERENCE, Reference[].class)
                 .subscribeOn(Schedulers.io())
                 .flatMap(Observable::from)
                 .filter(m -> m.KanjiNumber.equals(content.KanjiNumber))
@@ -126,7 +125,7 @@ public class KanjiContentModel {
     }
 
     private void setWord(KanjiContent content) {
-        helper.getData(DataHelper.DATABASE_KANJI, DataHelper.TABLE_WORK_ON_READING, WordOnReading[].class)
+        App.getDataHelper().getData(DataHelper.DATABASE_KANJI, DataHelper.TABLE_WORK_ON_READING, WordOnReading[].class)
                 .subscribeOn(Schedulers.io())
                 .flatMap(Observable::from)
                 .filter(m -> m.KanjiNumber.equals(content.KanjiNumber))
@@ -146,7 +145,7 @@ public class KanjiContentModel {
                 .map(ArrayList::new)
                 .subscribe(m -> adapterWordOn.setItems(m));
 
-        helper.getData(DataHelper.DATABASE_KANJI, DataHelper.TABLE_WORK_KUN_READING, WordKunReading[].class)
+        App.getDataHelper().getData(DataHelper.DATABASE_KANJI, DataHelper.TABLE_WORK_KUN_READING, WordKunReading[].class)
                 .subscribeOn(Schedulers.io())
                 .flatMap(Observable::from)
                 .filter(m -> m.KanjiNumber.equals(content.KanjiNumber))
@@ -166,7 +165,7 @@ public class KanjiContentModel {
                 .map(ArrayList::new)
                 .subscribe(m -> adapterWordKun.setItems(m));
 
-        helper.getData(DataHelper.DATABASE_KANJI, DataHelper.TABLE_EXAMPLES, Examples[].class)
+        App.getDataHelper().getData(DataHelper.DATABASE_KANJI, DataHelper.TABLE_EXAMPLES, Examples[].class)
                 .subscribeOn(Schedulers.io())
                 .flatMap(Observable::from)
                 .filter(m -> m.KanjiNumber.equals(content.KanjiNumber))

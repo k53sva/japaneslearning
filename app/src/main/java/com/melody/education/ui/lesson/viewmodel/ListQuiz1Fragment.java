@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.melody.education.App;
 import com.melody.education.R;
 import com.melody.education.adapter.LessonQuizItemAdapter;
 import com.melody.education.model.ShortQuiz;
@@ -43,8 +44,7 @@ public class ListQuiz1Fragment extends BaseFragment {
     }
 
     private void getData() {
-        DataHelper helper = new DataHelper(getActivity());
-        helper.getData(DataHelper.DATABASE_LESSON, DataHelper.TABLE_SHORT_QUIZ, ShortQuiz[].class)
+        App.getDataHelper().getData(DataHelper.DATABASE_LESSON, DataHelper.TABLE_SHORT_QUIZ, ShortQuiz[].class)
                 .flatMap(Observable::from)
                 .map(m -> m.KanjiSentence1)
                 .toList()

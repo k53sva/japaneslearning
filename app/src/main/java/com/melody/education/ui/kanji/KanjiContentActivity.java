@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
+import com.melody.education.App;
 import com.melody.education.R;
 import com.melody.education.model.KanjiContent;
 import com.melody.education.model.KanjiGroup;
@@ -49,8 +50,7 @@ public class KanjiContentActivity extends AppCompatActivity {
 
     private void getData() {
         KanjiGroup group = DataCache.getInstance().pop(KanjiGroup.class);
-        DataHelper helper = new DataHelper(this);
-        helper.getData(DataHelper.DATABASE_KANJI, DataHelper.TABLE_KANJI_CONTENT, KanjiContent[].class)
+        App.getDataHelper().getData(DataHelper.DATABASE_KANJI, DataHelper.TABLE_KANJI_CONTENT, KanjiContent[].class)
                 .subscribeOn(Schedulers.io())
                 .flatMap(Observable::from)
                 .filter(m -> m.ChungID.equals(group.ChungID))

@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.melody.education.App;
 import com.melody.education.adapter.LessonKeySentencesAdapter;
 import com.melody.education.databinding.FragmentKanjiContentBinding;
 import com.melody.education.databinding.FragmentNotesBinding;
@@ -54,8 +55,7 @@ public class NotesFragment extends BaseFragment {
     }
 
     public void getData() {
-        DataHelper helper = new DataHelper(getActivity());
-        helper.getData(DataHelper.DATABASE_LESSON, DataHelper.TABLE_NOTES, Notes[].class)
+        App.getDataHelper().getData(DataHelper.DATABASE_LESSON, DataHelper.TABLE_NOTES, Notes[].class)
                 .flatMap(Observable::from)
                 .filter(m -> m.ChungID.equals(ChungID))
                 .observeOn(AndroidSchedulers.mainThread())

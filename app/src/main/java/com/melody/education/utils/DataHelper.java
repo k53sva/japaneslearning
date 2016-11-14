@@ -1,6 +1,7 @@
 package com.melody.education.utils;
 
 import android.app.Activity;
+import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
@@ -41,10 +42,10 @@ public class DataHelper {
     public static final String TABLE_KEY_SENTENCES = "KeySentences";
 
 
-    private Activity activity;
+    private Context activity;
     private Gson gson = new Gson();
 
-    public DataHelper(Activity activity) {
+    public DataHelper(Context activity) {
         this.activity = activity;
     }
 
@@ -78,15 +79,15 @@ public class DataHelper {
             }
             cursor.close();
             myDataBase.close();
-} catch (Exception e) {
-        e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         return resultSet;
-        }
+    }
 
-public synchronized <T> Observable<T> getData(String database, String table, Class<T> clazz) {
+    public synchronized <T> Observable<T> getData(String database, String table, Class<T> clazz) {
         return Observable.just(convertDatabaseToJson(database, table))
-        .subscribeOn(Schedulers.io())
-        .map(m -> gson.fromJson(m.toString(), clazz));
-        }
-        }
+                .subscribeOn(Schedulers.io())
+                .map(m -> gson.fromJson(m.toString(), clazz));
+    }
+}

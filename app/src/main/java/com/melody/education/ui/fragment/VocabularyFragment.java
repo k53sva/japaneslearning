@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.melody.education.App;
 import com.melody.education.R;
 import com.melody.education.adapter.ConversationAdapter;
 import com.melody.education.adapter.VocabularyAdapter;
@@ -63,8 +64,7 @@ public class VocabularyFragment extends Fragment {
     }
 
     private void getData() {
-        DataHelper helper = new DataHelper(getActivity());
-        helper.getData(DataHelper.DATABASE_CONVERSATION, DataHelper.TABLE_VOCABULARY, Vocabulary[].class)
+        App.getDataHelper().getData(DataHelper.DATABASE_CONVERSATION, DataHelper.TABLE_VOCABULARY, Vocabulary[].class)
                 .flatMap(Observable::from)
                 .filter(m -> m.ChungID.equals(ConversationAdapter.conversationList.get(selectedIndex).ChungID))
                 .toList()

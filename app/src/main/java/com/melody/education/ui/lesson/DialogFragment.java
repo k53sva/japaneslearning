@@ -104,15 +104,14 @@ public class DialogFragment extends BaseFragment implements PlaylistListener<Med
 
 
     private void progressData() {
-        DataHelper helper = new DataHelper(getActivity());
-        Observable<Dialogue1> z1 = helper.getData(DataHelper.DATABASE_LESSON, DataHelper.TABLE_DIALOGUE_1, Dialogue1[].class)
+        Observable<Dialogue1> z1 = App.getDataHelper().getData(DataHelper.DATABASE_LESSON, DataHelper.TABLE_DIALOGUE_1, Dialogue1[].class)
                 .subscribeOn(Schedulers.io())
                 .flatMap(Observable::from)
                 .filter(m -> m.ChungID.equals(ChungID))
                 .doOnNext(m -> Log.e("TAG", ChungID))
                 .take(1);
 
-        Observable<Dialogue2> z2 = helper.getData(DataHelper.DATABASE_LESSON, DataHelper.TABLE_DIALOGUE_2, Dialogue2[].class)
+        Observable<Dialogue2> z2 = App.getDataHelper().getData(DataHelper.DATABASE_LESSON, DataHelper.TABLE_DIALOGUE_2, Dialogue2[].class)
                 .subscribeOn(Schedulers.io())
                 .flatMap(Observable::from)
                 .filter(m -> m.ChungID.equals(ChungID))
