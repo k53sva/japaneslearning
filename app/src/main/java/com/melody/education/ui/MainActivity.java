@@ -179,7 +179,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 break;
 
             case R.id.nav_menu_lessons:
-                if (Utils.checkFileExits(FetchData.PATH_DB + DataHelper.DATABASE_LESSON)) {
+                if (Utils.checkFileExits(String.format("%s/%s", this.getExternalCacheDir(),DataHelper.DATABASE_LESSON))) {
                     Utils.startFragment(this, new LessonListFragment());
                 } else {
                     dialog.show();
@@ -192,7 +192,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 break;
 
             case R.id.nav_menu_topics:
-                if (Utils.checkFileExits(FetchData.PATH_DB + DataHelper.DATABASE_TOPICS)) {
+                if (Utils.checkFileExits(String.format("%s/%s", this.getExternalCacheDir(), DataHelper.DATABASE_TOPICS))) {
                     Utils.startFragment(this, new TopicListFragment());
                 } else {
                     dialog.show();
@@ -205,7 +205,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 break;
 
             case R.id.nav_menu_kanji:
-                if (Utils.checkFileExits(FetchData.PATH_DB + DataHelper.DATABASE_KANJI)) {
+                if (Utils.checkFileExits(String.format("%s/%s", this.getExternalCacheDir(), DataHelper.DATABASE_KANJI))) {
                     startActivity(new Intent(this, KanjiActivity.class));
                 } else {
                     dialog.show();

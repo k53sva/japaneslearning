@@ -74,4 +74,5 @@
     <string name="pref_title_vibrate">Vibrate</string>
     <string name="activity_kanji">Kanji</string>
     <string name="activity_topics">Topics</string>
+    <string name="activity_lesson">Lesson</string>
 </resources>

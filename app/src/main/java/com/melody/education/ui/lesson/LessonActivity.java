@@ -10,7 +10,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
 import com.melody.education.R;
-import com.melody.education.ui.lesson.viewmodel.ListQuizFragment;
 import com.melody.education.utils.Utils;
 
 /**

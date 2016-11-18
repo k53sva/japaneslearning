@@ -53,7 +53,7 @@
 
         <activity
             android:name=".ui.lesson.LessonActivity"
-            android:label="@string/activity_kanji"
+            android:label="@string/activity_lesson"
             android:theme="@style/AppTheme.NoActionBar1" />
 
         <service

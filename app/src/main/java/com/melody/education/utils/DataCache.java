@@ -1,6 +1,11 @@
 package com.melody.education.utils;
 
+import com.annimon.stream.Collectors;
+import com.annimon.stream.Stream;
+
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -25,6 +30,8 @@ public class DataCache {
     private Map<Class<?>, Object> dataMap;
     public Map<Integer, Object> dataListMap = new HashMap<>();
     private HashMap<Integer, Boolean> mapConversation = new HashMap<>();
+    public HashMap<String, List<Integer>> tempKanji = new HashMap<>();
+    public HashMap<String, Integer> tempRomakj = new HashMap<>();
 
     public <T> void push(T data) {
         if (dataMap == null) {
@@ -63,6 +70,31 @@ public class DataCache {
 
     public void pushConversation(int id, boolean expand) {
         mapConversation.put(id, expand);
+    }
+
+    public void pushTempKanji(String id, List<Integer> position) {
+        tempKanji.put(id, position);
+    }
+
+    public void pushTempRomaji(String id, Integer position) {
+        tempRomakj.put(id, position);
+    }
+
+    public List<Integer> getTempKanji(String id) {
+        if (tempKanji.get(id) != null)
+            return tempKanji.get(id);
+        else {
+            List<Integer> l = new ArrayList<>();
+            Stream.range(0, 4).forEach(i -> l.add(0));
+            return l;
+        }
+    }
+
+    public int getTempRomaji(String id) {
+        if (tempRomakj.get(id) != null)
+            return tempRomakj.get(id);
+        else
+            return 0;
     }
 
 }

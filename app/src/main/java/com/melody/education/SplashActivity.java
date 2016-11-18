@@ -35,7 +35,7 @@ public class SplashActivity extends BaseActivity {
     protected void onResume() {
         super.onResume();
 
-        if (Utils.checkFileExits(FetchData.PATH_DB + DataHelper.DATABASE_CONVERSATION)) {
+        if (Utils.checkFileExits(String.format("%s/%s", this.getExternalCacheDir(), DataHelper.DATABASE_CONVERSATION))) {
             delay(1, "");
         } else {
             new FetchData(this).getDataConversation()

@@ -10,8 +10,8 @@ import android.view.ViewGroup;
 import com.melody.education.R;
 import com.melody.education.adapter.ViewPagerAdapter;
 import com.melody.education.ui.BaseFragment;
-import com.melody.education.ui.lesson.viewmodel.ListQuiz1Fragment;
-import com.melody.education.ui.lesson.viewmodel.ListQuizFragment;
+import com.melody.education.ui.lesson.viewmodel.KanjiQuizFragment;
+import com.melody.education.ui.lesson.viewmodel.RomajiQuizFragment;
 import com.viewpagerindicator.PageIndicator;
 
 
@@ -31,8 +31,8 @@ public class ShortQuizFragment extends BaseFragment {
         mViewPager = (ViewPager) view.findViewById(R.id.viewpager_learning);
         titleIndicator = (PageIndicator) view.findViewById(R.id.indicator);
         adapter = new ViewPagerAdapter(getChildFragmentManager());
-        adapter.addFragment(new ListQuizFragment(), "");
-        adapter.addFragment(new ListQuiz1Fragment(), "");
+        adapter.addFragment(new RomajiQuizFragment(), "");
+        adapter.addFragment(new KanjiQuizFragment(), "");
         mViewPager.setAdapter(adapter);
         titleIndicator.setViewPager(mViewPager);
         return view;

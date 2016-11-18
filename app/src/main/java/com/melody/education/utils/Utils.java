@@ -9,6 +9,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.util.TypedValue;
 
 import com.melody.education.R;
@@ -64,6 +65,7 @@ public class Utils {
 
     public static boolean checkFileExits(String path) {
         File file = new File(path);
+        Log.e("TAG", path + ": " + file.exists());
         return file.exists();
     }
 }

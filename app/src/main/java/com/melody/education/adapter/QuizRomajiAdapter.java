@@ -1,31 +1,35 @@
 package com.melody.education.adapter;
 
 import android.content.Context;
-import android.databinding.tool.util.L;
-import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.*;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.annimon.stream.Stream;
+import com.jakewharton.rxbinding.widget.RxAdapterView;
 import com.melody.education.R;
-import com.melody.education.model.Conversation;
-import com.melody.education.model.QuizModel;
-import com.melody.education.utils.DataCache;
-
-import net.cachapa.expandablelayout.ExpandableLayout;
+import com.melody.education.model.AnswerShortQuiz1;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-public class QuizAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+import rx.Observable;
+
+public class QuizRomajiAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private static final int TYPE_SPINNER = 0;
     private static final int TYPE_ITEM = 1;
     private Context mContext;
     private List<String> items = new ArrayList<>();
+    private AnswerShortQuiz1 answer;
+    private HashMap<Integer, String> check = new HashMap<>();
 
     private class MyViewHolder extends RecyclerView.ViewHolder {
         public TextView tvName;
@@ -46,9 +50,10 @@ public class QuizAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         }
     }
 
-    public QuizAdapter(Context mContext, List<String> items) {
+    public QuizRomajiAdapter(Context mContext, List<String> items, AnswerShortQuiz1 answer) {
         this.mContext = mContext;
         this.items = items;
+        this.answer = answer;
     }
 
     public void setModel(List<String> items) {
@@ -81,10 +86,23 @@ public class QuizAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
         if (holder instanceof SpinHolder) {
             SpinHolder v = (SpinHolder) holder;
-            String[] data = {"---", "one", "two", "three"};
-            ArrayAdapter ap = new ArrayAdapter<>(mContext, R.layout.item_textview_spinner, data);
-            v.spinner.setAdapter(ap);
+            Observable.from(answer.RomajiChoose.split(","))
+                    .toList()
+                    .subscribe(m -> {
+                        m.add(0, "----");
+                        ArrayAdapter<String> ap = new ArrayAdapter<>(mContext, R.layout.item_textview_spinner, m);
+                        v.spinner.setAdapter(ap);
+                        RxAdapterView.itemSelections(v.spinner)
+                                .doOnNext(i -> check.put(position, ap.getItem(i)))
+                                .subscribe(i -> checkAnswer());
+                    });
+
         }
+    }
+
+    private void checkAnswer() {
+        String temp = Stream.of(check).map(Map.Entry::getValue).reduce("", (x, y) -> x + "," + y).replace(",", "");
+        LessonQuizItemAdapter.tempRomaji.put(answer.idCon, temp.trim().equals(answer.RomajiCorrect.replace(",", "").trim()));
     }
 
     @Override

@@ -40,6 +40,7 @@ public class DataHelper {
     public static final String TABLE_DIALOGUE_2 = "Dialogue2";
     public static final String TABLE_SHORT_QUIZ = "ShortQuiz1";
     public static final String TABLE_KEY_SENTENCES = "KeySentences";
+    public static final String TABLE_ANSWER_QUIZ = "AnswerShortQuiz1";
 
 
     private Context activity;
