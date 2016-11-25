@@ -2,6 +2,7 @@ package com.melody.education.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +20,7 @@ import com.melody.education.model.QuizChoose;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import rx.Observable;
 
@@ -88,20 +90,19 @@ public class QuizKanjiAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             ArrayAdapter<String> ap = new ArrayAdapter<>(mContext, R.layout.item_textview_spinner, m);
             ap.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
             v.spinner.setAdapter(ap);
-            QuizChoose x = App.getApplication().getCheckKanji().get(answer.idCon);
-            if (x != null && x.position == position) {
-                v.spinner.setSelection(x.selection);
-            }
+            v.spinner.setSelection(App.getApplication().getQuizKanji(answer.idCon, position));
             RxAdapterView.itemSelections(v.spinner)
-                    .doOnNext(i -> check.put(position, ap.getItem(i)))
-                    .doOnNext(i -> App.getApplication().getCheckKanji().put(answer.idCon, new QuizChoose(position, i)))
-                    .subscribe(i -> checkAnswer());
+                    .subscribe(i -> {
+                        check.put(position, ap.getItem(i));
+                        checkAnswer();
+                        App.getApplication().getListKanji(answer.idCon).put(position, i);
+                    }, Throwable::printStackTrace);
         }
     }
 
 
     private void checkAnswer() {
-        String temp = Stream.of(check).reduce("", (x, y) -> x + ", " + y).replace(",", "");
+        String temp = Stream.of(check).map(Map.Entry::getValue).reduce("", (x, y) -> x + ", " + y).replace(",", "");
         LessonQuizItemAdapter.tempKanji.put(answer.idCon, temp.trim().equals(answer.KanjiCorrect.replace(",", "").trim()));
     }
 

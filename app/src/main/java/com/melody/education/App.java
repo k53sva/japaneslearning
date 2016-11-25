@@ -7,7 +7,9 @@ import com.melody.education.manager.PlaylistManager;
 import com.melody.education.model.QuizChoose;
 import com.melody.education.utils.DataHelper;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 
 public class App extends Application {
@@ -15,8 +17,8 @@ public class App extends Application {
     private static App application;
     private static PlaylistManager playlistManager;
     private static DataHelper dataHelper;
-    private HashMap<String, QuizChoose> checkRomaji = new HashMap<>();
-    private HashMap<String, QuizChoose> checkKanji = new HashMap<>();
+    private HashMap<String, HashMap<Integer, Integer>> checkRomaji = new HashMap<>();
+    private HashMap<String, HashMap<Integer, Integer>> checkKanji = new HashMap<>();
 
     @Override
     public void onCreate() {
@@ -26,12 +28,56 @@ public class App extends Application {
         playlistManager = new PlaylistManager();
     }
 
-    public synchronized HashMap<String, QuizChoose> getCheckRomaji() {
+    public synchronized int getQuizRomaji(String id, int position) {
+        HashMap<Integer, Integer> q = checkRomaji.get(id);
+        if (q == null) {
+            HashMap<Integer, Integer> h = new HashMap<>();
+            checkRomaji.put(id, h);
+            return 0;
+        } else {
+            if (q.get(position) != null)
+                return q.get(position);
+            else
+                return 0;
+        }
+    }
+
+    public synchronized HashMap<String, HashMap<Integer, Integer>> getCheckRomaji() {
         return checkRomaji;
     }
 
-    public synchronized HashMap<String, QuizChoose> getCheckKanji() {
+    public synchronized HashMap<Integer, Integer> getListRomaji(String id) {
+        if (checkRomaji.get(id) == null) {
+            HashMap<Integer, Integer> h = new HashMap<>();
+            checkRomaji.put(id, h);
+        }
+        return checkRomaji.get(id);
+    }
+
+    public synchronized HashMap<String, HashMap<Integer, Integer>> getCheckKanji() {
         return checkKanji;
+    }
+
+    public synchronized int getQuizKanji(String id, int position) {
+        HashMap<Integer, Integer> q = checkKanji.get(id);
+        if (q == null) {
+            HashMap<Integer, Integer> h = new HashMap<>();
+            checkKanji.put(id, h);
+            return 0;
+        } else {
+            if (q.get(position) != null)
+                return q.get(position);
+            else
+                return 0;
+        }
+    }
+
+    public synchronized HashMap<Integer, Integer> getListKanji(String id) {
+        if (checkKanji.get(id) == null) {
+            HashMap<Integer, Integer> h = new HashMap<>();
+            checkKanji.put(id, h);
+        }
+        return checkKanji.get(id);
     }
 
     @Override

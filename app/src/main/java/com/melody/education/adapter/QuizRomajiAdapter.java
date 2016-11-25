@@ -88,14 +88,13 @@ public class QuizRomajiAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             ArrayAdapter<String> ap = new ArrayAdapter<>(mContext, R.layout.item_textview_spinner, m);
             ap.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
             v.spinner.setAdapter(ap);
-            QuizChoose x = App.getApplication().getCheckRomaji().get(answer.idCon);
-            if (x != null && x.position == position) {
-                v.spinner.setSelection(x.selection);
-            }
+            v.spinner.setSelection(App.getApplication().getQuizRomaji(answer.idCon, position));
             RxAdapterView.itemSelections(v.spinner)
-                    .doOnNext(i -> check.put(position, ap.getItem(i)))
-                    .doOnNext(i -> App.getApplication().getCheckRomaji().put(answer.idCon, new QuizChoose(position, i)))
-                    .subscribe(i -> checkAnswer());
+                    .subscribe(i -> {
+                        check.put(position, ap.getItem(i));
+                        checkAnswer();
+                        App.getApplication().getListRomaji(answer.idCon).put(position, i);
+                    }, Throwable::printStackTrace);
         }
     }
 
