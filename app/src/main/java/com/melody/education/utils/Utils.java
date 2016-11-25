@@ -22,6 +22,11 @@ import java.net.InetAddress;
  * Created by K53SV on 8/29/2016.
  */
 public class Utils {
+    public static final String PRF_KEY_COUNT = "PRF_KEY_COUNT";
+    public static final String PRF_KEY_TOTAL = "PRF_KEY_TOTAL";
+    public static final String PRF_KEY_ROMAJI = "PRF_KEY_ROMAJI";
+    public static final String PRF_KEY_KANJI = "PRF_KEY_KANJI";
+
     public static final String PACKAGE_NAME = "com.melody.education";
 
 
