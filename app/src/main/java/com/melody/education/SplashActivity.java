@@ -15,7 +15,6 @@ import com.melody.education.utils.Utils;
 import java.util.HashMap;
 import java.util.Map;
 
-
 /**
  * Created by K53SV on 8/31/2016.
  */
@@ -27,14 +26,13 @@ public class SplashActivity extends BaseActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
-        delay(1, "");
-
+        //delay(1, "");
     }
+
 
     @Override
     protected void onResume() {
         super.onResume();
-
         if (Utils.checkFileExits(String.format("%s/%s", this.getExternalCacheDir(), DataHelper.DATABASE_CONVERSATION))) {
             delay(1, "");
         } else {

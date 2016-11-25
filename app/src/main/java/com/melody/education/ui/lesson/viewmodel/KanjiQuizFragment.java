@@ -28,7 +28,7 @@ import rx.Observable;
 public class KanjiQuizFragment extends BaseFragment {
     RecyclerView recyclerView;
     LessonQuizItemAdapter adapter;
-    Button btnCheck;
+    Button btnCheck, btnReset, btnAnswer;
 
     @Nullable
     @Override
@@ -36,6 +36,9 @@ public class KanjiQuizFragment extends BaseFragment {
         View v = inflater.inflate(R.layout.fragment_list_quiz, container, false);
         recyclerView = (RecyclerView) v.findViewById(R.id.recycler_view);
         btnCheck = (Button) v.findViewById(R.id.btn_check);
+        btnReset = (Button) v.findViewById(R.id.btn_reset);
+        btnAnswer = (Button) v.findViewById(R.id.btn_answer);
+
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(mLayoutManager);
         adapter = new LessonQuizItemAdapter(getActivity(), new ArrayList<>(), true);
@@ -48,6 +51,11 @@ public class KanjiQuizFragment extends BaseFragment {
     public void onResume() {
         super.onResume();
         RxView.clicks(btnCheck).subscribe(v -> adapter.checkAnswer());
+        RxView.clicks(btnAnswer).subscribe(v -> {
+        });
+        RxView.clicks(btnReset)
+                .doOnNext(v -> App.getApplication().getCheckKanji().clear())
+                .subscribe(v -> adapter.resetAnswer());
 
     }
 

@@ -135,12 +135,16 @@ public class LessonQuizItemAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
     public void checkAnswer() {
         model.status = QuizModel.CHECKED;
-        if (isKanji) {
+        if (isKanji)
             model.isCheck = tempKanji;
-        } else {
+        else
             model.isCheck = tempRomaji;
-            notifyDataSetChanged();
-        }
+        notifyDataSetChanged();
+    }
+
+    public void resetAnswer() {
+        model.status = QuizModel.RESET;
+        notifyDataSetChanged();
     }
 
     private AnswerShortQuiz1 mapPair(String id) {

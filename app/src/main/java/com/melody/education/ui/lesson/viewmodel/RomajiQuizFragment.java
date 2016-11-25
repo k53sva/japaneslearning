@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.jakewharton.rxbinding.view.RxView;
+import com.melody.education.App;
 import com.melody.education.R;
 import com.melody.education.adapter.LessonQuizItemAdapter;
 import com.melody.education.model.ShortQuiz;
@@ -28,7 +29,7 @@ import rx.Observable;
 public class RomajiQuizFragment extends BaseFragment {
     RecyclerView recyclerView;
     LessonQuizItemAdapter adapter;
-    Button btnCheck;
+    Button btnCheck, btnReset, btnAnswer;
 
     @Nullable
     @Override
@@ -36,6 +37,9 @@ public class RomajiQuizFragment extends BaseFragment {
         View v = inflater.inflate(R.layout.fragment_list_quiz, container, false);
         recyclerView = (RecyclerView) v.findViewById(R.id.recycler_view);
         btnCheck = (Button) v.findViewById(R.id.btn_check);
+        btnReset = (Button) v.findViewById(R.id.btn_reset);
+        btnAnswer = (Button) v.findViewById(R.id.btn_answer);
+
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(mLayoutManager);
         adapter = new LessonQuizItemAdapter(getActivity(), new ArrayList<>(), false);
@@ -48,6 +52,11 @@ public class RomajiQuizFragment extends BaseFragment {
     public void onResume() {
         super.onResume();
         RxView.clicks(btnCheck).subscribe(v -> adapter.checkAnswer());
+        RxView.clicks(btnAnswer).subscribe(v -> {
+        });
+        RxView.clicks(btnReset)
+                .doOnNext(v -> App.getApplication().getCheckRomaji().clear())
+                .subscribe(v -> adapter.resetAnswer());
     }
 
     private void getData() {

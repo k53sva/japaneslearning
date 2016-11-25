@@ -2,26 +2,24 @@ package com.melody.education.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.annimon.stream.Stream;
 import com.jakewharton.rxbinding.widget.RxAdapterView;
+import com.melody.education.App;
 import com.melody.education.R;
 import com.melody.education.model.AnswerShortQuiz1;
+import com.melody.education.model.QuizChoose;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import rx.Observable;
 
 public class QuizRomajiAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private static final int TYPE_SPINNER = 0;
@@ -86,17 +84,18 @@ public class QuizRomajiAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
         if (holder instanceof SpinHolder) {
             SpinHolder v = (SpinHolder) holder;
-            Observable.from(answer.RomajiChoose.split(","))
-                    .toList()
-                    .subscribe(m -> {
-                        m.add(0, "----");
-                        ArrayAdapter<String> ap = new ArrayAdapter<>(mContext, R.layout.item_textview_spinner, m);
-                        v.spinner.setAdapter(ap);
-                        RxAdapterView.itemSelections(v.spinner)
-                                .doOnNext(i -> check.put(position, ap.getItem(i)))
-                                .subscribe(i -> checkAnswer());
-                    });
-
+            String[] m = ("----," + answer.RomajiChoose).split(",");
+            ArrayAdapter<String> ap = new ArrayAdapter<>(mContext, R.layout.item_textview_spinner, m);
+            ap.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
+            v.spinner.setAdapter(ap);
+            QuizChoose x = App.getApplication().getCheckRomaji().get(answer.idCon);
+            if (x != null && x.position == position) {
+                v.spinner.setSelection(x.selection);
+            }
+            RxAdapterView.itemSelections(v.spinner)
+                    .doOnNext(i -> check.put(position, ap.getItem(i)))
+                    .doOnNext(i -> App.getApplication().getCheckRomaji().put(answer.idCon, new QuizChoose(position, i)))
+                    .subscribe(i -> checkAnswer());
         }
     }
 

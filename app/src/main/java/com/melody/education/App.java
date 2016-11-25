@@ -4,7 +4,10 @@ import android.app.Application;
 import android.os.StrictMode;
 
 import com.melody.education.manager.PlaylistManager;
+import com.melody.education.model.QuizChoose;
 import com.melody.education.utils.DataHelper;
+
+import java.util.HashMap;
 
 
 public class App extends Application {
@@ -12,6 +15,8 @@ public class App extends Application {
     private static App application;
     private static PlaylistManager playlistManager;
     private static DataHelper dataHelper;
+    private HashMap<String, QuizChoose> checkRomaji = new HashMap<>();
+    private HashMap<String, QuizChoose> checkKanji = new HashMap<>();
 
     @Override
     public void onCreate() {
@@ -19,6 +24,14 @@ public class App extends Application {
         super.onCreate();
         application = this;
         playlistManager = new PlaylistManager();
+    }
+
+    public synchronized HashMap<String, QuizChoose> getCheckRomaji() {
+        return checkRomaji;
+    }
+
+    public synchronized HashMap<String, QuizChoose> getCheckKanji() {
+        return checkKanji;
     }
 
     @Override

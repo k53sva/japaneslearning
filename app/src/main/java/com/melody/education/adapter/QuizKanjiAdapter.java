@@ -11,8 +11,10 @@ import com.annimon.stream.Stream;
 import com.github.davidmoten.rx.Transformers;
 import com.github.davidmoten.rx.util.MapWithIndex;
 import com.jakewharton.rxbinding.widget.RxAdapterView;
+import com.melody.education.App;
 import com.melody.education.R;
 import com.melody.education.model.AnswerShortQuiz1;
+import com.melody.education.model.QuizChoose;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -27,8 +29,6 @@ public class QuizKanjiAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     private List<String> items = new ArrayList<>();
     private AnswerShortQuiz1 answer;
     private HashMap<Integer, String> check = new HashMap<>();
-    private HashMap<Integer, Integer> tempSpinner = new HashMap<>();
-
 
     private class MyViewHolder extends RecyclerView.ViewHolder {
         public TextView tvName;
@@ -84,27 +84,21 @@ public class QuizKanjiAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
         if (holder instanceof SpinHolder) {
             SpinHolder v = (SpinHolder) holder;
-            Observable.from(answer.KanjiChoose.split(","))
-                    .toList()
-                    .subscribe(m -> {
-                        m.add(0, "----");
-                        ArrayAdapter<String> ap = new ArrayAdapter<>(mContext, R.layout.item_textview_spinner, m);
-                        v.spinner.setAdapter(ap);
-                        v.spinner.setSelection(getIndexSpinner(position));
-                        RxAdapterView.itemSelections(v.spinner)
-                                .doOnNext(i -> check.put(position, ap.getItem(i)))
-                                .doOnNext(i -> tempSpinner.put(position, i))
-                                .subscribe(i -> checkAnswer());
-
-                    });
+            String[] m = ("----," + answer.KanjiChoose).split(",");
+            ArrayAdapter<String> ap = new ArrayAdapter<>(mContext, R.layout.item_textview_spinner, m);
+            ap.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
+            v.spinner.setAdapter(ap);
+            QuizChoose x = App.getApplication().getCheckKanji().get(answer.idCon);
+            if (x != null && x.position == position) {
+                v.spinner.setSelection(x.selection);
+            }
+            RxAdapterView.itemSelections(v.spinner)
+                    .doOnNext(i -> check.put(position, ap.getItem(i)))
+                    .doOnNext(i -> App.getApplication().getCheckKanji().put(answer.idCon, new QuizChoose(position, i)))
+                    .subscribe(i -> checkAnswer());
         }
     }
 
-    private int getIndexSpinner(int position) {
-        if (tempSpinner.get(position) != null)
-            return tempSpinner.get(position);
-        return 0;
-    }
 
     private void checkAnswer() {
         String temp = Stream.of(check).reduce("", (x, y) -> x + ", " + y).replace(",", "");
