@@ -16,6 +16,7 @@ import com.melody.education.App;
 import com.melody.education.R;
 import com.melody.education.adapter.TopicAdapter;
 import com.melody.education.model.Topic;
+import com.melody.education.net.FetchData;
 import com.melody.education.utils.DataHelper;
 import com.melody.education.utils.GridSpacingItemDecoration;
 import com.melody.education.utils.Utils;
@@ -56,11 +57,10 @@ public class TopicListFragment extends BaseFragment {
     }
 
     void refreshItems() {
-        new Handler().postDelayed(this::onItemsLoadComplete, 5000);
-    }
-
-    void onItemsLoadComplete() {
-        mSwipeRefreshLayout.setRefreshing(false);
+        new FetchData(getActivity()).getDataTopic()
+                .doOnNext(m -> mSwipeRefreshLayout.setRefreshing(false))
+                .filter(m -> m)
+                .subscribe(m -> getData());
     }
 
     private void getData() {

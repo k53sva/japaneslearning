@@ -59,11 +59,10 @@ public class LessonListFragment extends BaseFragment {
     }
 
     void refreshItems() {
-        new Handler().postDelayed(this::onItemsLoadComplete, 5000);
-    }
-
-    void onItemsLoadComplete() {
-        mSwipeRefreshLayout.setRefreshing(false);
+        new FetchData(getActivity()).getDataLesson()
+                .doOnNext(m -> mSwipeRefreshLayout.setRefreshing(false))
+                .filter(m -> m)
+                .subscribe(m -> getData());
     }
 
     private void getData() {

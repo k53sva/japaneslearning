@@ -6,12 +6,14 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
 import com.melody.education.R;
 import com.melody.education.model.KanjiGroup;
+import com.melody.education.net.FetchData;
 import com.melody.education.utils.DataHelper;
 
 import java.util.ArrayList;
@@ -29,6 +31,7 @@ public class KanjiActivity extends AppCompatActivity {
     private ViewPager viewPager;
     private TabLayout tabLayout;
     private ViewPagerAdapter adapter;
+    private SwipeRefreshLayout mSwipeRefreshLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,8 +44,19 @@ public class KanjiActivity extends AppCompatActivity {
         viewPager = (ViewPager) findViewById(R.id.viewpager);
         adapter = new ViewPagerAdapter(getSupportFragmentManager());
         tabLayout = (TabLayout) findViewById(R.id.tabs);
+
+        mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_refresh);
+        mSwipeRefreshLayout.setOnRefreshListener(this::refreshItems);
         getData();
     }
+
+    void refreshItems() {
+        new FetchData(this).getDataKanji()
+                .doOnNext(m -> mSwipeRefreshLayout.setRefreshing(false))
+                .filter(m -> m)
+                .subscribe(m -> getData());
+    }
+
 
     private void getData() {
         DataHelper helper = new DataHelper(this);

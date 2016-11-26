@@ -29,7 +29,6 @@ public class LessonAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     private static final int TYPE_HEADER = 2;
     private Context mContext;
     SharedPreferences preferences;
-    SharedPreferences.Editor editor;
 
     public static List<LessonTitle> lessonArrayList = new ArrayList<>();
 
@@ -65,7 +64,6 @@ public class LessonAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         this.mContext = mContext;
         this.lessonArrayList = lessonArrayList;
         preferences = PreferenceManager.getDefaultSharedPreferences(mContext);
-        editor = preferences.edit();
     }
 
     public void setModel(List<LessonTitle> lessonArrayList) {

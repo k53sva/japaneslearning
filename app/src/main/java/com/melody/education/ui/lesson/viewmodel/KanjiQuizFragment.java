@@ -19,7 +19,6 @@ import com.melody.education.R;
 import com.melody.education.adapter.LessonQuizItemAdapter;
 import com.melody.education.model.ShortQuiz;
 import com.melody.education.ui.BaseFragment;
-import com.melody.education.ui.LessonListFragment;
 import com.melody.education.ui.lesson.LessonActivity;
 import com.melody.education.utils.DataHelper;
 import com.melody.education.utils.Utils;

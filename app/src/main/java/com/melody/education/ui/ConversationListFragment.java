@@ -63,16 +63,9 @@ public class ConversationListFragment extends BaseFragment {
 
     void refreshItems() {
         new FetchData(getActivity()).getDataConversation()
-                .doOnNext(m -> onItemsLoadComplete())
+                .doOnNext(m -> mSwipeRefreshLayout.setRefreshing(false))
                 .filter(m -> m)
-                .subscribe(m -> {
-                    getData();
-                });
-        new Handler().postDelayed(this::onItemsLoadComplete, 5000);
-    }
-
-    void onItemsLoadComplete() {
-        mSwipeRefreshLayout.setRefreshing(false);
+                .subscribe(m -> getData());
     }
 
     private void getData() {
