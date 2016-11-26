@@ -1,6 +1,9 @@
 package com.melody.education.adapter;
 
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
+import android.support.design.widget.Snackbar;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,10 +11,12 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.melody.education.R;
 import com.melody.education.model.LessonTitle;
 import com.melody.education.ui.lesson.LessonActivity;
+import com.melody.education.utils.Utils;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -23,6 +28,9 @@ public class LessonAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     private static final int TYPE_ITEM = 1;
     private static final int TYPE_HEADER = 2;
     private Context mContext;
+    SharedPreferences preferences;
+    SharedPreferences.Editor editor;
+
     public static List<LessonTitle> lessonArrayList = new ArrayList<>();
 
     private class MyViewHolder extends RecyclerView.ViewHolder {
@@ -56,6 +64,8 @@ public class LessonAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     public LessonAdapter(Context mContext, List<LessonTitle> lessonArrayList) {
         this.mContext = mContext;
         this.lessonArrayList = lessonArrayList;
+        preferences = PreferenceManager.getDefaultSharedPreferences(mContext);
+        editor = preferences.edit();
     }
 
     public void setModel(List<LessonTitle> lessonArrayList) {
@@ -92,7 +102,7 @@ public class LessonAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                     .into(myViewHolder.thumbnail);
 
             //Click item
-            ((MyViewHolder) holder).body.setOnClickListener(v -> startLearningActivity(item));
+            ((MyViewHolder) holder).body.setOnClickListener(v -> startLearningActivity(item, position));
 
         } else if (holder instanceof AdsHolder) {
             //cast holder to VHHeader and set data for header.
@@ -116,7 +126,12 @@ public class LessonAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         return lessonArrayList.size();
     }
 
-    private void startLearningActivity(LessonTitle item) {
-        LessonActivity.launchActivity(mContext, "Ch1", item.Title, item.Picture);
+    private void startLearningActivity(LessonTitle item, int position) {
+        int i = preferences.getInt(Utils.PRF_LESSON_FINAL, 0);
+        if (position <= i)
+            LessonActivity.launchActivity(mContext, item.ChungID, item.Title, item.Picture, position);
+        else
+            Toast.makeText(mContext, "You must complete the Lesson Quiz " + (i + 1), Toast.LENGTH_LONG).show();
     }
+
 }

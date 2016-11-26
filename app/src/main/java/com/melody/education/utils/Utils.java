@@ -26,9 +26,15 @@ public class Utils {
     public static final String PRF_KEY_TOTAL = "PRF_KEY_TOTAL";
     public static final String PRF_KEY_ROMAJI = "PRF_KEY_ROMAJI";
     public static final String PRF_KEY_KANJI = "PRF_KEY_KANJI";
+    public static final String PRF_LESSON_FINAL = "PRF_LESSON_FINAL";
 
     public static final String PACKAGE_NAME = "com.melody.education";
 
+    public static boolean checkFinal(int count, int total){
+        if((count/total)*100 >80)
+            return true;
+        return false;
+    }
 
     public static void startFragment(FragmentActivity context, Fragment fragment) {
         String backStateName = fragment.getClass().getName();

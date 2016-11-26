@@ -19,6 +19,8 @@ import com.melody.education.R;
 import com.melody.education.adapter.LessonQuizItemAdapter;
 import com.melody.education.model.ShortQuiz;
 import com.melody.education.ui.BaseFragment;
+import com.melody.education.ui.LessonListFragment;
+import com.melody.education.ui.lesson.LessonActivity;
 import com.melody.education.utils.DataHelper;
 import com.melody.education.utils.Utils;
 
@@ -36,13 +38,15 @@ public class KanjiQuizFragment extends BaseFragment {
     LessonQuizItemAdapter adapter;
     Button btnCheck, btnReset, btnAnswer;
     int total;
-    SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
-    SharedPreferences.Editor editor = preferences.edit();
+    SharedPreferences preferences;
+    SharedPreferences.Editor editor;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_list_quiz, container, false);
+        preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        editor = preferences.edit();
         recyclerView = (RecyclerView) v.findViewById(R.id.recycler_view);
         btnCheck = (Button) v.findViewById(R.id.btn_check);
         btnReset = (Button) v.findViewById(R.id.btn_reset);
@@ -71,12 +75,16 @@ public class KanjiQuizFragment extends BaseFragment {
     }
 
     private void saveData() {
-        total = LessonQuizItemAdapter.tempRomaji.size() + LessonQuizItemAdapter.tempKanji.size();
-        int x = preferences.getInt(Utils.PRF_KEY_COUNT, 0)
-                + Stream.of(LessonQuizItemAdapter.tempKanji).map(Map.Entry::getValue).filter(m -> m).collect(Collectors.toList()).size();
-        editor.putInt(Utils.PRF_KEY_COUNT, x);
-        editor.putInt(Utils.PRF_KEY_TOTAL, total);
-        editor.apply();
+        int i = preferences.getInt(Utils.PRF_LESSON_FINAL, 0);
+        if (LessonActivity.lessonId == i) {
+            total = LessonQuizItemAdapter.tempRomaji.size() + LessonQuizItemAdapter.tempKanji.size();
+            int x = +Stream.of(LessonQuizItemAdapter.tempKanji).map(Map.Entry::getValue).filter(m -> m).collect(Collectors.toList()).size()
+                    + Stream.of(LessonQuizItemAdapter.tempRomaji).map(Map.Entry::getValue).filter(m -> m).collect(Collectors.toList()).size();
+            if ((Utils.checkFinal(x, total))) {
+                editor.putInt(Utils.PRF_LESSON_FINAL, LessonActivity.lessonId);
+            }
+            editor.apply();
+        }
     }
 
     private void getData() {

@@ -20,16 +20,19 @@ public class LessonActivity extends AppCompatActivity {
     public static final String EXTRA_INDEX = "EXTRA_INDEX";
     public static final String EXTRA_TITLE = "EXTRA_TITLE";
     public static final String EXTRA_IMAGE = "EXTRA_IMAGE";
+    public static int lessonId = 0;
     private TabLayout tabLayout;
     private String ChungID;
     private String title;
     private String image;
 
-    public static void launchActivity(Context context, String ChungId, String title, String image) {
+
+    public static void launchActivity(Context context, String ChungId, String title, String image, int position) {
         Intent intent = new Intent(context, LessonActivity.class);
         intent.putExtra(EXTRA_INDEX, ChungId);
         intent.putExtra(EXTRA_TITLE, title);
         intent.putExtra(EXTRA_IMAGE, image);
+        lessonId = position;
         context.startActivity(intent);
     }
 
