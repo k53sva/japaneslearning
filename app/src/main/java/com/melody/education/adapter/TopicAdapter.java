@@ -13,9 +13,7 @@ import com.melody.education.R;
 import com.melody.education.model.Topic;
 import com.melody.education.model.TopicTitle;
 import com.melody.education.net.FetchData;
-import com.melody.education.ui.TopicActivity;
 import com.melody.education.ui.topic.TopicDetailActivity;
-import com.melody.education.ui.topic.TopicDetailViewModel;
 import com.melody.education.utils.DataHelper;
 import com.squareup.picasso.Picasso;
 

@@ -11,11 +11,11 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.melody.education.R;
-import com.melody.education.ui.fragment.ConversationFragment;
+import com.melody.education.ui.conversation.ConversationFragment;
 import com.melody.education.model.Conversation;
 import com.melody.education.net.FetchData;
 import com.melody.education.service.MediaService;
-import com.melody.education.ui.ConversationActivity;
+import com.melody.education.ui.conversation.ConversationActivity;
 import com.melody.education.utils.DataCache;
 import com.squareup.picasso.Picasso;
 

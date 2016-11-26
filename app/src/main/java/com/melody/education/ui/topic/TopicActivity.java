@@ -1,4 +1,4 @@
-package com.melody.education.ui;
+package com.melody.education.ui.topic;
 
 import android.content.Context;
 import android.content.Intent;
@@ -14,6 +14,7 @@ import com.melody.education.R;
 import com.melody.education.adapter.TopicDetailAdapter;
 import com.melody.education.model.Topic;
 import com.melody.education.net.FetchData;
+import com.melody.education.ui.BaseActivity;
 import com.melody.education.utils.DataHelper;
 import com.melody.education.utils.GridSpacingItemDecoration;
 import com.melody.education.utils.Utils;

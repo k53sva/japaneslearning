@@ -11,8 +11,8 @@ import android.view.ViewGroup;
 
 import com.melody.education.R;
 import com.melody.education.adapter.ViewPagerAdapter;
-import com.melody.education.ui.fragment.HiraganaFragment;
-import com.melody.education.ui.fragment.KatakanaFragment;
+import com.melody.education.ui.syllabaries.HiraganaFragment;
+import com.melody.education.ui.syllabaries.KatakanaFragment;
 import com.melody.education.utils.Utils;
 
 /**

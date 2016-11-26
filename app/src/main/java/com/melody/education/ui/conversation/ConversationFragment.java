@@ -1,7 +1,6 @@
-package com.melody.education.ui.fragment;
+package com.melody.education.ui.conversation;
 
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;

@@ -1,4 +1,4 @@
-package com.melody.education.ui.fragment;
+package com.melody.education.ui.conversation;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
