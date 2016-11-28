@@ -25,6 +25,7 @@ import com.melody.education.utils.Utils;
 
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import rx.Observable;
@@ -92,6 +93,7 @@ public class RomajiQuizFragment extends BaseFragment {
         helper.getData(DataHelper.DATABASE_LESSON, DataHelper.TABLE_SHORT_QUIZ, ShortQuiz[].class)
                 .flatMap(Observable::from)
                 .toList()
+                .doOnNext(m -> Observable.just(m).map(List::size).filter(n -> n == 0).subscribe(n -> editor.putInt(Utils.PRF_LESSON_FINAL, LessonActivity.lessonId)))
                 .subscribe(m -> {
                     adapter.setModel(m);
                 }, Throwable::printStackTrace);

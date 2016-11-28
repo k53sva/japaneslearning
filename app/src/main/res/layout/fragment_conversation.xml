@@ -28,11 +28,10 @@
         android:layout_width="match_parent"
         android:layout_height="80dp"
         android:layout_alignParentBottom="true"
-        android:background="@drawable/gray_border_wo_padding"
         android:gravity="center_vertical"
         android:orientation="vertical"
         android:paddingLeft="4dp">
-
+<!--android:background="@drawable/gray_border_wo_padding"-->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -45,7 +44,7 @@
                 android:layout_height="wrap_content"
                 android:background="@android:color/transparent"
                 android:scaleType="centerInside"
-                android:src="@drawable/playlistcore_ic_play_arrow_black"
+                android:src="@drawable/playlistcore_ic_play_arrow_white"
                 tools:ignore="ContentDescription" />
 
             <RelativeLayout
@@ -75,18 +74,21 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="10dp"
                         tools:ignore="RtlHardcoded"
+                        android:textColor="@color/colorAccent"
                         tools:text="00:00" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:ellipsize="end"
+                        android:textColor="@color/colorAccent"
                         android:text=" / " />
 
                     <TextView
                         android:id="@+id/audio_player_duration"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:textColor="@color/colorAccent"
                         android:layout_marginRight="10dp"
                         tools:ignore="RelativeOverlap,RtlHardcoded"
                         tools:text="00:00" />
