@@ -96,7 +96,7 @@ public class LessonAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             myViewHolder.des.setText(item.Detail);
             Picasso.with(mContext)
                     .load(item.Picture)
-                    .placeholder(R.drawable.album1)
+                    .placeholder(R.drawable.logo_app)
                     .into(myViewHolder.thumbnail);
 
             //Click item

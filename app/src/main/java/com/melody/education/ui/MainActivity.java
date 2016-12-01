@@ -207,17 +207,13 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         float ver = preferences.getFloat(Version.KANJI_KEY, 0);
 
         if (version.kanji == ver) {
-            if (Utils.checkFileExits(String.format("%s/%s", this.getExternalCacheDir(), DataHelper.DATABASE_KANJI))) {
+            if (Utils.checkFileExits(String.format("%s/%s", this.getExternalCacheDir(), DataHelper.DATABASE_KANJI)))
                 startActivity(new Intent(this, KanjiActivity.class));
-                Log.e(TAG, "V1=V2 and exits");
-            } else {
+            else
                 getDatKanji(version.kanji);
-                Log.e(TAG, "V1=V2 and not exits");
-            }
-        } else {
-            Log.e(TAG, "V1!=V2");
+        } else
             getDatKanji(version.kanji);
-        }
+
     }
 
     private void getDatKanji(float v) {
@@ -238,18 +234,13 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     private void checkVersionTopic() {
         float ver = preferences.getFloat(Version.TOPICS_KEY, 0);
 
-        if (version.topics == ver) {
-            if (Utils.checkFileExits(String.format("%s/%s", this.getExternalCacheDir(), DataHelper.DATABASE_TOPICS))) {
+        if (version.topics == ver)
+            if (Utils.checkFileExits(String.format("%s/%s", this.getExternalCacheDir(), DataHelper.DATABASE_TOPICS)))
                 Utils.startFragment(this, new TopicListFragment());
-                Log.e(TAG, "V1=V2 and exits");
-            } else {
+            else
                 getDatTopics(version.topics);
-                Log.e(TAG, "V1=V2 and not exits");
-            }
-        } else {
-            Log.e(TAG, "V1!=V2");
+        else
             getDatTopics(version.topics);
-        }
     }
 
     private void getDatTopics(float v) {
@@ -270,18 +261,14 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     private void checkVersionLesson() {
         float ver = preferences.getFloat(Version.LESSON_KEY, 0);
 
-        if (version.Lesson == ver) {
-            if (Utils.checkFileExits(String.format("%s/%s", this.getExternalCacheDir(), DataHelper.DATABASE_LESSON))) {
+        if (version.Lesson == ver)
+            if (Utils.checkFileExits(String.format("%s/%s", this.getExternalCacheDir(), DataHelper.DATABASE_LESSON)))
                 Utils.startFragment(this, new LessonListFragment());
-                Log.e(TAG, "V1=V2 and exits");
-            } else {
+            else
                 getDataLesson(version.Lesson);
-                Log.e(TAG, "V1=V2 and not exits");
-            }
-        } else {
-            Log.e(TAG, "V1!=V2");
+        else
             getDataLesson(version.Lesson);
-        }
+
     }
 
     private void getDataLesson(float v) {

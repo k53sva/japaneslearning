@@ -16,6 +16,7 @@ import com.melody.education.App;
 import com.melody.education.R;
 import com.melody.education.adapter.TopicAdapter;
 import com.melody.education.model.Topic;
+import com.melody.education.model.TopicTitle;
 import com.melody.education.net.FetchData;
 import com.melody.education.utils.DataHelper;
 import com.melody.education.utils.GridSpacingItemDecoration;
@@ -64,12 +65,10 @@ public class TopicListFragment extends BaseFragment {
     }
 
     private void getData() {
-        App.getDataHelper().getData(DataHelper.DATABASE_TOPICS, DataHelper.TABLE_TOPIC, Topic[].class)
+        App.getDataHelper().getData(DataHelper.DATABASE_TOPICS, DataHelper.TABLE_TOPIC_TITLE, TopicTitle[].class)
                 .subscribeOn(Schedulers.io())
                 .flatMap(Observable::from)
-                .groupBy(m -> m.ChungID)
-                .flatMap(m -> m.distinctUntilChanged(n -> n.ChungID))
-                .toList()
+                .toSortedList((p1, p2) -> Integer.valueOf(p1.id).compareTo(p2.id))
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(m -> adapter.setModel(m));
     }

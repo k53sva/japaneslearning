@@ -9,6 +9,7 @@ import android.widget.TextView;
 import com.jakewharton.rxbinding.view.RxView;
 import com.melody.education.R;
 import com.melody.education.model.Dialogue1;
+import com.melody.education.net.FetchData;
 import com.melody.education.ui.BaseFragment;
 
 /**
@@ -54,7 +55,12 @@ public class LessonDialogFragment extends BaseFragment {
     }
 
     public void setModel(Dialogue1 m) {
+        m.Audio1 = FetchData.ROOT_URL + "lesson/" + m.Audio1;
         this.dialogue1 = m;
+    }
+
+    public Dialogue1 getModel() {
+       return this.dialogue1;
     }
 
     private void retrieveViews(View view) {

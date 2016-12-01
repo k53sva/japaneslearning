@@ -3,6 +3,7 @@ package com.melody.education.binding;
 import android.databinding.BindingAdapter;
 import android.widget.ImageView;
 
+import com.melody.education.R;
 import com.squareup.picasso.Picasso;
 
 /**
@@ -18,6 +19,7 @@ public final class BindingAdapters {
         if (!url.isEmpty())
             Picasso.with(view.getContext())
                     .load(url)
+                    .placeholder(R.mipmap.ic_launcher)
                     .into(view);
     }
 

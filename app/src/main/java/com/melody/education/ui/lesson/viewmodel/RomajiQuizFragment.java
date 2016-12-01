@@ -13,6 +13,7 @@ import android.widget.Button;
 
 import com.annimon.stream.Collectors;
 import com.annimon.stream.Stream;
+import com.google.android.exoplayer.C;
 import com.jakewharton.rxbinding.view.RxView;
 import com.melody.education.App;
 import com.melody.education.R;
@@ -20,6 +21,7 @@ import com.melody.education.adapter.LessonQuizItemAdapter;
 import com.melody.education.model.ShortQuiz;
 import com.melody.education.ui.BaseFragment;
 import com.melody.education.ui.lesson.LessonActivity;
+import com.melody.education.ui.lesson.ShortQuizFragment;
 import com.melody.education.utils.DataHelper;
 import com.melody.education.utils.Utils;
 
@@ -41,14 +43,31 @@ public class RomajiQuizFragment extends BaseFragment {
     int total = 0;
     SharedPreferences preferences;
     SharedPreferences.Editor editor;
+    public static final String EXTRA_INDEX = "EXTRA_INDEX";
+    private String ChungID;
+
+
+    public static RomajiQuizFragment newInstance(String index) {
+        RomajiQuizFragment fragment = new RomajiQuizFragment();
+        Bundle bundle = new Bundle();
+        bundle.putString(EXTRA_INDEX, index);
+        fragment.setArguments(bundle);
+        return fragment;
+    }
+
+    private void retrieveExtras() {
+        if (getArguments() != null) {
+            ChungID = getArguments().getString(EXTRA_INDEX);
+        }
+    }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_list_quiz, container, false);
+        retrieveExtras();
         preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
         editor = preferences.edit();
-
         recyclerView = (RecyclerView) v.findViewById(R.id.recycler_view);
         btnCheck = (Button) v.findViewById(R.id.btn_check);
         btnReset = (Button) v.findViewById(R.id.btn_reset);
@@ -92,6 +111,7 @@ public class RomajiQuizFragment extends BaseFragment {
         DataHelper helper = new DataHelper(getActivity());
         helper.getData(DataHelper.DATABASE_LESSON, DataHelper.TABLE_SHORT_QUIZ, ShortQuiz[].class)
                 .flatMap(Observable::from)
+                .filter(m -> m.ChungID.equals(ChungID))
                 .toList()
                 .doOnNext(m -> Observable.just(m).map(List::size).filter(n -> n == 0).subscribe(n -> editor.putInt(Utils.PRF_LESSON_FINAL, LessonActivity.lessonId)))
                 .subscribe(m -> {

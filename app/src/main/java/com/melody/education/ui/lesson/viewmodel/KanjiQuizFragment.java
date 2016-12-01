@@ -39,11 +39,29 @@ public class KanjiQuizFragment extends BaseFragment {
     int total;
     SharedPreferences preferences;
     SharedPreferences.Editor editor;
+    public static final String EXTRA_INDEX = "EXTRA_INDEX";
+    private String ChungID;
+
+
+    public static KanjiQuizFragment newInstance(String index) {
+        KanjiQuizFragment fragment = new KanjiQuizFragment();
+        Bundle bundle = new Bundle();
+        bundle.putString(EXTRA_INDEX, index);
+        fragment.setArguments(bundle);
+        return fragment;
+    }
+
+    private void retrieveExtras() {
+        if (getArguments() != null) {
+            ChungID = getArguments().getString(EXTRA_INDEX);
+        }
+    }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_list_quiz, container, false);
+        retrieveExtras();
         preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
         editor = preferences.edit();
         recyclerView = (RecyclerView) v.findViewById(R.id.recycler_view);
@@ -89,6 +107,7 @@ public class KanjiQuizFragment extends BaseFragment {
     private void getData() {
         App.getDataHelper().getData(DataHelper.DATABASE_LESSON, DataHelper.TABLE_SHORT_QUIZ, ShortQuiz[].class)
                 .flatMap(Observable::from)
+                .filter(m -> m.ChungID.equals(ChungID))
                 .toList()
                 .subscribe(m -> {
                     adapter.setModel(m);

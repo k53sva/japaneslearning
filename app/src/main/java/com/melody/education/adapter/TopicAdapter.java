@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -30,12 +31,13 @@ public class TopicAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     private static final int TYPE_HEADER = 2;
     private Activity mContext;
     private DataHelper dataHelper;
-    private static List<Topic> topics = new ArrayList<>();
+    private List<TopicTitle> topics = new ArrayList<>();
 
     private class MyViewHolder extends RecyclerView.ViewHolder {
         public TextView title, des;
         public ImageView thumbnail;
         private RelativeLayout body;
+        private LinearLayout ln;
 
 
         public MyViewHolder(View view) {
@@ -44,10 +46,11 @@ public class TopicAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             des = (TextView) view.findViewById(R.id.tv_des);
             thumbnail = (ImageView) view.findViewById(R.id.iv_bg_lesson);
             body = (RelativeLayout) view.findViewById(R.id.body);
+            ln = (LinearLayout) view.findViewById(R.id.content);
         }
     }
 
-    public void setModel(List<Topic> list) {
+    public void setModel(List<TopicTitle> list) {
         this.topics = list;
         notifyDataSetChanged();
     }
@@ -65,7 +68,7 @@ public class TopicAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         }
     }
 
-    public TopicAdapter(Activity mContext, List<Topic> topics) {
+    public TopicAdapter(Activity mContext, List<TopicTitle> topics) {
         this.mContext = mContext;
         this.topics = topics;
         dataHelper = new DataHelper(mContext);
@@ -91,20 +94,18 @@ public class TopicAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     public void onBindViewHolder(final RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof MyViewHolder) {
             MyViewHolder myViewHolder = (MyViewHolder) holder;
-            Topic item = topics.get(position);
-            myViewHolder.title.setText(item.LessonName.toUpperCase());
-            myViewHolder.des.setText(item.Detail);
-            dataHelper.getData(DataHelper.DATABASE_TOPICS, DataHelper.TABLE_TOPIC_TITLE, TopicTitle[].class)
-                    .subscribeOn(Schedulers.io())
-                    .filter(m -> m.length > 0)
-                    .map(m -> m[0])
-                    .map(m -> FetchData.ROOT_URL + m.TopicImage)
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(m ->
-                            Picasso.with(mContext).load(m)
-                                    .placeholder(R.drawable.album1)
-                                    .into(myViewHolder.thumbnail)
-                    );
+            TopicTitle item = topics.get(position);
+            String detail = item.TitleDetail;
+            if (detail != null && detail.length() > 0) {
+                myViewHolder.des.setText(detail);
+                myViewHolder.ln.setVisibility(View.VISIBLE);
+            } else {
+                myViewHolder.ln.setVisibility(View.GONE);
+            }
+            Picasso.with(mContext).load(FetchData.ROOT_URL + item.TopicImage)
+                    .placeholder(R.drawable.logo_app)
+                    .into(myViewHolder.thumbnail);
+
             ((MyViewHolder) holder).body.setOnClickListener(v ->
                     TopicDetailActivity.launchActivity(mContext, topics.get(position).ChungID));
 

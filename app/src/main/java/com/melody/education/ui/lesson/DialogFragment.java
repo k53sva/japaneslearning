@@ -127,8 +127,7 @@ public class DialogFragment extends BaseFragment implements PlaylistListener<Med
                     adapter.addFragment(dialog2, "");
                     mViewPager.setAdapter(adapter);
                     titleIndicator.setViewPager(mViewPager);
-                    boolean generatedPlaylist = setupPlaylistManager("http://ahaheaven.esy.es/conversation/le13_v_scall.mp3",
-                            "http://ahaheaven.esy.es/conversation/le26_v_scall.mp3");
+                    boolean generatedPlaylist = setupPlaylistManager(dialog1.getModel().Audio1, dialog2.getModel().Audio2);
                     startPlayback(generatedPlaylist);
                     setupListeners();
                 });

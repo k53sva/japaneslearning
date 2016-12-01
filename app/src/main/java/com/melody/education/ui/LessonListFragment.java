@@ -77,7 +77,7 @@ public class LessonListFragment extends BaseFragment {
     }
 
     private LessonTitle fillData(LessonTitle title) {
-        title.Picture = FetchData.ROOT_URL + "Lesson/" + title.Picture;
+        title.Picture = FetchData.ROOT_URL + "lesson/" + title.Picture;
         return title;
     }
 }

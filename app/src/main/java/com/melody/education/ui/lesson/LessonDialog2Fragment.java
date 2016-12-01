@@ -12,6 +12,7 @@ import com.jakewharton.rxbinding.view.RxView;
 import com.melody.education.R;
 import com.melody.education.model.Dialogue1;
 import com.melody.education.model.Dialogue2;
+import com.melody.education.net.FetchData;
 import com.melody.education.ui.BaseFragment;
 import com.melody.education.utils.DataHelper;
 
@@ -63,7 +64,13 @@ public class LessonDialog2Fragment extends BaseFragment {
 
     public void setModel(Dialogue2 m) {
         this.dialogue2 = m;
+        m.Audio2 = FetchData.ROOT_URL + "lesson/" + m.Audio2;
     }
+
+    public Dialogue2 getModel() {
+        return this.dialogue2;
+    }
+
 
     private void retrieveViews(View view) {
         tvDialog = (TextView) view.findViewById(R.id.tv_dialog);

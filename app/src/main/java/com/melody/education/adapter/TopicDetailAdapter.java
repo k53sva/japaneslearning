@@ -86,7 +86,7 @@ public class TopicDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
                 Picasso.with(mContext)
                         .load(item.ImageUrl)
-                        .placeholder(R.drawable.album1)
+                        .placeholder(R.drawable.logo_app)
                         .into(myViewHolder.ivDetail);
                 myViewHolder.expandableLayout.expand();
 
