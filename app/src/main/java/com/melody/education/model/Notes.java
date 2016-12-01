@@ -12,7 +12,7 @@ public class Notes {
     public String Detail;
     public final ObservableString v = new ObservableString();
 
-    public void setView() {
-        v.set(Detail);
+    public void setView(String detail) {
+        v.set(detail);
     }
 }

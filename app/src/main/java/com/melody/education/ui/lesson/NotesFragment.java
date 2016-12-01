@@ -54,12 +54,17 @@ public class NotesFragment extends BaseFragment {
         return binding.getRoot();
     }
 
-    public void getData() {
+    @Override
+    public void onResume() {
+        super.onResume();
+        getData();
+    }
+
+    private void getData() {
         App.getDataHelper().getData(DataHelper.DATABASE_LESSON, DataHelper.TABLE_NOTES, Notes[].class)
                 .flatMap(Observable::from)
                 .filter(m -> m.ChungID.equals(ChungID))
                 .observeOn(AndroidSchedulers.mainThread())
-                .doOnNext(m -> notes = m)
-                .subscribe(m -> notes.setView());
+                .subscribe(m -> notes.setView(m.Detail));
     }
 }

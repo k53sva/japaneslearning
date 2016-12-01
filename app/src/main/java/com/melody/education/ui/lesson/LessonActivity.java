@@ -82,7 +82,7 @@ public class LessonActivity extends AppCompatActivity {
                     case 3:
                         NotesFragment note = NotesFragment.newInstance(ChungID);
                         Utils.startFragment(LessonActivity.this, note);
-
+                        break;
                     case 4:
                         ShortQuizFragment quiz = ShortQuizFragment.newInstance(ChungID);
                         Utils.startFragment(LessonActivity.this, quiz);
