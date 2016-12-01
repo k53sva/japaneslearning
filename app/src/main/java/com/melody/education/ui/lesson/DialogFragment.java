@@ -61,7 +61,6 @@ public class DialogFragment extends BaseFragment implements PlaylistListener<Med
 
     private boolean shouldSetDuration;
     private boolean userInteracting;
-    private int selectedIndex = 0;
     private PlaylistManager playlistManager;
 
     private LessonDialogFragment dialog1 = new LessonDialogFragment();
@@ -108,7 +107,6 @@ public class DialogFragment extends BaseFragment implements PlaylistListener<Med
                 .subscribeOn(Schedulers.io())
                 .flatMap(Observable::from)
                 .filter(m -> m.ChungID.equals(ChungID))
-                .doOnNext(m -> Log.e("TAG", ChungID))
                 .take(1);
 
         Observable<Dialogue2> z2 = App.getDataHelper().getData(DataHelper.DATABASE_LESSON, DataHelper.TABLE_DIALOGUE_2, Dialogue2[].class)
@@ -127,7 +125,7 @@ public class DialogFragment extends BaseFragment implements PlaylistListener<Med
                     adapter.addFragment(dialog2, "");
                     mViewPager.setAdapter(adapter);
                     titleIndicator.setViewPager(mViewPager);
-                    boolean generatedPlaylist = setupPlaylistManager(dialog1.getModel().Audio1, dialog2.getModel().Audio2);
+                    boolean generatedPlaylist = setupPlaylistManager(dialog1.getModel().Audio1);
                     startPlayback(generatedPlaylist);
                     setupListeners();
                 });
@@ -155,9 +153,15 @@ public class DialogFragment extends BaseFragment implements PlaylistListener<Med
 
             @Override
             public void onPageSelected(int position) {
-                selectedIndex = position;
-                playlistManager.invokePausePlay();
-                playlistManager.play(selectedIndex, true);
+                if (position == 1) {
+                    boolean generatedPlaylist = setupPlaylistManager(dialog2.getModel().Audio2);
+                    startPlayback(generatedPlaylist);
+                    setupListeners();
+                } else {
+                    boolean generatedPlaylist = setupPlaylistManager(dialog1.getModel().Audio1);
+                    startPlayback(generatedPlaylist);
+                    setupListeners();
+                }
             }
 
             @Override
@@ -177,7 +181,7 @@ public class DialogFragment extends BaseFragment implements PlaylistListener<Med
     public boolean onPlaybackStateChanged(@NonNull PlaylistServiceCore.PlaybackState playbackState) {
         switch (playbackState) {
             case STOPPED:
-                playlistManager.play(selectedIndex, true);
+                playlistManager.play(0, true);
                 break;
 
             case RETRIEVING:
@@ -225,15 +229,11 @@ public class DialogFragment extends BaseFragment implements PlaylistListener<Med
         return true;
     }
 
-    private boolean setupPlaylistManager(String s1, String s2) {
+    private boolean setupPlaylistManager(String s1) {
         Conversation c1 = new Conversation();
-        Conversation c2 = new Conversation();
         c1.Audio = s1;
         c1.Title = title;
         c1.Anh = image;
-        c2.Audio = s2;
-        c2.Title = title;
-        c2.Anh = image;
 
         playlistManager = App.getPlaylistManager();
         playlistManager.reset();
@@ -243,10 +243,8 @@ public class DialogFragment extends BaseFragment implements PlaylistListener<Med
 
         List<MediaItem> mediaItems = new LinkedList<>();
         mediaItems.add(new MediaItem(c1, true));
-        mediaItems.add(new MediaItem(c2, true));
         playlistManager.setParameters(mediaItems, 0);
         playlistManager.setId(0);
-        playlistManager.invokeRepeat();
         return true;
     }
 
@@ -309,10 +307,6 @@ public class DialogFragment extends BaseFragment implements PlaylistListener<Med
 
         @Override
         public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-            /*if (!fromUser) {
-                return;
-            }*/
-
             seekPosition = progress;
             currentPositionView.setText(TimeFormatUtil.formatMs(progress));
         }
