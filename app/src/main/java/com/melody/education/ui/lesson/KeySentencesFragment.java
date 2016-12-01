@@ -11,11 +11,9 @@ import android.view.ViewGroup;
 
 import com.melody.education.App;
 import com.melody.education.R;
-import com.melody.education.adapter.ConversationAdapter;
 import com.melody.education.adapter.LessonKeySentencesAdapter;
-import com.melody.education.adapter.VocabularyAdapter;
 import com.melody.education.model.KeySentences;
-import com.melody.education.model.Vocabulary;
+import com.melody.education.net.FetchData;
 import com.melody.education.utils.DataHelper;
 import com.melody.education.utils.GridSpacingItemDecoration;
 import com.melody.education.utils.Utils;
@@ -69,8 +67,14 @@ public class KeySentencesFragment extends Fragment {
         App.getDataHelper().getData(DataHelper.DATABASE_LESSON, DataHelper.TABLE_KEY_SENTENCES, KeySentences[].class)
                 .flatMap(Observable::from)
                 .filter(m -> m.ChungID.equals(ChungID))
+                .map(this::fillAudio)
                 .toList()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(m -> adapter.setModel(m));
+    }
+
+    private KeySentences fillAudio(KeySentences key) {
+        key.Audio = FetchData.ROOT_URL + "lesson/" + key.Audio;
+        return key;
     }
 }
