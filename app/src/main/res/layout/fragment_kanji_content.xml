@@ -26,6 +26,7 @@
                 android:gravity="center"
                 android:text="@{kanjiContent.name}"
                 android:textSize="24sp"
+                android:textColor="@color/colorPrimaryDark"
                 android:textStyle="bold" />
 
             <LinearLayout
@@ -90,7 +91,11 @@
                         android:layout_height="match_parent"
                         android:layout_weight="1"
                         android:text="@{kanjiContent.onR.get()}" />
-
+                    <View
+                        android:layout_width="1dp"
+                        android:layout_height="match_parent"
+                        android:background="@android:color/darker_gray"
+                        />
                     <android.support.v7.widget.RecyclerView
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
@@ -117,7 +122,11 @@
                         android:layout_height="match_parent"
                         android:layout_weight="1"
                         android:text="@{kanjiContent.kunR.get()}" />
-
+                    <View
+                        android:layout_width="1dp"
+                        android:layout_height="match_parent"
+                        android:background="@android:color/darker_gray"
+                        />
                     <android.support.v7.widget.RecyclerView
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
@@ -150,6 +159,11 @@
                     android:text="Examples"
                     android:textSize="20sp"
                     android:textStyle="bold" />
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:background="@android:color/darker_gray"
+                    />
 
                 <android.support.v7.widget.RecyclerView
                     android:layout_width="match_parent"

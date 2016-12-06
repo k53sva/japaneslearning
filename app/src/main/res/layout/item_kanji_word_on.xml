@@ -58,6 +58,10 @@
             android:layout_margin="@dimen/dimen_5dp"
             android:layout_marginLeft="@dimen/dimen_5dp"
             android:text="@{wordOn.English}" />
-
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@android:color/darker_gray"
+            />
     </LinearLayout>
 </layout>

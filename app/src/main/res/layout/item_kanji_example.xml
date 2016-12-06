@@ -58,6 +58,10 @@
             android:background="@android:color/holo_purple"
             android:paddingLeft="@dimen/dimen_5dp"
             android:text="@{example.KanjiLook}" />
-
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@android:color/darker_gray"
+            />
     </LinearLayout>
 </layout>

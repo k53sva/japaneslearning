@@ -27,6 +27,7 @@
                 android:layout_weight="3"
                 android:text="@{wordKun.KanjiWords}" />
 
+
             <RelativeLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -58,6 +59,12 @@
             android:layout_margin="@dimen/dimen_5dp"
             android:layout_marginLeft="@dimen/dimen_5dp"
             android:text="@{wordKun.English}" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@android:color/darker_gray"
+            />
 
     </LinearLayout>
 </layout>
