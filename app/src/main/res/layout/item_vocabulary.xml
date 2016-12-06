@@ -48,7 +48,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="6"
                     android:text="はじめまして[HAJIMEMASHITE]"
-                    android:textColor="@color/text_conversation" />
+                    android:textColor="@color/aqua" />
 
 
                 <TextView
@@ -57,7 +57,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="6"
                     android:text="This is a standard greeting, when you meet somebody for the first time. When somebody said to you HAJIMEMASHITE, you also say, HAJIMEMASHITE."
-                    android:textColor="@color/text_conversation" />
+                    android:textColor="@color/fuchsia" />
             </LinearLayout>
         </net.cachapa.expandablelayout.ExpandableLayout>
     </LinearLayout>

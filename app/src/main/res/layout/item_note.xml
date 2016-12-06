@@ -48,7 +48,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="6"
                     android:text="はじめまして[HAJIMEMASHITE]"
-                    android:textColor="@color/text_conversation" />
+                    android:textColor="@color/fuchsia" />
 
             </LinearLayout>
         </net.cachapa.expandablelayout.ExpandableLayout>

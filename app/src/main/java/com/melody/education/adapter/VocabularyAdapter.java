@@ -40,7 +40,7 @@ public class VocabularyAdapter extends RecyclerView.Adapter<VocabularyAdapter.Vo
     public void onBindViewHolder(VocabularyHolder holder, int position) {
         Vocabulary item = vocabularyList.get(position);
         holder.tvEnglish.setText(item.Anh);
-        holder.tvROmaji.setText(item.NhatRomaji);
+        holder.tvRomaji.setText(item.NhatRomaji);
         holder.tvDetail.setText(item.Detail);
         holder.tvStt.setText((position + 1) + ". ");
 
@@ -65,7 +65,7 @@ public class VocabularyAdapter extends RecyclerView.Adapter<VocabularyAdapter.Vo
 
     public class VocabularyHolder extends RecyclerView.ViewHolder {
         TextView tvEnglish;
-        TextView tvROmaji;
+        TextView tvRomaji;
         TextView tvDetail;
         TextView tvStt;
         LinearLayout content;
@@ -74,7 +74,7 @@ public class VocabularyAdapter extends RecyclerView.Adapter<VocabularyAdapter.Vo
         public VocabularyHolder(View itemView) {
             super(itemView);
             tvEnglish = (TextView) itemView.findViewById(R.id.tv_vocabulary_english);
-            tvROmaji = (TextView) itemView.findViewById(R.id.tv_vocabulary_romaji);
+            tvRomaji = (TextView) itemView.findViewById(R.id.tv_vocabulary_romaji);
             tvDetail = (TextView) itemView.findViewById(R.id.tv_vocabulary_detail);
             tvStt = (TextView) itemView.findViewById(R.id.tv_stt);
             content = (LinearLayout) itemView.findViewById(R.id.item_content);

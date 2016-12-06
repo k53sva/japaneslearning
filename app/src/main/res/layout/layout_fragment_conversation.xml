@@ -44,14 +44,14 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="How are you"
-                    android:textColor="@color/text_conversation" />
+                    android:textColor="@color/fuchsia" />
 
                 <TextView
                     android:id="@+id/tv_romaji"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="How are you"
-                    android:textColor="@color/text_conversation" />
+                    android:textColor="@color/aqua" />
 
             </LinearLayout>
         </net.cachapa.expandablelayout.ExpandableLayout>

@@ -34,7 +34,7 @@ public class TopicAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     private List<TopicTitle> topics = new ArrayList<>();
 
     private class MyViewHolder extends RecyclerView.ViewHolder {
-        public TextView title, des;
+        public TextView des;
         public ImageView thumbnail;
         private RelativeLayout body;
         private LinearLayout ln;
@@ -42,7 +42,6 @@ public class TopicAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
         public MyViewHolder(View view) {
             super(view);
-            title = (TextView) view.findViewById(R.id.tv_title);
             des = (TextView) view.findViewById(R.id.tv_des);
             thumbnail = (ImageView) view.findViewById(R.id.iv_bg_lesson);
             body = (RelativeLayout) view.findViewById(R.id.body);
@@ -81,7 +80,7 @@ public class TopicAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             return new HeaderViewHolder(v);
         } else if (viewType == TYPE_ITEM) {
             View itemView = LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.item_list_lesson, parent, false);
+                    .inflate(R.layout.item_list_topic, parent, false);
 
             return new MyViewHolder(itemView);
         } else {
