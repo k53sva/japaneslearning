@@ -54,6 +54,7 @@ public class ShortQuizFragment extends BaseFragment {
         adapter.addFragment(KanjiQuizFragment.newInstance(ChungID), "");
         mViewPager.setAdapter(adapter);
         mViewPager.beginFakeDrag();
+        mViewPager.setSwipeLocked(true);
 
         return view;
     }

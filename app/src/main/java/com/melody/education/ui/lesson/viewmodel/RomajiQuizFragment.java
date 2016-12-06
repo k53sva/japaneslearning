@@ -6,6 +6,8 @@ import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,7 +42,7 @@ public class RomajiQuizFragment extends BaseFragment {
     RecyclerView recyclerView;
     LessonQuizItemAdapter adapter;
     Button btnCheck, btnReset, btnAnswer;
-    int total = 0;
+    long total = 0;
     SharedPreferences preferences;
     SharedPreferences.Editor editor;
     public static final String EXTRA_INDEX = "EXTRA_INDEX";
@@ -97,7 +99,8 @@ public class RomajiQuizFragment extends BaseFragment {
     private void saveData() {
         int i = preferences.getInt(Utils.PRF_LESSON_FINAL, 0);
         if (LessonActivity.lessonId == i) {
-            total = LessonQuizItemAdapter.tempRomaji.size() + LessonQuizItemAdapter.tempKanji.size();
+            total = Stream.of(adapter.answerShortQuiz1List).filter(m -> m.ChungID.equals(ChungID)).count() * 2;
+            Log.e("TAG", total + "");
             int x = +Stream.of(LessonQuizItemAdapter.tempKanji).map(Map.Entry::getValue).filter(m -> m).collect(Collectors.toList()).size()
                     + Stream.of(LessonQuizItemAdapter.tempRomaji).map(Map.Entry::getValue).filter(m -> m).collect(Collectors.toList()).size();
             if ((Utils.checkFinal(x, total))) {
@@ -114,8 +117,7 @@ public class RomajiQuizFragment extends BaseFragment {
                 .filter(m -> m.ChungID.equals(ChungID))
                 .toList()
                 .doOnNext(m -> Observable.just(m).map(List::size).filter(n -> n == 0).subscribe(n -> editor.putInt(Utils.PRF_LESSON_FINAL, LessonActivity.lessonId)))
-                .subscribe(m -> {
-                    adapter.setModel(m);
-                }, Throwable::printStackTrace);
+                .subscribe(m -> adapter.setModel(m), Throwable::printStackTrace);
     }
+
 }

@@ -13,5 +13,5 @@ public class QuizModel {
 
     public List<ShortQuiz> items;
     public int status = 0;
-    public HashMap<String, Boolean> isCheck;
+    public HashMap<Integer, Boolean> isCheck;
 }

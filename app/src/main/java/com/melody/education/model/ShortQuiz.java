@@ -11,4 +11,5 @@ public class ShortQuiz {
     public String RomajiSentence1;
     public String KanjiSentence1;
     public String Look;
+    public String AnswerID;
 }

@@ -36,7 +36,7 @@ public class KanjiQuizFragment extends BaseFragment {
     RecyclerView recyclerView;
     LessonQuizItemAdapter adapter;
     Button btnCheck, btnReset, btnAnswer;
-    int total;
+    long total;
     SharedPreferences preferences;
     SharedPreferences.Editor editor;
     public static final String EXTRA_INDEX = "EXTRA_INDEX";
@@ -94,7 +94,7 @@ public class KanjiQuizFragment extends BaseFragment {
     private void saveData() {
         int i = preferences.getInt(Utils.PRF_LESSON_FINAL, 0);
         if (LessonActivity.lessonId == i) {
-            total = LessonQuizItemAdapter.tempRomaji.size() + LessonQuizItemAdapter.tempKanji.size();
+            total = Stream.of(adapter.answerShortQuiz1List).filter(m -> m.ChungID.equals(ChungID)).count()*2;
             int x = +Stream.of(LessonQuizItemAdapter.tempKanji).map(Map.Entry::getValue).filter(m -> m).collect(Collectors.toList()).size()
                     + Stream.of(LessonQuizItemAdapter.tempRomaji).map(Map.Entry::getValue).filter(m -> m).collect(Collectors.toList()).size();
             if ((Utils.checkFinal(x, total))) {

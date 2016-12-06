@@ -25,7 +25,7 @@ public class Utils {
     public static final String TAG = Utils.class.getName();
     public static final String PRF_LESSON_FINAL = "PRF_LESSON_FINAL";
 
-    public static boolean checkFinal(int count, int total) {
+    public static boolean checkFinal(int count, long total) {
         if ((count / total) * 100 > 80)
             return true;
         return false;
