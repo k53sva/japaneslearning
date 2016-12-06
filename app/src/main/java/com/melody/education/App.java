@@ -28,7 +28,6 @@ public class App extends Application {
         super.onCreate();
         application = this;
         playlistManager = new PlaylistManager();
-        Hawk.init(this).setEncryption(new NoEncryption()).build();
     }
 
     public synchronized int getQuizRomaji(String id, int position) {

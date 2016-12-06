@@ -110,7 +110,7 @@ public class KanjiQuizFragment extends BaseFragment {
                 .filter(m -> m.ChungID.equals(ChungID))
                 .toList()
                 .subscribe(m -> {
-                    adapter.setModel(m);
+                    adapter.setQuizModel(m);
                 }, Throwable::printStackTrace);
     }
 }

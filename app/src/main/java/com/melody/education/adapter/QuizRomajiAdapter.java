@@ -105,7 +105,6 @@ public class QuizRomajiAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     private void checkAnswer() {
         String temp = Stream.of(check).map(Map.Entry::getValue).reduce("", (x, y) -> x + "," + y).replace(",", "");
         LessonQuizItemAdapter.tempRomaji.put(questionId, temp.trim().equals(answer.RomajiCorrect.replace(",", "").trim()));
-        Log.e("TAG", "answerId: " + answerId + "; questionId: " + questionId + "; " + temp.trim().equals(answer.RomajiCorrect.replace(",", "").trim()));
     }
 
     @Override

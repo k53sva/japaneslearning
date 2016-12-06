@@ -3,12 +3,15 @@ package com.melody.education.adapter;
 import android.content.Context;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.TextView;
 
+import com.annimon.stream.Collectors;
 import com.annimon.stream.Stream;
 import com.melody.education.App;
 import com.melody.education.R;
@@ -31,13 +34,14 @@ public class LessonQuizItemAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     private static final int TYPE_ITEM = 1;
     private Context mContext;
     public AnswerShortQuiz1[] answerShortQuiz1List;
-    private QuizModel model = new QuizModel();
+    private QuizModel quizModel = new QuizModel();
     private boolean isKanji;
 
     public static final HashMap<Integer, Boolean> tempKanji = new HashMap<>();
     public static final HashMap<Integer, Boolean> tempRomaji = new HashMap<>();
 
     private class MyViewHolder extends RecyclerView.ViewHolder {
+        private TextView tvStt;
         public RecyclerView recyclerView;
         public ImageView ivCheck;
 
@@ -45,6 +49,7 @@ public class LessonQuizItemAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             super(view);
             recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
             ivCheck = (ImageView) view.findViewById(R.id.iv_check);
+            tvStt = (TextView) view.findViewById(R.id.stt);
         }
     }
 
@@ -61,20 +66,20 @@ public class LessonQuizItemAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         tempKanji.size();
         tempRomaji.clear();
         this.mContext = mContext;
-        this.model.items = items;
+        this.quizModel.items = items;
         this.isKanji = isKanji;
         Stream.of(items).forEach(x -> {
             if (x.AnswerID != null)
-                this.model.isCheck.put(x.id, false);
+                this.quizModel.isCheck.put(x.id, false);
             else
-                this.model.isCheck.put(-1, false);
+                this.quizModel.isCheck.put(-1, false);
         });
         App.getDataHelper().getData(DataHelper.DATABASE_LESSON, DataHelper.TABLE_ANSWER_QUIZ, AnswerShortQuiz1[].class)
                 .subscribe(m -> answerShortQuiz1List = m, Throwable::printStackTrace);
     }
 
-    public void setModel(List<ShortQuiz> items) {
-        this.model.items = items;
+    public void setQuizModel(List<ShortQuiz> items) {
+        this.quizModel.items = items;
         notifyDataSetChanged();
     }
 
@@ -94,11 +99,23 @@ public class LessonQuizItemAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
     @Override
     public void onBindViewHolder(final RecyclerView.ViewHolder holder, int position) {
-        ShortQuiz item = model.items.get(position);
+        ShortQuiz item = quizModel.items.get(position);
         if (holder instanceof LessonQuizItemAdapter.MyViewHolder) {
             LessonQuizItemAdapter.MyViewHolder v = (LessonQuizItemAdapter.MyViewHolder) holder;
             RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(mContext, LinearLayoutManager.HORIZONTAL, false);
             v.recyclerView.setLayoutManager(mLayoutManager);
+            if (quizModel.stt.get(position) == -1) {
+                if (item.KanjiSentence1.contains(item.idCon + ".")) {
+                    v.tvStt.setText(item.idCon + ".");
+                    item.KanjiSentence1 = item.KanjiSentence1.substring(2);
+                    item.RomajiSentence1 = item.RomajiSentence1.substring(2);
+                    quizModel.stt.set(position, Integer.valueOf(item.idCon));
+                    Log.e("TAG", "pos=" + position + ";id=" + item.idCon);
+                } else {
+                    v.tvStt.setText("");
+                }
+            } else
+                v.tvStt.setText(quizModel.stt.get(position) + ".");
             Observable.just(item)
                     .map(this::mapLanguage)
                     .flatMap(Observable::from)
@@ -118,11 +135,11 @@ public class LessonQuizItemAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                             v.recyclerView.setAdapter(adapter);
                         }
                     }, Throwable::printStackTrace);
-            if (model.status == QuizModel.RESET || !item.RomajiSentence1.contains("_"))
+            if (quizModel.status == QuizModel.RESET || !item.RomajiSentence1.contains("_"))
                 v.ivCheck.setVisibility(View.GONE);
             else {
                 v.ivCheck.setVisibility(View.VISIBLE);
-                if (model.isCheck.get(item.id)) {
+                if (quizModel.isCheck.get(item.id)) {
                     v.ivCheck.setImageResource(R.drawable.ic_true);
                 } else
                     v.ivCheck.setImageResource(R.drawable.ic_flase);
@@ -138,16 +155,19 @@ public class LessonQuizItemAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     }
 
     public void checkAnswer() {
-        model.status = QuizModel.CHECKED;
+        quizModel.status = QuizModel.CHECKED;
         if (isKanji)
-            model.isCheck = tempKanji;
+            quizModel.isCheck = tempKanji;
         else
-            model.isCheck = tempRomaji;
+            quizModel.isCheck = tempRomaji;
         notifyDataSetChanged();
+        for (int i = 0; i < quizModel.stt.size(); i++) {
+            Log.e("TAG", "pos=" + i + ";id=" + quizModel.stt.get(i));
+        }
     }
 
     public void resetAnswer() {
-        model.status = QuizModel.RESET;
+        quizModel.status = QuizModel.RESET;
         notifyDataSetChanged();
     }
 
@@ -166,6 +186,6 @@ public class LessonQuizItemAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
     @Override
     public int getItemCount() {
-        return model.items.size();
+        return quizModel.items.size();
     }
 }
