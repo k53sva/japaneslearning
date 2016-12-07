@@ -11,8 +11,6 @@ import com.jakewharton.rxbinding.view.RxView;
 import com.melody.education.R;
 import com.melody.education.adapter.ViewPagerAdapter;
 import com.melody.education.ui.BaseFragment;
-import com.melody.education.ui.lesson.viewmodel.KanjiQuizFragment;
-import com.melody.education.ui.lesson.viewmodel.RomajiQuizFragment;
 import com.melody.education.utils.LockableViewPager;
 
 

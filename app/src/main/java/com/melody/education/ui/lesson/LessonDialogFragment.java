@@ -38,10 +38,10 @@ public class LessonDialogFragment extends BaseFragment {
         RxView.clicks(tvChange)
                 .subscribe(m -> {
                     if (isKanji) {
-                        tvChange.setText("Kanji");
+                        tvChange.setText("Romaji");
                         tvDialog.setText(dialogue1.Kanji1);
                     } else {
-                        tvChange.setText("Romaji");
+                        tvChange.setText("Kanji");
                         tvDialog.setText(dialogue1.Romaji1);
                     }
                     isKanji = !isKanji;

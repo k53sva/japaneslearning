@@ -1,23 +1,16 @@
 package com.melody.education.ui.lesson;
 
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.jakewharton.rxbinding.view.RxView;
 import com.melody.education.R;
-import com.melody.education.model.Dialogue1;
 import com.melody.education.model.Dialogue2;
 import com.melody.education.net.FetchData;
 import com.melody.education.ui.BaseFragment;
-import com.melody.education.utils.DataHelper;
-
-import rx.Observable;
-import rx.schedulers.Schedulers;
 
 /**
  * Created by K53SV on 8/29/2016.
@@ -46,10 +39,10 @@ public class LessonDialog2Fragment extends BaseFragment {
         RxView.clicks(tvChange)
                 .subscribe(m -> {
                     if (isKanji) {
-                        tvChange.setText("Kanji");
+                        tvChange.setText("Romaji");
                         tvDialog.setText(dialogue2.Kanji2);
                     } else {
-                        tvChange.setText("Romaji");
+                        tvChange.setText("Kanji");
                         tvDialog.setText(dialogue2.Romaji2);
                     }
                     isKanji = !isKanji;

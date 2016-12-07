@@ -1,4 +1,4 @@
-package com.melody.education.ui.lesson.viewmodel;
+package com.melody.education.ui.lesson;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -6,7 +6,6 @@ import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,7 +19,6 @@ import com.melody.education.R;
 import com.melody.education.adapter.LessonQuizItemAdapter;
 import com.melody.education.model.ShortQuiz;
 import com.melody.education.ui.BaseFragment;
-import com.melody.education.ui.lesson.LessonActivity;
 import com.melody.education.utils.DataHelper;
 import com.melody.education.utils.Utils;
 
@@ -96,13 +94,15 @@ public class RomajiQuizFragment extends BaseFragment {
     private void saveData() {
         int i = preferences.getInt(Utils.PRF_LESSON_FINAL, 0);
         if (LessonActivity.lessonId == i) {
-            total = Stream.of(adapter.answerShortQuiz1List).filter(m -> m.ChungID.equals(ChungID)).count() * 2;
+            total = Stream.of(adapter.answerShortQuiz1List).filter(m -> m.ChungID.equals(ChungID)).count();
             int x = +Stream.of(LessonQuizItemAdapter.tempKanji).map(Map.Entry::getValue).filter(m -> m).collect(Collectors.toList()).size()
                     + Stream.of(LessonQuizItemAdapter.tempRomaji).map(Map.Entry::getValue).filter(m -> m).collect(Collectors.toList()).size();
             if ((Utils.checkFinal(x, total))) {
-                editor.putInt(Utils.PRF_LESSON_FINAL, LessonActivity.lessonId);
+                editor.putInt(Utils.PRF_LESSON_FINAL, LessonActivity.lessonId + 1);
+                editor.apply();
             }
-            editor.apply();
+            showAlertAction(getActivity(), id -> {
+            }, "You have the right answer" + x + "/" + total + " questions");
         }
     }
 

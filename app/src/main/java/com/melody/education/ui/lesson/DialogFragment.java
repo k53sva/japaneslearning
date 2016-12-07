@@ -181,7 +181,7 @@ public class DialogFragment extends BaseFragment implements PlaylistListener<Med
     public boolean onPlaybackStateChanged(@NonNull PlaylistServiceCore.PlaybackState playbackState) {
         switch (playbackState) {
             case STOPPED:
-                playlistManager.play(0, true);
+                playlistManager.play(0, false);
                 break;
 
             case RETRIEVING:
@@ -295,7 +295,6 @@ public class DialogFragment extends BaseFragment implements PlaylistListener<Med
 
 
     private void startPlayback(boolean forceStart) {
-        //If we are changing audio files, or we haven't played before then start the playback
         if (forceStart) {
             playlistManager.setCurrentPosition(0);
             playlistManager.play(0, false);

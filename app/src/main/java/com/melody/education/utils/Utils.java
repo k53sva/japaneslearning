@@ -28,7 +28,8 @@ public class Utils {
     public static boolean checkFinal(int count, long total) {
         if ((count / total) * 100 > 80)
             return true;
-        return false;
+        else
+            return false;
     }
 
     public static void startFragment(FragmentActivity context, Fragment fragment) {

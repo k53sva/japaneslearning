@@ -125,11 +125,19 @@ public class LessonAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     }
 
     private void startLearningActivity(LessonTitle item, int position) {
-        int i = preferences.getInt(Utils.PRF_LESSON_FINAL, 0);
-        if (position <= i)
+        if (position == 0)
             LessonActivity.launchActivity(mContext, item.ChungID, item.Title, item.Picture, position);
-        else
-            Toast.makeText(mContext, "You must complete the Lesson Quiz " + (i + 1), Toast.LENGTH_LONG).show();
+        else {
+            int i = preferences.getInt(Utils.PRF_LESSON_FINAL, 0);
+            if (position <= i)
+                LessonActivity.launchActivity(mContext, item.ChungID, item.Title, item.Picture, position);
+            else {
+                if (i == 0)
+                    Toast.makeText(mContext, "You must complete the Lesson Quiz " + 1, Toast.LENGTH_LONG).show();
+                else
+                    Toast.makeText(mContext, "You must complete the Lesson Quiz " + i, Toast.LENGTH_LONG).show();
+            }
+        }
     }
 
 }
