@@ -1,4 +1,4 @@
-package com.melody.education.ui;
+package com.melody.education.ui.lesson;
 
 import android.os.Bundle;
 import android.os.Handler;
@@ -14,10 +14,12 @@ import android.view.ViewGroup;
 
 import com.melody.education.App;
 import com.melody.education.R;
-import com.melody.education.adapter.TopicAdapter;
-import com.melody.education.model.Topic;
-import com.melody.education.model.TopicTitle;
+import com.melody.education.adapter.LessonAdapter;
+import com.melody.education.model.Lesson;
+import com.melody.education.model.LessonTitle;
 import com.melody.education.net.FetchData;
+import com.melody.education.ui.BaseFragment;
+import com.melody.education.ui.MainActivity;
 import com.melody.education.utils.DataHelper;
 import com.melody.education.utils.GridSpacingItemDecoration;
 import com.melody.education.utils.Utils;
@@ -31,19 +33,20 @@ import rx.schedulers.Schedulers;
 /**
  * Created by K53SV on 8/29/2016.
  */
-public class TopicListFragment extends BaseFragment {
-    private TopicAdapter adapter;
+public class LessonListFragment extends BaseFragment {
+    private RecyclerView recyclerView;
+    private LessonAdapter adapter;
     private SwipeRefreshLayout mSwipeRefreshLayout;
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.content_main, container, false);
-        RecyclerView recyclerView = (RecyclerView) v.findViewById(R.id.recycler_view);
+        recyclerView = (RecyclerView) v.findViewById(R.id.recycler_view);
         RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(getActivity(), 1);
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.addItemDecoration(new GridSpacingItemDecoration(2, Utils.dpToPx(getActivity(), 0), true));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
 
-        adapter = new TopicAdapter(getActivity(), new ArrayList<>());
+        adapter = new LessonAdapter(getActivity(), new ArrayList<>());
         recyclerView.setAdapter(adapter);
 
         mSwipeRefreshLayout = (SwipeRefreshLayout) v.findViewById(R.id.swipe_refresh);
@@ -58,18 +61,25 @@ public class TopicListFragment extends BaseFragment {
     }
 
     void refreshItems() {
-        new FetchData(getActivity()).getDataTopic()
+        new FetchData(getActivity()).getDataLesson()
                 .doOnNext(m -> mSwipeRefreshLayout.setRefreshing(false))
                 .filter(m -> m)
                 .subscribe(m -> getData());
     }
 
     private void getData() {
-        App.getDataHelper().getData(DataHelper.DATABASE_TOPICS, DataHelper.TABLE_TOPIC_TITLE, TopicTitle[].class)
+        App.getDataHelper().getData(DataHelper.DATABASE_LESSON, DataHelper.TABLE_LESSON_TITLE, LessonTitle[].class)
                 .subscribeOn(Schedulers.io())
                 .flatMap(Observable::from)
-                .toSortedList((p1, p2) -> Integer.valueOf(p1.id).compareTo(p2.id))
+                .map(this::fillData)
+                .toList()
+                .map(ArrayList::new)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(m -> adapter.setModel(m));
+    }
+
+    private LessonTitle fillData(LessonTitle title) {
+        title.Picture = FetchData.ROOT_URL + "lesson/" + title.Picture;
+        return title;
     }
 }

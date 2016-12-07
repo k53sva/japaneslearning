@@ -29,7 +29,11 @@ import com.melody.education.ui.conversation.ConversationActivity;
 import com.melody.education.ui.conversation.ConversationFragment;
 import com.melody.education.model.Conversation;
 import com.melody.education.net.FetchData;
-import com.melody.education.ui.kanji.KanjiActivity;
+import com.melody.education.ui.conversation.ConversationListFragment;
+import com.melody.education.ui.kanji.KanjiFragment;
+import com.melody.education.ui.lesson.LessonListFragment;
+import com.melody.education.ui.syllabaries.SyllabariesFragment;
+import com.melody.education.ui.topic.TopicListFragment;
 import com.melody.education.utils.DataCache;
 import com.melody.education.utils.DataHelper;
 import com.melody.education.utils.Utils;
@@ -208,7 +212,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
         if (version.kanji == ver) {
             if (Utils.checkFileExits(String.format("%s/%s", this.getExternalCacheDir(), DataHelper.DATABASE_KANJI)))
-                startActivity(new Intent(this, KanjiActivity.class));
+                Utils.startFragment(this, new KanjiFragment());
             else
                 getDatKanji(version.kanji);
         } else
@@ -224,7 +228,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                     if (m) {
                         editor.putFloat(Version.KANJI_KEY, v);
                         editor.commit();
-                        startActivity(new Intent(this, KanjiActivity.class));
+                        Utils.startFragment(this, new KanjiFragment());
                     } else
                         showAlertAction(this, id -> startActivity(new Intent(android.provider.Settings.ACTION_WIRELESS_SETTINGS))
                                 , "No connection. Please check connect internet");

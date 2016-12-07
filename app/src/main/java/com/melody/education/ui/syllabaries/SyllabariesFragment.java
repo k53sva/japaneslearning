@@ -1,4 +1,4 @@
-package com.melody.education.ui;
+package com.melody.education.ui.syllabaries;
 
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
@@ -11,6 +11,8 @@ import android.view.ViewGroup;
 
 import com.melody.education.R;
 import com.melody.education.adapter.ViewPagerAdapter;
+import com.melody.education.ui.BaseFragment;
+import com.melody.education.ui.MainActivity;
 import com.melody.education.ui.syllabaries.HiraganaFragment;
 import com.melody.education.ui.syllabaries.KatakanaFragment;
 import com.melody.education.utils.Utils;

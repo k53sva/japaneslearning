@@ -119,6 +119,7 @@ public class KanjiContentModel {
                 .filter(m -> m != null)
                 .filter(m -> m.length() > 0)
                 .doOnNext(m -> ex.isSound = true)
+                .doOnNext(m -> ex.Kanji = FetchData.ROOT_URL + "kanji/" + ex.Kanji)
                 .subscribe(m -> ex.Sound = FetchData.ROOT_URL + FUNCTION_NAME + m);
 
         return ex;
