@@ -12,4 +12,5 @@ public class ShortQuiz {
     public String KanjiSentence1;
     public String Look;
     public String AnswerID;
+    public String QuizImage;
 }

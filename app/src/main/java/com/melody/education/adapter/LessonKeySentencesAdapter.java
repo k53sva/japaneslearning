@@ -55,8 +55,12 @@ public class LessonKeySentencesAdapter extends RecyclerView.Adapter<LessonKeySen
             else
                 holder.expandableLayout.expand();
         });
-
-        holder.ivplay.setOnClickListener(v -> playAudio((ImageView) v, item.Audio));
+        if (item.Audio != null & item.Audio.length() > 0) {
+            holder.ivplay.setVisibility(View.VISIBLE);
+            holder.ivplay.setOnClickListener(v -> playAudio((ImageView) v, item.Audio));
+        } else {
+            holder.ivplay.setVisibility(View.GONE);
+        }
     }
 
     public void setModel(List<KeySentences> models) {

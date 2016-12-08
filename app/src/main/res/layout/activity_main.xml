@@ -30,7 +30,7 @@
                     android:id="@+id/toolbar"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="@drawable/cover"
+                    android:background="@drawable/img_cover"
                     android:fitsSystemWindows="true"
                     app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
                     app:theme="@style/TransparentToolbar">

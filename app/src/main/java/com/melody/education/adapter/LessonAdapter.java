@@ -132,10 +132,7 @@ public class LessonAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             if (position <= i)
                 LessonActivity.launchActivity(mContext, item.ChungID, item.Title, item.Picture, position);
             else {
-                if (i == 0)
-                    Toast.makeText(mContext, "You must complete the Lesson Quiz " + 1, Toast.LENGTH_LONG).show();
-                else
-                    Toast.makeText(mContext, "You must complete the Lesson Quiz " + i, Toast.LENGTH_LONG).show();
+                    Toast.makeText(mContext, "You must complete the previous lesson", Toast.LENGTH_LONG).show();
             }
         }
     }

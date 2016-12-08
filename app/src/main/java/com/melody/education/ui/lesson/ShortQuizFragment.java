@@ -63,10 +63,10 @@ public class ShortQuizFragment extends BaseFragment {
         RxView.clicks(btnChange)
                 .subscribe(m -> {
                     if (isKanji) {
-                        btnChange.setText("Kanji");
+                        btnChange.setText("Romaji");
                         mViewPager.setCurrentItem(1);
                     } else {
-                        btnChange.setText("Romaji");
+                        btnChange.setText("Kanji");
                         mViewPager.setCurrentItem(0);
                     }
                     isKanji = !isKanji;
