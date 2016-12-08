@@ -8,37 +8,35 @@
             type="com.melody.education.model.KanjiGroup" />
     </data>
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:layout_height="150dp">
 
-        <android.support.v7.widget.CardView
+        <ImageView
+            android:id="@+id/iv_detail"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:scaleType="fitXY"
+            bind:imageUrl="@{itemKanji.TitleImage}" />
 
-            <LinearLayout
-                android:id="@+id/item_content"
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_alignParentBottom="true"
+            android:background="#AA000000"
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
+
+            <TextView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:orientation="horizontal">
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:text="@{itemKanji.Title}"
+                android:textColor="#FFFFFF" />
+        </LinearLayout>
 
-                <ImageView
-                    android:id="@+id/iv_detail"
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"
-                    android:layout_gravity="center"
-                    bind:imageUrl="@{itemKanji.TitleImage}" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/dimen_5dp"
-                    android:layout_marginLeft="@dimen/dimen_5dp"
-                    android:text="@{itemKanji.Title}" />
-            </LinearLayout>
-        </android.support.v7.widget.CardView>
-
-    </LinearLayout>
+    </RelativeLayout>
 </layout>
