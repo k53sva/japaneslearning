@@ -104,18 +104,18 @@ public class LessonQuizItemAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             LessonQuizItemAdapter.MyViewHolder v = (LessonQuizItemAdapter.MyViewHolder) holder;
             RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(mContext, LinearLayoutManager.HORIZONTAL, false);
             v.recyclerView.setLayoutManager(mLayoutManager);
-            if (quizModel.stt.get(position) == -1) {
-                if (item.KanjiSentence1.contains(item.idCon + ".")) {
-                    v.tvStt.setText(item.idCon + ".");
+            if (quizModel.stt.get(position).equals("null")) {
+                String a = item.KanjiSentence1.substring(0, 1);
+                if (android.text.TextUtils.isDigitsOnly(a)) {
+                    v.tvStt.setText(a + ".");
                     item.KanjiSentence1 = item.KanjiSentence1.substring(2);
                     item.RomajiSentence1 = item.RomajiSentence1.substring(2);
-                    quizModel.stt.set(position, Integer.valueOf(item.idCon));
-                    Log.e("TAG", "pos=" + position + ";id=" + item.idCon);
+                    quizModel.stt.set(position, (a + "."));
                 } else {
                     v.tvStt.setText("");
                 }
             } else
-                v.tvStt.setText(quizModel.stt.get(position) + ".");
+                v.tvStt.setText(quizModel.stt.get(position));
             Observable.just(item)
                     .map(this::mapLanguage)
                     .flatMap(Observable::from)

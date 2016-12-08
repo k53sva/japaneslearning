@@ -4,14 +4,9 @@ import android.app.Application;
 import android.os.StrictMode;
 
 import com.melody.education.manager.PlaylistManager;
-import com.melody.education.model.QuizChoose;
 import com.melody.education.utils.DataHelper;
-import com.orhanobut.hawk.Hawk;
-import com.orhanobut.hawk.NoEncryption;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 
 public class App extends Application {

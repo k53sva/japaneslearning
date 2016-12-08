@@ -13,11 +13,11 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.melody.education.R;
 import com.melody.education.model.LessonTitle;
 import com.melody.education.ui.lesson.LessonActivity;
 import com.melody.education.utils.Utils;
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -94,7 +94,7 @@ public class LessonAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             LessonTitle item = lessonArrayList.get(position);
             myViewHolder.title.setText(item.Title);
             myViewHolder.des.setText(item.Detail);
-            Picasso.with(mContext)
+            Glide.with(mContext)
                     .load(item.Picture)
                     .placeholder(R.drawable.logo_app)
                     .into(myViewHolder.thumbnail);

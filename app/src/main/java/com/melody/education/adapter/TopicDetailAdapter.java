@@ -9,9 +9,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.melody.education.R;
 import com.melody.education.model.Topic;
-import com.squareup.picasso.Picasso;
 
 import net.cachapa.expandablelayout.ExpandableLayout;
 
@@ -84,7 +84,7 @@ public class TopicDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                 myViewHolder.tvRomaji.setText(item.Romaji);
                 myViewHolder.tvDetail.setText(item.Detail);
 
-                Picasso.with(mContext)
+                Glide.with(mContext)
                         .load(item.ImageUrl)
                         .placeholder(R.drawable.logo_app)
                         .into(myViewHolder.ivDetail);

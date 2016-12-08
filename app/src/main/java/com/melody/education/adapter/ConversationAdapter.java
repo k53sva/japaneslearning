@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.melody.education.R;
 import com.melody.education.ui.conversation.ConversationFragment;
 import com.melody.education.model.Conversation;
@@ -17,7 +18,6 @@ import com.melody.education.net.FetchData;
 import com.melody.education.service.MediaService;
 import com.melody.education.ui.conversation.ConversationActivity;
 import com.melody.education.utils.DataCache;
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -94,7 +94,7 @@ public class ConversationAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             myViewHolder.title.setText(item.Title);
             myViewHolder.count.setText(item.Description);
 
-            Picasso.with(mContext)
+            Glide.with(mContext)
                     .load(FetchData.ROOT_URL + item.Picture)
                     .placeholder(R.drawable.album1)
                     .into(myViewHolder.thumbnail);

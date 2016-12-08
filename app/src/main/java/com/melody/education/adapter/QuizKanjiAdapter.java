@@ -2,6 +2,7 @@ package com.melody.education.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -101,8 +102,9 @@ public class QuizKanjiAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
 
     private void checkAnswer() {
-        String temp = Stream.of(check).map(Map.Entry::getValue).reduce("", (x, y) -> x + ", " + y).replace(",", "");
+        String temp = Stream.of(check).map(Map.Entry::getValue).reduce("", (x, y) -> x.trim() + ", " + y.trim()).replace(",", "");
         LessonQuizItemAdapter.tempKanji.put(questionId, temp.trim().equals(answer.KanjiCorrect.replace(",", "").trim()));
+        Log.e("QuizKanjiAdapter", temp +"|" + answer.KanjiCorrect.replace(",", "").trim());
     }
 
     @Override

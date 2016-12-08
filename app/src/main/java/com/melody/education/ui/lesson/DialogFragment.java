@@ -188,10 +188,10 @@ public class DialogFragment extends BaseFragment implements PlaylistListener<Med
                 Log.e(TAG, "RETRIEVING");
                 break;
             case PREPARING:
+
                 Log.e(TAG, "PREPARING");
                 break;
             case SEEKING:
-                //restartLoading();
                 Log.e(TAG, "SEEKING");
                 break;
 

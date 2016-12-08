@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.melody.education.R;
 import com.melody.education.model.KeySentences;
 
@@ -64,7 +65,9 @@ public class LessonKeySentencesAdapter extends RecyclerView.Adapter<LessonKeySen
     }
 
     public void playAudio(ImageView view, String audio) {
-        view.setImageResource(R.drawable.ic_loading);
+        Glide.with(activity)
+                .load(R.drawable.ic_loader)
+                .into(view);
         view.setEnabled(false);
         try {
             MediaPlayer mp = new MediaPlayer();

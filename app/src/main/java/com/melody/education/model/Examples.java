@@ -4,6 +4,7 @@ import android.media.MediaPlayer;
 import android.view.View;
 import android.widget.ImageView;
 
+import com.bumptech.glide.Glide;
 import com.melody.education.R;
 
 import java.io.IOException;

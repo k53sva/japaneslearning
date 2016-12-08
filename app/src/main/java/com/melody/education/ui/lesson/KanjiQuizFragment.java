@@ -34,7 +34,7 @@ import rx.Observable;
 public class KanjiQuizFragment extends BaseFragment {
     RecyclerView recyclerView;
     LessonQuizItemAdapter adapter;
-    Button btnCheck, btnReset, btnAnswer;
+    Button btnReset, btnAnswer;
     long total;
     SharedPreferences preferences;
     SharedPreferences.Editor editor;
@@ -64,7 +64,6 @@ public class KanjiQuizFragment extends BaseFragment {
         preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
         editor = preferences.edit();
         recyclerView = (RecyclerView) v.findViewById(R.id.recycler_view);
-        btnCheck = (Button) v.findViewById(R.id.btn_check);
         btnReset = (Button) v.findViewById(R.id.btn_reset);
         btnAnswer = (Button) v.findViewById(R.id.btn_answer);
 
@@ -79,7 +78,6 @@ public class KanjiQuizFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
-        RxView.clicks(btnCheck).subscribe(v -> adapter.checkAnswer());
         RxView.clicks(btnAnswer).subscribe(v -> {
             adapter.checkAnswer();
             saveData();
@@ -92,18 +90,22 @@ public class KanjiQuizFragment extends BaseFragment {
 
     private void saveData() {
         int i = preferences.getInt(Utils.PRF_LESSON_FINAL, 0);
-        if (LessonActivity.lessonId == i) {
-            total = Stream.of(adapter.answerShortQuiz1List).filter(m -> m.ChungID.equals(ChungID)).count();
-            int x = +Stream.of(LessonQuizItemAdapter.tempKanji).map(Map.Entry::getValue).filter(m -> m).collect(Collectors.toList()).size()
-                    + Stream.of(LessonQuizItemAdapter.tempRomaji).map(Map.Entry::getValue).filter(m -> m).collect(Collectors.toList()).size();
-            if ((Utils.checkFinal(x, total))) {
+        total = Stream.of(adapter.answerShortQuiz1List).filter(m -> m.ChungID.equals(ChungID)).count();
+        int x = +Stream.of(LessonQuizItemAdapter.tempKanji).map(Map.Entry::getValue).filter(m -> m).collect(Collectors.toList()).size()
+                + Stream.of(LessonQuizItemAdapter.tempRomaji).map(Map.Entry::getValue).filter(m -> m).collect(Collectors.toList()).size();
+        if ((Utils.checkFinal(x, total))) {
+            showAlertAction(getActivity(), id -> {
+            }, "Congratulations, you have completed the test with the correct answer is" + x + "/" + total);
+
+            if (LessonActivity.lessonId == i) {
                 editor.putInt(Utils.PRF_LESSON_FINAL, LessonActivity.lessonId + 1);
                 editor.apply();
             }
+        } else {
             showAlertAction(getActivity(), id -> {
-            }, "You have the right answer" + x + "/" + total + " questions");
-
+            }, "You have the right answer" + x + "/" + total + " questions. Try again?");
         }
+
     }
 
     private void getData() {

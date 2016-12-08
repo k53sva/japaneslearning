@@ -10,19 +10,16 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.melody.education.R;
-import com.melody.education.model.Topic;
 import com.melody.education.model.TopicTitle;
 import com.melody.education.net.FetchData;
 import com.melody.education.ui.topic.TopicDetailActivity;
 import com.melody.education.utils.DataHelper;
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
 
 
 public class TopicAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
@@ -101,7 +98,7 @@ public class TopicAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             } else {
                 myViewHolder.ln.setVisibility(View.GONE);
             }
-            Picasso.with(mContext).load(FetchData.ROOT_URL + item.TopicImage)
+            Glide.with(mContext).load(FetchData.ROOT_URL + item.TopicImage)
                     .placeholder(R.drawable.logo_app)
                     .into(myViewHolder.thumbnail);
 
