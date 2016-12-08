@@ -39,7 +39,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="6"
-                android:textColor="@color/aqua"
+                android:textColor="@color/txt_english"
                 android:text="はじめまして[HAJIMEMASHITE]" />
 
         </net.cachapa.expandablelayout.ExpandableLayout>
@@ -49,7 +49,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="6"
-            android:textColor="@color/fuchsia"
+            android:textColor="@color/txt_romaji"
             android:text="はじめまして[HAJIMEMASHITE]" />
 
     </LinearLayout>

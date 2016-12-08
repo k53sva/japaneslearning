@@ -26,4 +26,7 @@
     <color name="blue">#0000FF</color>
     <color name="navy">#000080</color>
     <color name="black">#000000</color>
+    
+    <color name="txt_romaji">#ED1C24</color>
+    <color name="txt_english">#1033D8</color>
 </resources>
