@@ -19,7 +19,7 @@ public final class BindingAdapters {
         if (!url.isEmpty())
             Glide.with(view.getContext())
                     .load(url)
-                    .placeholder(R.mipmap.ic_launcher)
+                    .placeholder(R.drawable.logo_app)
                     .into(view);
     }
 

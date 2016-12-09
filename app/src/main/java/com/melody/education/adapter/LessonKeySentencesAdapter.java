@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.melody.education.R;
 import com.melody.education.model.KeySentences;
+import com.melody.education.net.FetchData;
 
 import net.cachapa.expandablelayout.ExpandableLayout;
 
@@ -55,11 +56,12 @@ public class LessonKeySentencesAdapter extends RecyclerView.Adapter<LessonKeySen
             else
                 holder.expandableLayout.expand();
         });
-        if (item.Audio != null & item.Audio.length() > 0) {
+        if (item.Audio.trim().equals(FetchData.ROOT_URL + "lesson/")) {
+            holder.ivplay.setVisibility(View.GONE);
+
+        } else {
             holder.ivplay.setVisibility(View.VISIBLE);
             holder.ivplay.setOnClickListener(v -> playAudio((ImageView) v, item.Audio));
-        } else {
-            holder.ivplay.setVisibility(View.GONE);
         }
     }
 

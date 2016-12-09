@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.melody.education.R;
@@ -18,6 +19,7 @@ import com.melody.education.net.FetchData;
 import com.melody.education.service.MediaService;
 import com.melody.education.ui.conversation.ConversationActivity;
 import com.melody.education.utils.DataCache;
+import com.orhanobut.hawk.Hawk;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,7 +34,7 @@ public class ConversationAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
         public TextView title, count;
-        public ImageView overflow;
+        public ImageView favorite;
         public ImageView thumbnail;
         private RelativeLayout body;
 
@@ -42,7 +44,7 @@ public class ConversationAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             title = (TextView) view.findViewById(R.id.title);
             count = (TextView) view.findViewById(R.id.count);
             thumbnail = (ImageView) view.findViewById(R.id.thumbnail);
-            overflow = (ImageView) view.findViewById(R.id.overflow);
+            favorite = (ImageView) view.findViewById(R.id.iv_favorite);
             body = (RelativeLayout) view.findViewById(R.id.item_content);
         }
     }
@@ -96,8 +98,27 @@ public class ConversationAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
             Glide.with(mContext)
                     .load(FetchData.ROOT_URL + item.Picture)
-                    .placeholder(R.drawable.album1)
+                    .placeholder(R.drawable.logo_app)
                     .into(myViewHolder.thumbnail);
+            Integer fa = Hawk.get(item.id + "");
+            if (fa != null && fa == item.id) {
+                myViewHolder.favorite.setImageResource(R.drawable.ic_like);
+                myViewHolder.favorite.setOnClickListener(v -> {
+                    Hawk.delete(item.id + "");
+                    ((ImageView) v).setImageResource(R.drawable.ic_favorite);
+
+                    Toast.makeText(mContext, "You have to remove '" + item.Title + "' to favorite", Toast.LENGTH_LONG).show();
+
+                });
+            } else {
+                myViewHolder.favorite.setImageResource(R.drawable.ic_favorite);
+                myViewHolder.favorite.setOnClickListener(v -> {
+                    ((ImageView) v).setImageResource(R.drawable.ic_like);
+                    Hawk.put(item.id + "", item.id);
+                    Toast.makeText(mContext, "You have to add '" + item.Title + "' to favorite", Toast.LENGTH_LONG).show();
+                });
+            }
+
 
             ((MyViewHolder) holder).body.setOnClickListener(v -> startLearningActivity(position));
 

@@ -5,6 +5,7 @@ import android.os.StrictMode;
 
 import com.melody.education.manager.PlaylistManager;
 import com.melody.education.utils.DataHelper;
+import com.orhanobut.hawk.Hawk;
 
 import java.util.HashMap;
 
@@ -23,6 +24,7 @@ public class App extends Application {
         super.onCreate();
         application = this;
         playlistManager = new PlaylistManager();
+        Hawk.init(getApplicationContext()).build();
     }
 
     public synchronized int getQuizRomaji(String id, int position) {

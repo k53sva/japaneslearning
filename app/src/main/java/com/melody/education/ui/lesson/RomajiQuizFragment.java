@@ -133,7 +133,6 @@ public class RomajiQuizFragment extends BaseFragment {
             if (q.QuizImage != null && q.QuizImage.length() > 0) {
                 String url = FetchData.ROOT_URL + "lesson/" + q.QuizImage;
                 Glide.with(getActivity()).load(url).into(ivQuiz);
-                Log.e("TAG", url);
                 break;
             }
         }

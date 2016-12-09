@@ -62,6 +62,7 @@ public class DialogFragment extends BaseFragment implements PlaylistListener<Med
     private boolean shouldSetDuration;
     private boolean userInteracting;
     private PlaylistManager playlistManager;
+    private int playCount = 0;
 
     private LessonDialogFragment dialog1 = new LessonDialogFragment();
     private LessonDialog2Fragment dialog2 = new LessonDialog2Fragment();
@@ -137,6 +138,7 @@ public class DialogFragment extends BaseFragment implements PlaylistListener<Med
         super.onPause();
         playlistManager.unRegisterPlaylistListener(this);
         playlistManager.unRegisterProgressListener(this);
+        playCount = 0;
     }
 
     public void onResume() {
@@ -181,14 +183,13 @@ public class DialogFragment extends BaseFragment implements PlaylistListener<Med
     public boolean onPlaybackStateChanged(@NonNull PlaylistServiceCore.PlaybackState playbackState) {
         switch (playbackState) {
             case STOPPED:
-                playlistManager.play(0, false);
+                playlistManager.invokePausePlay();
                 break;
 
             case RETRIEVING:
                 Log.e(TAG, "RETRIEVING");
                 break;
             case PREPARING:
-
                 Log.e(TAG, "PREPARING");
                 break;
             case SEEKING:
@@ -197,6 +198,10 @@ public class DialogFragment extends BaseFragment implements PlaylistListener<Med
 
             case PLAYING:
                 doneLoading(true);
+                if (playCount == 0) {
+                    playlistManager.invokePausePlay();
+                    playCount++;
+                }
                 Log.e(TAG, "PLAYING");
                 break;
 

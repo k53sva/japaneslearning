@@ -34,11 +34,6 @@
         android:icon="@drawable/ic_menu_camera"
         android:title="Playlist" />
 
-    <item
-        android:background="?attr/selectableItemBackground"
-        android:icon="@drawable/ic_menu_send"
-        android:title="Quiz" />
-
     <item android:title="About">
         <menu>
             <item
